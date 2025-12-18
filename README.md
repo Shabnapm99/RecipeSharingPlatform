@@ -1,16 +1,30 @@
-# React + Vite
+# Recipe Sharing Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🔗 Live Demo
 
-Currently, two official plugins are available:
+https://recipe-sharing-platform-kappa-red.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📖 Description
 
-## React Compiler
+Recipe Sharing Platform is a web application that helps users browse and discover recipes easily using search and filters like cuisine, diet type, and cooking time. Users can view detailed recipes with ingredients, step-by-step instructions, and save their favorite recipes. It is designed for anyone who enjoys cooking and wants a simple, organized way to find and prepare meals.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Features
+- Feature 1: Brief description
+- Feature 2: Brief description
+- Feature 3: Brief description
+- Feature 4: Brief description
+- Responsive design for all devices
+- [Optional] AI Integration: Describe if implemented
 
-## Expanding the ESLint configuration
+## 🎯 Project Goals
+Explain what you learned and aimed to achieve with this project.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Technologies Used
+
+- **Frontend:** React.js
+- **Styling:** CSS3 / Tailwind CSS
+- **APIs:** 
+- **Libraries:** React Router
+- **AI Tools:**
+- **Deployment:** Vercel
+
