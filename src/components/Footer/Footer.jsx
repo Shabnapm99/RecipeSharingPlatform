@@ -9,7 +9,7 @@ function Footer() {
     return (
         <footer className='bg-[#102217] text-gray-400 text-sm py-6 px-4 sm:px-6 lg:px-8'>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 lg:justify-items-center'>
-                <div className='flex flex-col gap-2'>
+                <div className='flex flex-col gap-4'>
                     <div className='flex items-center gap-3'>
                         <img src='/images/BrandIcons.png' alt='Brand icon' />
                         <p className='text-white text-xl font-semibold'>CookBook</p>
