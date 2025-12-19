@@ -8,6 +8,7 @@ import SignUp from './pages/SignUp';
 import RecipeList from './pages/RecipeList';
 import RecipeDetails from './pages/RecipeDetails';
 import Favorites from './pages/Favorites';
+import NotFound from './pages/NotFound';
 
 function App() {
 
@@ -42,7 +43,8 @@ function App() {
           path:'/favorites',
           element:<Favorites/>
         }
-      ]
+      ],
+      errorElement:<NotFound/>
     },
 
   ]);
