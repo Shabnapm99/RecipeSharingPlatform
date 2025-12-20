@@ -68,8 +68,13 @@ function Footer() {
 
             </div>
 
-            <div className='border-t border-gray-600 mt-12 pt-8'>
+            <div className='border-t border-gray-600 mt-12 pt-8 flex justify-between'>
                 <p className=''>&copy; 2025 CookBook | All rights reserved</p>
+                <div className='flex gap-4'>
+                    <p>Privacy</p>
+                    <p>Terms</p>
+                    <p>Cookies</p>
+                </div>
 
             </div>
 
