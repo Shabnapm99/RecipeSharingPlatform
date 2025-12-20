@@ -29,14 +29,14 @@ function RecipeList() {
       {/* search bar */}
       <section className='w-full'>
         <h2 className='text-xl font-bold text-white mb-4'>Search Recipes</h2>
-        <div className='relative w-[90%] md:w-[50%]'>
-          <input placeholder='Searchfor recipes, ingredients or cusines...' className='bg-[#3c4f43] text-white text-sm rounded-2xl py-2 px-10 w-full' />
-          <div className='absolute top-2 left-2 text-white text-lg'><IoSearchSharp/></div>
-          <div className='absolute top-2 right-2 text-white text-lg cursor-pointer'><MdKeyboardVoice/></div>
+        <div className='relative w-full md:w-[50%]'>
+          <input placeholder='Searchfor recipes, ingredients or cusines...' className='bg-[#3c4f43] text-white text-sm rounded-2xl py-2 px-10 w-full border border-[#13ec13]' />
+          <div className='absolute top-2 left-2 translate-y-0.5 text-white text-lg'><IoSearchSharp/></div>
+          <div className='absolute top-2 right-2 text-white text-lg cursor-pointer rounded-full bg-[#1c2720] p-1.5 -translate-y-1'><MdKeyboardVoice/></div>
         </div>
 
       </section>
-      <div className='flex gap-4 mt-6 justify-center'>
+      <div className='flex flex-col md:flex-row gap-4 mt-6 justify-center'>
 
         {/* Filter section */}
 
@@ -48,7 +48,7 @@ function RecipeList() {
 
         <section className='basis-3/4'>
             <div>
-              <h4 className='text-gray-500'>Found {recipes.length} Recipes</h4>
+              <h4 className='text-gray-500 mb-3 text-[16px]'>Found {recipes.length} Recipes</h4>
               <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
                 {
                   recipes.map((recipe)=>{
