@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import {createBrowserRouter,RouterProvider} from 'react-router-dom'
 import Root from './routes/Root';
-import Home from './pages/Home';
+import Home from './pages/HomePage/Home';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import RecipeList from './pages/RecipeList';
