@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import './App.css'
-import {createBrowserRouter,RouterProvider} from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Root from './routes/Root';
 import Home from './pages/HomePage/Home';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
-import RecipeList from './pages/RecipeList';
+import RecipeList from './pages/RecipeListingPage/RecipeList';
 import RecipeDetails from './pages/RecipeDetails';
 import Favorites from './pages/Favorites';
 import NotFound from './pages/NotFound';
+import { recipeLoader } from './pages/RecipeListingPage/RecipeList';
 
 function App() {
 
@@ -16,43 +17,48 @@ function App() {
 
   const router = createBrowserRouter([
     {
-      path:'/',
-      element:<Root/>,
-      children:[
+      path: '/',
+      element: <Root />,
+      children: [
         {
-          path:'/',
-          element:<Home/>
+          path: '/',
+          element: <Home />,
+          loader: recipeLoader
         },
         {
-          path:'/login',
-          element:<Login/>
+          path: '/recipes',
+          element: <RecipeList />,
+          loader: recipeLoader
         },
         {
-          path:'/signup',
-          element:<SignUp/>
+          path: '/recipes/:id',
+          element: <RecipeDetails />
         },
         {
-          path:'/recipes',
-          element:<RecipeList/>
-        },
-        {
-          path:'/recipes/:id',
-          element:<RecipeDetails/>
-        },
-        {
-          path:'/favorites',
-          element:<Favorites/>
+          path: '/favorites',
+          element: <Favorites />
         }
       ],
+      errorElement: <NotFound />
+    },
+    {
+      path: '/login',
+      element: <Login />,
+      errorElement:<NotFound/>
+    },
+    {
+      path: '/signup',
+      element: <SignUp />,
       errorElement:<NotFound/>
     },
 
+
   ]);
- 
+
 
   return (
     <>
-    <RouterProvider router={router}/>    
+      <RouterProvider router={router} />
     </>
   )
 }

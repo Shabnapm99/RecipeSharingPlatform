@@ -12,7 +12,7 @@ function Footer() {
                 <div className='flex flex-col gap-4'>
                     <div className='flex items-center gap-3'>
                         <img src='/images/BrandIcons.png' alt='Brand icon' />
-                        <p className='text-white text-xl font-semibold'>CookBook</p>
+                        <p className='text-white text:lg md:text-xl font-semibold'>CookBook</p>
                     </div>
                     <p className='leading-relaxed'>Discover and share amazing recipes from around the world. Join our community of passionate food lovers.</p>
                     <div className='flex gap-2'>

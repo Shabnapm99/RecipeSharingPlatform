@@ -16,11 +16,11 @@ function Header() {
                 <nav className='px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center'>
                 <div className='flex gap-3 items-center cursor-pointer' onClick={()=>navigate('/')}>
                     <img src='/images/BrandIcons.png' alt='BrandIcon' />
-                    <span className='text-lg md:text-2xl font-bold'>CookBook</span>
+                    <span className='text-xl md:text-2xl font-bold'>CookBook</span>
                 </div>
                 <ul className='hidden md:flex gap-4 items-center'>
-                    <li className='text-[15px] cursor-pointer active:border-b' onClick={()=>navigate('/')}>Home</li>
-                    <li className='flex items-center gap-2 px-5 py-1 rounded-2xl bg-[#3c4f43] text-[15px]' onClick={()=>{navigate('/recipes')}}><IoSearchSharp/><span>Search</span></li>
+                    <li className='text-[15px] cursor-pointer active:border-b hover:text-[#13ec6a]' onClick={()=>navigate('/')}>Home</li>
+                    <li className='flex items-center gap-2 px-5 py-1 rounded-2xl bg-[#3c4f43] text-[15px] hover:text-[#13ec6a]' onClick={()=>{navigate('/recipes')}}><IoSearchSharp/><span>Search</span></li>
                 </ul>
 
                 { //Show signin and signUp button only when user is not logged in
@@ -38,7 +38,7 @@ function Header() {
 
             </nav>
             {/* Navigation in small screens */}
-             <div className='flex md:hidden text-sm items-center justify-between px-6 py-2 text-gray-600 border-t'>
+             <div className='flex md:hidden text-sm items-center justify-between px-6 py-2 text-gray-400 border-t'>
                     <div className='flex flex-col justify-center items-center'  onClick={()=>navigate('/')}><IoHomeOutline/>Home</div>
                     <div className='flex flex-col justify-center items-center' onClick={()=>{navigate('/recipes')}}><IoSearchSharp/>search</div>
                     <div className='flex flex-col justify-center items-center'><MdNotificationsNone/>Notification</div>
