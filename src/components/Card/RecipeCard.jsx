@@ -11,7 +11,8 @@ function RecipeCard({ recipe }) {
                 <div className='absolute top-3 right-3 rounded-2xl bg-black/65 text-xs px-2 py-0.5 text-white'><span>{recipe?.cuisine}</span></div>
                 <div className='absolute bottom-3 left-3 rounded-2xl bg-black/65 text-xs px-2 py-0.5 text-white flex items-center gap-1'>
                     <MdAccessTime />
-                    <p >{recipe?.cookTimeMinutes} Mins</p></div>
+                    <p >{recipe?.cookTimeMinutes} Mins</p>
+                </div>
             </div>
             <div className='p-4'>
                 <div className='flex justify-between items-center text-xs font-medium'>
