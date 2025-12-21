@@ -26,8 +26,8 @@ function Header() {
                 { //Show signin and signUp button only when user is not logged in
 
                     !isLoggedIn ? <div className='flex gap-4 items-center'>
-                        <Link><button className='border border-[#3c4f43] py-1.5 px-2.5 rounded-md cursor-pointer hover:border-none hover:bg-[#3c4f43]'>Sign In</button></Link>
-                        <Link><button className='py-1.5 px-2.5 bg-[#13ec6a] text-[#111814] rounded-md cursor-pointer hover:bg-[#0f9444]'>Sign Up</button></Link>
+                        <Link to={'/login'}><button className='border border-[#3c4f43] py-1.5 px-2.5 rounded-md cursor-pointer hover:border-none hover:bg-[#3c4f43]'>Sign In</button></Link>
+                        <Link to={'/signup'}><button className='py-1.5 px-2.5 bg-[#13ec6a] text-[#111814] rounded-md cursor-pointer hover:bg-[#0f9444]'>Sign Up</button></Link>
                     </div> : <div className='flex gap-4 items-center'>
                         <Link><button className='text-2xl cursor-pointer hidden md:block'><MdNotificationsNone/></button></Link>
                         <Link to={'/favorites'}><button className='text-lg cursor-pointer'><FaRegHeart/></button></Link>

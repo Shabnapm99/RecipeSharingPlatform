@@ -10,6 +10,7 @@ import RecipeDetails from './pages/RecipeDetailsPage/RecipeDetails';
 import Favorites from './pages/Favorites';
 import NotFound from './pages/NotFound';
 import { recipeLoader } from './pages/RecipeListingPage/RecipeList';
+import AddRecipe from './pages/AddRecipePage/AddRecipe';
 
 function App() {
 
@@ -38,6 +39,10 @@ function App() {
         {
           path: '/favorites',
           element: <Favorites />
+        },
+                {
+          path: '/add',
+          element: <AddRecipe />
         }
       ],
       errorElement: <NotFound />

@@ -30,9 +30,9 @@ function RecipeDetails() {
 
           {/* Recipe section */}
 
-          <div className='w-[90vw] h-[60vh] lg:w-[60vw] lg:h-[80vh] rounded-xl relative'>
+          <div className='w-[90vw] h-[60vh] lg:w-[60vw] lg:h-[85vh] rounded-xl relative'>
             <img src={recipe.image} className='w-full h-full object-fill rounded-xl' />
-            <div className='w-[90vw] h-[60vh] lg:w-[60vw] lg:h-[80vh] bg-black/40 absolute top-0 left-0 rounded-xl'></div>
+            <div className='w-[90vw] h-[60vh] lg:w-[60vw] lg:h-[85vh] bg-black/40 absolute top-0 left-0 rounded-xl'></div>
             <div className='flex items-center gap-2 absolute top-2 right-2'>
               <div className='rounded-full p-2 bg-black/65 text-white'>
               <FaRegHeart/>

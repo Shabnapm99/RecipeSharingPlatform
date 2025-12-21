@@ -19,7 +19,7 @@ function Home() {
                             <h2 className='text-3xl md:text-5xl font-bold text-gray-400 text-center'>Discover Amazing Recipes</h2>
                             <div className='flex flex-col md:flex-row gap-4 justify-center mt-10'>
                                 <Link to={'/recipes'}><button className='text-sm font-medium flex justify-center items-center gap-2 bg-[#13ec13] text-[#111814] py-1.5 px-7 rounded-lg cursor-pointer hover:bg-[#0fd30f]'>Explore Recipes</button></Link>
-                                <button className='text-sm font-medium flex justify-center items-center gap-2 bg-[#3c4f43] text-white py-1.5 px-7 rounded-lg cursor-pointer hover:bg-white hover:text-[#0fd30f]'>Share Your Recipe</button>
+                                <Link to={'/add'}><button className='text-sm font-medium flex justify-center items-center gap-2 bg-[#3c4f43] text-white py-1.5 px-7 rounded-lg cursor-pointer hover:bg-white hover:text-[#0fd30f]'>Share Your Recipe</button></Link>
                             </div>
                         </div>
                     </div>
