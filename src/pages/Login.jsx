@@ -5,10 +5,10 @@ function Login() {
   return (
     <div className='bg-[#1c2720] w-screen h-screen flex justify-center items-center'>
 
-      <div className='flex rounded-lg bg-[#102217] max-h-screen w-[80%]'>
+      <div className='flex rounded-lg bg-[#102217] h-screen md:h-[70vh] lg:h-screen w-full lg:w-[80%]'>
 
         {/* Leftside : Login */}
-        <div className=' flex flex-col justify-center px-6 py-12 w-1/2'>
+        <div className=' flex flex-col justify-center px-6 py-12 w-full md:w-1/2'>
           <div className='flex items-center gap-3 mb-2'>
             {/* Logo and brand */}
             <div className=' flex justify-center items-center h-10 w-10 rounded-full bg-white/10'>
@@ -48,15 +48,16 @@ function Login() {
             {/* Sign up link */}
             <p className='mt-8 text-center text-sm text-gray-400'>
               <span className='block'>New here? <Link to={'/signup'} className='font-semibold text-[#13ec6a] hover:text-[#13ec6a]/80'>Create an account</Link></span>
-              <Link to={'/'}><span className='block font-bold'>Home</span></Link></p>
-            
+              <Link to={'/'}><span className='block font-bold'>Home</span></Link>
+            </p>
+
 
           </div>
         </div>
 
         {/* RightSide:image */}
 
-        <div className='w-1/2'>
+        <div className='w-1/2 hidden md:block'>
           <img src='/images/Login.png' className='w-full h-full object-cover' />
 
         </div>

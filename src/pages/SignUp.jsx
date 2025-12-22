@@ -5,11 +5,20 @@ function SignUp() {
   return (
     <div className='bg-[#1c2720] w-screen h-screen flex justify-center items-center'>
 
-      <div className='flex rounded-lg bg-[#102217] max-h-screen w-[80%]'>
+      <div className='flex flex-col md:flex-row rounded-lg bg-[#102217] h-screen md:h-[70vh] lg:h-screen w-full lg:w-[80%]'>
+
+        {/* Brand name and icon on small screen */}
+
+        <div className='block md:hidden pt-4 px-4'>
+          <div className='flex gap-3 items-center cursor-pointer' onClick={() => navigate('/')}>
+            <img src='/images/BrandIcons.png' alt='BrandIcon' />
+            <span className='text-xl md:text-2xl font-bold text-white'>CookBook</span>
+          </div>
+        </div>
 
         {/* RightSide:image */}
 
-        <div className='w-1/2 relative'>
+        <div className='w-1/2 relative hidden md:block'>
           <img src='/images/signup.png' className='w-full h-full object-cover' />
           {/* Text div on image */}
           <div className='absolute top-2 left-2 '>
@@ -18,7 +27,7 @@ function SignUp() {
               <span className='text-xl md:text-2xl font-bold text-white'>CookBook</span>
             </div>
           </div>
-          <div className='absolute top-50 left-40 text-center'>
+          <div className='absolute top-60 left-12 lg:top-50 lg:left-40 text-center'>
             <h1 className='text-5xl font-bold'>
               <span className='block text-white'>Master Your</span>
               <span className='block text-[#13ec6a]'>Kitchen Game</span>
@@ -28,7 +37,7 @@ function SignUp() {
         </div>
 
         {/* rightside : register */}
-        <div className=' flex flex-col justify-center px-6 py-12 w-1/2'>
+        <div className=' flex flex-col justify-center px-6 py-12  md:w-1/2 w-full'>
           {/* Headline */}
           <div>
             <h1 className='text-2xl font-bold text-white'>Create an Account</h1>
@@ -68,7 +77,7 @@ function SignUp() {
             {/* Sign up link */}
             <p className='mt-5 text-center text-sm text-gray-400'>
               <span>Already have an account? <Link to={'/login'} className='font-semibold text-[#13ec6a] hover:text-[#13ec6a]/80'>Login</Link></span>
-            <Link to={'/'}><span className='block font-bold'>Home</span></Link>
+              <Link to={'/'}><span className='block font-bold'>Home</span></Link>
             </p>
 
           </div>
