@@ -1,10 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PopularRecipe from './PopularRecipe'
 import StatsSection from './StatsSection'
 import EngagementSection from './EngagementSection'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import Modal from '../../components/Card/Modal'
 
 function Home() {
+    const isLoggedIn = useSelector((state)=>state.users.isLoggedIn);
+    const [showModal,setShowModal] = useState(false);
+    let navigate = useNavigate()
+
+    function handleShareRecipe(){
+        isLoggedIn?navigate('/add'):setShowModal(true);
+    }
     return (
         <main className='bg-[#1c2720] pt-3'>
 
@@ -17,9 +26,11 @@ function Home() {
                         <div className='z-10'>
                             <h1 className='text-4xl md:text-6xl font-bold text-white mb-4 text-center'>Welcome to CookBook!</h1>
                             <h2 className='text-3xl md:text-5xl font-bold text-gray-400 text-center'>Discover Amazing Recipes</h2>
-                            <div className='flex flex-col md:flex-row gap-4 justify-center mt-10'>
+                            <div className='flex flex-col md:flex-row gap-4 justify-center items-center mt-10'>
+
                                 <Link to={'/recipes'}><button className='text-sm font-medium flex justify-center items-center gap-2 bg-[#13ec13] text-[#111814] py-1.5 px-7 rounded-lg cursor-pointer hover:bg-[#0fd30f]'>Explore Recipes</button></Link>
-                                <Link to={'/add'}><button className='text-sm font-medium flex justify-center items-center gap-2 bg-[#3c4f43] text-white py-1.5 px-7 rounded-lg cursor-pointer hover:bg-white hover:text-[#0fd30f]'>Share Your Recipe</button></Link>
+                                <button className='text-sm font-medium flex justify-center items-center gap-2 bg-[#3c4f43] text-white py-1.5 px-7 rounded-lg cursor-pointer hover:bg-white hover:text-[#0fd30f]' onClick={handleShareRecipe}>Share Your Recipe</button>
+                                {showModal && <Modal onClose={() => setShowModal(false)} text='Login required to share Recipe' />}{/* show the modalonly if showModal is true */}
                             </div>
                         </div>
                     </div>

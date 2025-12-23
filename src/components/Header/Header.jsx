@@ -5,9 +5,10 @@ import { MdNotificationsNone } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
 import { useNavigate,Link } from 'react-router-dom';
 import { IoHomeOutline } from "react-icons/io5";
+import { useSelector } from 'react-redux';
 function Header() {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+   const isLoggedIn = useSelector((state)=>state.users.isLoggedIn)
     let navigate = useNavigate();
     return (
         <header className='bg-[#102217] text-white sticky top-0 left-0 z-50'>

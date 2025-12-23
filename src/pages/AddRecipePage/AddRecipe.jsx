@@ -5,6 +5,7 @@ import PreviewCard from './PreviewCard';
 import SaveCard from './SaveCard';
 import Ingredients from './Ingredients';
 import Steps from './Steps';
+import Modal from '../../components/Card/Modal';
 
 function AddRecipe() {
   return (
@@ -12,7 +13,7 @@ function AddRecipe() {
       <section className='w-[80%]'>
         {/* header */}
         <div className='flex gap-4 items-center'>
-          <Link to={'/'}><button className='text-white/30 flex gap-2 item-center justify-center hover:border hover:rounded-lg px-2'>
+          <Link to={'/'}><button className='hidden text-white/30 md:flex gap-2 item-center justify-center hover:border hover:rounded-lg px-2'>
             <div className='flex items-center'><FaArrowLeft /></div>
             <p className=''>Back</p>
           </button>
@@ -26,10 +27,10 @@ function AddRecipe() {
         </div>
       </section>
 
-      <section className='w-[80%] mx-auto flex flex-col lg:flex-row gap-3'>
+      <section className='w-[80%] mx-auto flex flex-col lg:flex-row lg:gap-3'>
 
         {/*information */}
-        <div className='w-[75%]'>
+        <div className=' w-full lg:w-[75%]'>
           <div className='border border-[#3b5445] p-5 rounded-2xl my-4 bg-[#102217]'>
             {/* Basic information */}
             <div className='flex flex-col text-white gap-2'>
@@ -45,7 +46,7 @@ function AddRecipe() {
                 <textarea type='text' id='description' placeholder='Enter Description' className='border border-[#3b5445] rounded p-2 bg-[#1c2720] text-sm' minLength={5} maxLength={100}/>
               </div>
               {/* Other inputs */}
-              <div className='flex gap-4'>
+              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
                 <div className='flex flex-col gap-1'>
                   <label className='text-[#13ec6a]/50 font-medium'>Cooking Time(Mins)</label>
                   <input type='number' min={5} max={60} placeholder='5' className='border border-[#3b5445] rounded px-2 py-1.5 bg-[#1c2720] text-sm' />
@@ -105,7 +106,7 @@ function AddRecipe() {
               {/* image url */}
               <div className='flex flex-col gap-2'>
                 <label htmlFor='title' className='text-[#13ec6a]/50 font-medium'>Image URL</label>
-                <input type='text' id='title' placeholder='Enter your recipe title' className='border border-[#3b5445] rounded p-2 bg-[#1c2720]' />
+                <input type='text' id='title' placeholder='Enter url' className='border border-[#3b5445] rounded p-2 bg-[#1c2720]' />
               </div>
               <div className='flex gap-2 my-2'>
                 <input type='file' className='border border-[#3b5445] rounded w-35 px-2 py-1 bg-[#1c2720]' />
@@ -133,13 +134,14 @@ function AddRecipe() {
 
 
         {/* preview and save */}
-        <div className='flex flex-col gap-2 flex-1'>
+        <div className='flex flex-col lg:gap-2 flex-1'>
           <PreviewCard />
           <SaveCard />
 
         </div>
 
       </section>
+    
     </main>
   )
 }
