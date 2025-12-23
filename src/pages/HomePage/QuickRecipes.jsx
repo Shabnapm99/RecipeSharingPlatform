@@ -6,7 +6,7 @@ function QuickRecipes() {
 
     // const recipes = useSelector((state)=>state.recipes.recipes);
     const recipes = useLoaderData();
-    let QuickRecipes = recipes.filter((recipe)=> recipe?.cookTimeMinutes>15);//this will filter the recipes and return recipes which have rating greater than 4.8
+    let QuickRecipes = recipes.filter((recipe)=> recipe?.cookTimeMinutes<15);//this will filter the recipes and return recipes which have rating greater than 4.8
     let QuickRecipesToshow = QuickRecipes.slice(0,4);//to show only 4 items
 
 
