@@ -30,7 +30,8 @@ function RecipeList() {
       <section className='w-full'>
         <h2 className='text-xl font-bold text-white mb-4'>Search Recipes</h2>
         <div className='relative w-full md:w-[50%]'>
-          <input placeholder='Searchfor recipes, ingredients or cusines...' className='bg-[#3c4f43] text-white text-sm rounded-2xl py-2 px-10 w-full border border-[#13ec13]' />
+          <input placeholder='Searchfor recipes, ingredients or cusines...' className='bg-[#3c4f43] text-white text-sm rounded-2xl py-2 px-10 w-full border border-[#13ec13]' 
+          />
           <div className='absolute top-2 left-2 translate-y-0.5 text-white text-lg'><IoSearchSharp/></div>
           <div className='absolute top-2 right-2 text-white text-lg cursor-pointer rounded-full bg-[#1c2720] p-1.5 -translate-y-1'><MdKeyboardVoice/></div>
         </div>
