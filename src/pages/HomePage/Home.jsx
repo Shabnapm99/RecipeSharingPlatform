@@ -5,6 +5,7 @@ import EngagementSection from './EngagementSection'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Modal from '../../components/Card/Modal'
+import QuickRecipes from './QuickRecipes'
 
 function Home() {
     const isLoggedIn = useSelector((state)=>state.users.isLoggedIn);
@@ -39,15 +40,15 @@ function Home() {
 
             {/* Featured recipe section */}
 
-            <section className='w-full mb-5'>
+            <section className='w-full mb-5 py-5 bg-[#222b25]'>
                 <PopularRecipe />
             </section>
 
             {/* Quick and Edasy recipe section */}
 
-            {/* <section className='w-full mb-5'>
-                <PopularRecipe />
-            </section> */}
+            <section className='w-full my-5'>
+                <QuickRecipes />
+            </section>
 
             {/* Stats Section */}
 

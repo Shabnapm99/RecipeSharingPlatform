@@ -10,7 +10,7 @@ function PopularRecipe() {
     let popularRecipesToshow = popularRecipes.slice(0,4);
   return (
     <div className='w-[90vw] mx-auto rounded-lg'>
-        <h2 className='text-3xl font-semibold text-white mb-5'>Trending Now</h2>
+        <h2 className='text-2xl md:text-3xl font-semibold text-white mb-5'>Trending Now</h2>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
             {
             popularRecipesToshow.map((recipe)=>{
