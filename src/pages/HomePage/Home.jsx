@@ -40,13 +40,13 @@ function Home() {
 
             {/* Featured recipe section */}
 
-            <section className='w-full mb-5 py-5 bg-[#222b25]'>
+            <section className='w-full mb-5'>
                 <PopularRecipe />
             </section>
 
             {/* Quick and Edasy recipe section */}
 
-            <section className='w-full my-5'>
+            <section className='w-full bg-[#222b25] py-5'>
                 <QuickRecipes />
             </section>
 
