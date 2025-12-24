@@ -7,14 +7,15 @@ function FilterComponent() {
     
     return (
         <div className=' text-white bg-[#364f3f] rounded p-3 flex flex-col gap-3'>
-            <div className='flex justify-between items-center'>
+            <div className={`flex justify-between items-center md:border-b md:pb-3 ${showFiltersDiv&&'border-b pb-3'}`}>
                 <div className='flex justify-center items-center gap-2'>
                     <LuFilter />
-                    <h3>Filters</h3>
+                    <h3 className=''>Filters</h3>
                 </div>
+                {/* Filter Icon on small screen */}
                 <LuFilter className='text-sm md:hidden' onClick={()=>setShowFiltersDiv(!showFiltersDiv)} />
             </div>
-            <div className={` flex-col gap-3 ${showFiltersDiv?'flex':'hidden'}`}>
+            <div className={`${showFiltersDiv?'flex':'hidden'} md:flex flex-col gap-3 `}>
                 <div className='flex flex-col gap-2 text-sm'>
                     <label htmlFor='cuisine'>Cuisine</label>
                     <select className='bg-[#1c2720] block p-1.5 rounded'>

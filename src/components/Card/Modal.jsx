@@ -15,7 +15,7 @@ function Modal({onClose,text}) {
                         <button className='absolute top-3 right-3 p-2 hover:border rounded border-gray-500 text-[#13ec6a]/90 hover:text-red-700'  onClick={onClose}><ImCross/></button>
                         <p className='pt-3 text-sm md:text-base'>{text}</p>
 
-                        <button className='bg-[#13ec13]/90 rounded px-2 py-1 text-white' onClick={()=>navigate('/login')}>Ok</button>
+                        <button className='bg-[#13ec13]/90 rounded px-2 py-1 text-white' onClick={()=>navigate('/login')}>Login now</button>
 
                     </div>
 

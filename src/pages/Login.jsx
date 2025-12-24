@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 function Login() {
+
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+
+  function handleSubmit(e){
+    e.preventDefault();
+  }
   return (
     <div className='bg-[#1c2720] w-screen h-screen flex justify-center items-center'>
 
@@ -24,15 +31,17 @@ function Login() {
           </div>
           {/* Form */}
           <div className='mt-8'>
-            <form className=''>
+            <form className='' onSubmit={handleSubmit}>
               <div className='flex flex-col gap-5'>
                 <div className=''>
                   <label htmlFor='email' className='text-white block text-sm'>Email or UserName</label>
-                  <input className='mt-2 rounded-2xl py-2.5 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='email' id='email' required placeholder='example@gmail.com' />
+                  <input className='mt-2 rounded-2xl py-2.5 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='email' id='email' required placeholder='example@gmail.com' value={email}
+                  onChange={(e)=>setEmail(e.target.value)} />
                 </div>
                 <div className=''>
                   <label htmlFor='pswd' className='text-white block text-sm'>Password</label>
-                  <input className='mt-2 rounded-2xl py-2.5 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='password' id='pswd' required />
+                  <input className='mt-2 rounded-2xl py-2.5 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' type='password' id='pswd' required placeholder='.......' value={password}
+                  onChange={(e)=>setPassword(e.target.value)}/>
                 </div>
                 <div className='text-end'>
                   <a className='text-sm font-medium text-[#13ec6a]' href='#'>Forgot password?</a>

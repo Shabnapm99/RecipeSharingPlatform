@@ -9,7 +9,7 @@ https://recipe-sharing-platform-kappa-red.vercel.app/
 Recipe Sharing Platform is a web application that helps users browse and discover recipes easily using search and filters like cuisine, diet type, and cooking time. Users can view detailed recipes with ingredients, step-by-step instructions, and save their favorite recipes. It is designed for anyone who enjoys cooking and wants a simple, organized way to find and prepare meals.
 
 ## ✨ Features
-- Feature 1: Brief description
+- Search: Implemeted Search by ingredients, recipe name or cuisine. added voice searching using     webspeech API
 - Feature 2: Brief description
 - Feature 3: Brief description
 - Feature 4: Brief description
@@ -23,8 +23,8 @@ Explain what you learned and aimed to achieve with this project.
 
 - **Frontend:** React.js
 - **Styling:** CSS3 / Tailwind CSS
-- **APIs:** 
-- **Libraries:** React Router
+- **APIs:** WebSpeech API
+- **Libraries:** React Router, React Redux
 - **AI Tools:**
 - **Deployment:** Vercel
 
