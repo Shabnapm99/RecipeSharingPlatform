@@ -1,31 +1,51 @@
 import React, { useEffect, useState } from 'react'
 import FilterComponent from './FilterComponent'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { IoSearchSharp } from 'react-icons/io5';
 import { MdKeyboardVoice } from "react-icons/md";
 import RecipeCard from '../../components/Card/RecipeCard';
-import { useLoaderData } from 'react-router-dom';
+// import { useLoaderData } from 'react-router-dom';
+import { app } from '../../utils/firebaseConfig';//import firebase configuration
+import { getFirestore, collection, addDoc, getDocs, } from 'firebase/firestore'
+import { setRecipes } from '../../features/recipeSlice';
 
 // Loader function
 
-export async function recipeLoader() {
-
-  let response = await fetch('https://dummyjson.com/recipes');
-  let data = await response.json();//this returns an object
-  return data.recipes;// this will return the recipes array
-
-}
-
-
-
+const db = getFirestore(app);//Initialize Cloud Firestore and get a reference to the service
 
 function RecipeList() {
-  // const recipes = useSelector((state) => state.recipes.recipes);
-  let recipes = useLoaderData();
+
+  let dispatch = useDispatch();
+
+  // Recipes from firbase firestore
+
+  const getData = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "recipes"));
+      let recipes = querySnapshot.docs.map((doc) => ({
+       uniqueId: doc.id,//the unique ID Firestore generated for this document ie one object.here Creates a new property called uniqueId in our object
+        ...doc.data()//It copies all the fields from the document into the object ie includes the uniqueId key value pair with other data, so that we can use this unique id while deleting updating and all
+      }));
+
+      dispatch(setRecipes(recipes));
+
+    } catch (error) {
+      console.error(`Error occured : ${error.message}`);
+    }
+
+  }
+
+  const recipes = useSelector((state) => state.recipes.recipes);
+  // let recipes = useLoaderData();
   const [fileterdRecipe, setFiletered] = useState(recipes);
-  // useEffect(()=>{
-  //   console.log(recipe);
-  // },[])
+  useEffect(() => {
+    getData()
+  }, [])
+
+  useEffect(()=>{
+    setFiletered(recipes);
+  },[recipes])
+
 
   let [searchContent, setSearchContent] = useState('');
   let [recording, setRecording] = useState(false);
@@ -46,7 +66,7 @@ function RecipeList() {
     reco.start();
   }
 
-  //Search funstionality
+  //Search functionality
 
   function searchRecipe(event) {
     let value = event.target.value.toLowerCase().trim();
@@ -83,12 +103,13 @@ function RecipeList() {
 
         <section className='basis-3/4'>
           <div>
-            <h4 className='text-gray-500 mb-3 text-[16px]'>Found {fileterdRecipe.length} Recipes</h4>
+            <h4 className='text-gray-500 mb-3 text-[16px]'>Found {recipes?.length} Recipes</h4>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
               {
-                fileterdRecipe.map((recipe) => {
+                fileterdRecipe.map((recipe,index) => {
                   return (
-                    <RecipeCard key={recipe.id} recipe={recipe} />
+                    <RecipeCard key={recipe?.uniqueId || index} recipe={recipe} />//use uniqueId if available, otherwise fallback to index.
+                    
                   )
                 })
               }

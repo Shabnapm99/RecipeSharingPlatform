@@ -9,7 +9,7 @@ import RecipeList from './pages/RecipeListingPage/RecipeList';
 import RecipeDetails from './pages/RecipeDetailsPage/RecipeDetails';
 import Favorites from './pages/Favorites';
 import NotFound from './pages/NotFound';
-import { recipeLoader } from './pages/RecipeListingPage/RecipeList';
+// import { recipeLoader } from './pages/RecipeListingPage/RecipeList';
 import AddRecipe from './pages/AddRecipePage/AddRecipe';
 
 function App() {
@@ -25,12 +25,12 @@ function App() {
         {
           path: '/',
           element: <Home />,
-          loader: recipeLoader
+          // loader: recipeLoader
         },
         {
           path: '/recipes',
           element: <RecipeList />,
-          loader: recipeLoader
+          // loader: recipeLoader
         },
         {
           path: '/recipes/:id',
