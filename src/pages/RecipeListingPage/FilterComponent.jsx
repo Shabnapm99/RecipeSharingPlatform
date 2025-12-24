@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { LuFilter } from "react-icons/lu";
 
 function FilterComponent() {
+
+    const [showFiltersDiv,setShowFiltersDiv] = useState(false);//state to toggle show filterDiv when clicked on filter icon on small screen
+    
     return (
         <div className=' text-white bg-[#364f3f] rounded p-3 flex flex-col gap-3'>
             <div className='flex justify-between items-center'>
@@ -9,9 +12,9 @@ function FilterComponent() {
                     <LuFilter />
                     <h3>Filters</h3>
                 </div>
-                <LuFilter className='text-sm md:hidden' />
+                <LuFilter className='text-sm md:hidden' onClick={()=>setShowFiltersDiv(!showFiltersDiv)} />
             </div>
-            <div className='flex flex-col gap-3'>
+            <div className={` flex-col gap-3 ${showFiltersDiv?'flex':'hidden'}`}>
                 <div className='flex flex-col gap-2 text-sm'>
                     <label htmlFor='cuisine'>Cuisine</label>
                     <select className='bg-[#1c2720] block p-1.5 rounded'>
