@@ -8,7 +8,7 @@ function RecipeCard({ recipe }) {
     let navigate = useNavigate();
 
     return (
-        <div className='bg-[#3c4f43] flex flex-col gap-1 rounded-xl cursor-pointer hover:-translate-y-1 group' onClick={()=>navigate(`/recipes/${recipe.id}`)}>
+        <div className='bg-[#3c4f43] flex flex-col gap-1 rounded-xl cursor-pointer hover:-translate-y-1 group' onClick={()=>navigate(`/recipes/${recipe.uniqueId}`)}>
             <div className='w-[full] relative'>
                 <img src={recipe?.image} className='max-w-full max-h-full rounded-t-xl relative' />
                 <div className='absolute top-0 left-0 bg-black/35 z-40 w-full h-full rounded-t-xl'></div>
@@ -36,7 +36,7 @@ function RecipeCard({ recipe }) {
 
                 </div>
                 <h3 className='text-white font-semibold group-hover:text-[#13ec13]'>{recipe?.name}</h3>
-                <p></p>
+                <p>{recipe?.author}</p>
                 <p></p>
 
             </div>

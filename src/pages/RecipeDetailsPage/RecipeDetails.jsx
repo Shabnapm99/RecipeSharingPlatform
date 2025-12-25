@@ -1,32 +1,64 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FaStar } from 'react-icons/fa';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdAccessTime } from 'react-icons/md';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LuChefHat } from "react-icons/lu";
 import Ingredients from './Ingredients';
 import { SiGooglegemini } from "react-icons/si";
 import { IoMdArrowRoundForward } from "react-icons/io";
 import InstructionCard from '../../components/Card/InstructionCard';
 import { FaRegHeart } from "react-icons/fa6";
-import { FiShare2,FiPrinter  } from "react-icons/fi";
+import { FiShare2, FiPrinter } from "react-icons/fi";
 import { Link, useParams } from 'react-router-dom';
+import { getDoc, doc, getFirestore } from 'firebase/firestore';
+import {app} from '../../utils/firebaseConfig'
+import { setSelectedRecipe } from '../../features/recipeSlice';
 
 function RecipeDetails() {
 
   const urlParam = useParams();
   const id = urlParam.id;
-  console.log(id);
+
+  let dispatch = useDispatch();
 
   const recipes = useSelector((state) => state.recipes.recipes);
-  const recipe = recipes[3];
+  const recipe = useSelector((state)=>state.recipes.selectedRecipe);
+
+  // Initialize Cloud Firestore and get a reference to the service
+  const db = getFirestore(app);
+
+  //firebase function to get a single recipe
+
+  useEffect(() => {
+    const getRecipe = async () => {
+      try{
+
+        const docRef = doc(db,'recipes',`${id}`); //create a refernce of document we want to get
+        const getSnap = await getDoc(docRef);
+        console.log(getSnap.data());
+
+        dispatch(setSelectedRecipe(getSnap.data()))
+      }catch(error){
+        console.error(`Error occured : ${error.message}`);
+      }
+      
+    }
+    getRecipe();//call the function to get the recipe
+  }, [])
+
+ if (!recipe) return <p>Loading recipe...</p>;
+
+
+
   return (
+
     <main className='bg-[#1c2720] p-3'>
 
       {/* Back button */}
       <div className='my-5 md:my-8  md:mx-5 lg:mx-14 '>
         <Link to={'/recipes'}><button className='text-gray-400 font-medium flex gap-3 items-center text-sm m-3 hover:border hover:border-bg-white/10 py-1 px-2 rounded-lg' ><IoMdArrowRoundBack />Back to Recipes</button>
-      </Link>
+        </Link>
       </div>
 
 
@@ -37,26 +69,26 @@ function RecipeDetails() {
           {/* Recipe section */}
 
           <div className='w-[90vw] lg:w-[60vw] aspect-square lg:aspect-3/2 rounded-xl relative'>
-            <img src={recipe.image} className='w-full h-full rounded-xl' />
+            <img src={recipe?.image} className='w-full h-full rounded-xl' />
             <div className='inset-0 bg-black/40 absolute top-0 left-0 rounded-xl'></div>
             <div className='flex items-center gap-2 absolute top-2 right-2'>
               <div className='rounded-full p-2 bg-black/65 text-white'>
-              <FaRegHeart/>
+                <FaRegHeart />
               </div>
-            <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
-              <FiShare2 />
-              
-            </div>
-            <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
-              <FiPrinter  />
-              
-            </div>
+              <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
+                <FiShare2 />
+
+              </div>
+              <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
+                <FiPrinter />
+
+              </div>
 
             </div>
-            
+
           </div>
           <div className='flex flex-col lg:flex-row justify-between lg:items-center'>
-            <h1 className="text-3xl md:text-4xl font-bold text-white/90 my-4">{recipe.name}</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-white/90 my-4">{recipe?.name}</h1>
             <div className='flex items-center gap-1 bg-yellow-500/10 border border-yellow-500/20 h-6 px-1 rounded-2xl w-fit'>
               <FaStar className='text-yellow-500 text-sm' />
               <p className='text-xs font-medium text-yellow-500'>{recipe?.rating} ({recipe?.reviewCount})</p>
@@ -86,21 +118,21 @@ function RecipeDetails() {
           {/* Gemini button in small screens */}
 
           <button className='text-xs text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-full md:hidden items-center gap-2 px-2 py-1.5 flex '>
-              <p>Summarize with Gemini</p>
-              <IoMdArrowRoundForward className='' />
-            </button>
+            <p>Summarize with Gemini</p>
+            <IoMdArrowRoundForward className='' />
+          </button>
 
           <div className='grid grid-cols-3 md:grid-cols-5 gap-4 my-3 py-3'>
             <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white gap-1'>
               <MdAccessTime />
               <p >{recipe?.cookTimeMinutes} Mins</p>
             </div>
-            <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe.difficulty}</div>
-            <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe.cuisine}</div>
-            <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>diet type</div>
+            <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.difficulty}</div>
+            <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.cuisine}</div>
+            <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.dietType}</div>
             <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white gap-1'>
               <LuChefHat />
-              <p>author</p>
+              <p>{recipe?.author}</p>
             </div>
           </div>
 
@@ -112,11 +144,11 @@ function RecipeDetails() {
             </div>
             <div className='py-4'>
               {
-                recipe.instructions.map((instruction, index) => {
+                (recipe?.instructions || []).map((instruction, index) => {
                   return <InstructionCard instruction={instruction} index={index} key={index} />
                 })
               }
-
+       {/* If instruction isn't loade yet loop through empty array instead of looping through undefined which throw error and stop page from loading */}
             </div>
           </div>
 
@@ -125,8 +157,8 @@ function RecipeDetails() {
         </div>
 
         {/* Ingredients list*/}
-        <Ingredients ingredients={recipe.ingredients} />
-        
+        <Ingredients ingredients={recipe?.ingredients} />
+
       </section>
     </main>
   )

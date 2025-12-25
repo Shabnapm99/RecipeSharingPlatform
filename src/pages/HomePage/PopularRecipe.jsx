@@ -6,7 +6,7 @@ import { useLoaderData } from 'react-router-dom';
 function PopularRecipe() {
     const recipes = useSelector((state)=>state.recipes.recipes);
     // const recipes = useLoaderData();
-    let popularRecipes = recipes.filter((recipe)=> recipe.rating>4.8);//this will filter the recipes and return recipes which have rating greater than 4.8
+    let popularRecipes = recipes.filter((recipe)=> recipe.rating>4);//this will filter the recipes and return recipes which have rating greater than 4.8
     let popularRecipesToshow = popularRecipes.slice(0,4);//to show only 4 items
   return (
     <div className='w-[90vw] mx-auto rounded-lg'>
