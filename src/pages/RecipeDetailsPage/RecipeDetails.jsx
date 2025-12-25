@@ -12,8 +12,8 @@ import { FaRegHeart } from "react-icons/fa6";
 import { FiShare2, FiPrinter } from "react-icons/fi";
 import { Link, useParams } from 'react-router-dom';
 import { getDoc, doc, getFirestore } from 'firebase/firestore';
-import {app} from '../../utils/firebaseConfig'
-import { setSelectedRecipe } from '../../features/recipeSlice';
+import { app } from '../../utils/firebaseConfig'
+import { setSelectedRecipe, clearSelectedRecipe } from '../../features/recipeSlice';
 
 function RecipeDetails() {
 
@@ -23,7 +23,7 @@ function RecipeDetails() {
   let dispatch = useDispatch();
 
   const recipes = useSelector((state) => state.recipes.recipes);
-  const recipe = useSelector((state)=>state.recipes.selectedRecipe);
+  const recipe = useSelector((state) => state.recipes.selectedRecipe);
 
   // Initialize Cloud Firestore and get a reference to the service
   const db = getFirestore(app);
@@ -32,28 +32,30 @@ function RecipeDetails() {
 
   useEffect(() => {
     const getRecipe = async () => {
-      try{
+      try {
 
-        const docRef = doc(db,'recipes',`${id}`); //create a refernce of document we want to get
+        const docRef = doc(db, 'recipes', `${id}`); //create a refernce of document we want to get
         const getSnap = await getDoc(docRef);
         console.log(getSnap.data());
 
         dispatch(setSelectedRecipe(getSnap.data()))
-      }catch(error){
+      } catch (error) {
         console.error(`Error occured : ${error.message}`);
       }
-      
+
     }
     getRecipe();//call the function to get the recipe
-  }, [])
 
- if (!recipe) return <p>Loading recipe...</p>;
+    return () => {
+      dispatch(clearSelectedRecipe());//Anything returned from useEffect is a cleanup function.React calls this before the component unmounts or before running the effect next time (if dependencies changed).
+    };//if we didn't clearup the selectedrecipe next time we are accessing another item, the previous item will show before ethe required one loads 
+  }, [id])
 
 
 
   return (
 
-    <main className='bg-[#1c2720] p-3'>
+    <main className='bg-[#1c2720] p-3 relative'>
 
       {/* Back button */}
       <div className='my-5 md:my-8  md:mx-5 lg:mx-14 '>
@@ -148,7 +150,7 @@ function RecipeDetails() {
                   return <InstructionCard instruction={instruction} index={index} key={index} />
                 })
               }
-       {/* If instruction isn't loade yet loop through empty array instead of looping through undefined which throw error and stop page from loading */}
+              {/* If instruction isn't loade yet loop through empty array instead of looping through undefined which throw error and stop page from loading */}
             </div>
           </div>
 

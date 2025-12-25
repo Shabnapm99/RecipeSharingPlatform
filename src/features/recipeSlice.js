@@ -13,11 +13,14 @@ const recipeSlice = createSlice({
       },
       setSelectedRecipe:(state,action)=>{
         state.selectedRecipe = action.payload
+      },
+      clearSelectedRecipe:(state)=>{
+        state.selectedRecipe = null
       }
 
     }
 })
 
-export const {setRecipes,setSelectedRecipe} = recipeSlice.actions; //export action creators
+export const {setRecipes,setSelectedRecipe,clearSelectedRecipe} = recipeSlice.actions; //export action creators
 
 export default recipeSlice.reducer;
