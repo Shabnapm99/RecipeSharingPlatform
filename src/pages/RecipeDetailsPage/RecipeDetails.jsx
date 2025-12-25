@@ -10,9 +10,13 @@ import { IoMdArrowRoundForward } from "react-icons/io";
 import InstructionCard from '../../components/Card/InstructionCard';
 import { FaRegHeart } from "react-icons/fa6";
 import { FiShare2,FiPrinter  } from "react-icons/fi";
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function RecipeDetails() {
+
+  const urlParam = useParams();
+  const id = urlParam.id;
+  console.log(id);
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const recipe = recipes[3];

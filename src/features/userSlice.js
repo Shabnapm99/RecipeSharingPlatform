@@ -4,7 +4,7 @@ const userSlice = createSlice({
     name:'user',
     initialState:{
         users:[{}],
-        isLoggedIn:false,
+        isLoggedIn:true,
     },
     reducers:{
 
