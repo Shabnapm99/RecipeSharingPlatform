@@ -9,23 +9,26 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [alertMessage,setAlertMessage] = useState('');
+  const [showErrorPara,setShowErrorPara] = useState(false);
 
   function handleSubmit(event) {
     event.preventDefault();
+    setShowErrorPara(!showErrorPara);
     let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     let passWordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[A-Za-z].{7,}$/;
-    if (name.trim() === '') {
-      alert('please provide valid name');
+    if (name.trim() === '' || name.trim().length<3 || name.trim().length>50)  {
+      setAlertMessage('please provide a valid name');
       return;
     } else if (email.trim() === '' || emailRegex.test(email) === false) {
-      alert('please provide a valid email');
+      setAlertMessage('please provide a valid email');
       return;
     }
     else if (password.trim() === '' || passWordRegex.test(password) === false) {
-      alert('plese provide valid password');
+      setAlertMessage('please provide a valid password');
       return;
     } else if (password !== confirmPassword) {
-      alert('passwords Do not match');
+      setAlertMessage('passwords Do not match');
       return;
 
     } else setShowModal(true);
@@ -75,7 +78,8 @@ function SignUp() {
           {/* Headline */}
           <div>
             <h1 className='text-2xl font-bold text-white'>Create an Account</h1>
-            {/* <p className='text-base text-gray-400 mt-2'>Login to access your saved recipes and share you new recipe.</p> */}
+            {/* Error message */}
+             {showErrorPara&& <p className='text-sm text-red-500 mt-1'>{alertMessage}</p>}
           </div>
           {/* Form */}
           <div className='mt-5'>
@@ -111,6 +115,7 @@ function SignUp() {
               </div>
 
             </form>
+            {/* SuccesFul Modal */}
             {
               showModal && <Modal onClose={() => setShowModal(false)} text='Successfully registered to CookBook' />
             }

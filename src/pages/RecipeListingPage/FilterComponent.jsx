@@ -3,56 +3,67 @@ import { LuFilter } from "react-icons/lu";
 
 function FilterComponent() {
 
-    const [showFiltersDiv,setShowFiltersDiv] = useState(false);//state to toggle show filterDiv when clicked on filter icon on small screen
-    
+    const [showFiltersDiv, setShowFiltersDiv] = useState(false);//state to toggle show filterDiv when clicked on filter icon on small screen
+    const [cuisine, setCuisine] = useState("");
+
+    //Filter function
+
+    function filter(event) {
+
+        console.log(`'I am getting called'${event.target.value}`);
+        
+        
+
+    }
+
     return (
         <div className=' text-white bg-[#364f3f] rounded p-3 flex flex-col gap-3'>
-            <div className={`flex justify-between items-center md:border-b md:pb-3 ${showFiltersDiv&&'border-b pb-3'}`}>
+            <div className={`flex justify-between items-center md:border-b md:pb-3 ${showFiltersDiv && 'border-b pb-3'}`}>
                 <div className='flex justify-center items-center gap-2'>
                     <LuFilter />
                     <h3 className=''>Filters</h3>
                 </div>
                 {/* Filter Icon on small screen */}
-                <LuFilter className='text-sm md:hidden' onClick={()=>setShowFiltersDiv(!showFiltersDiv)} />
+                <LuFilter className='text-sm md:hidden' onClick={() => setShowFiltersDiv(!showFiltersDiv)} />
             </div>
-            <div className={`${showFiltersDiv?'flex':'hidden'} md:flex flex-col gap-3 `}>
+            <div className={`${showFiltersDiv ? 'flex' : 'hidden'} md:flex flex-col gap-3 `}>
                 <div className='flex flex-col gap-2 text-sm'>
                     <label htmlFor='cuisine'>Cuisine</label>
-                    <select className='bg-[#1c2720] block p-1.5 rounded'>
-                        <option selected>All cuisines</option>
-                        <option>Italian</option>
-                        <option>American</option>
-                        <option>Asian</option>
-                        <option>Mexican</option>
-                        <option>Mexican</option>
-                        <option>Mediterranean</option>
-                        <option>Pakistani</option>
-                        <option>Japanese</option>
-                        <option>Moroccan</option>
-                        <option>Greek</option>
-                        <option>Korean</option>
-                        <option>Thai</option>
-                        <option>Indian</option>
-                        <option>Turkish</option>
-                        <option>Russian</option>
-                        <option>Lebanese</option>
-                        <option>Brazilian</option>
+                    <select className='bg-[#1c2720] block p-1.5 rounded' value={cuisine} onChange={(e)=>setCuisine(e.target.value)}>
+                        <option value=''>All cuisines</option>
+                        <option value='italian'>Italian</option>
+                        <option value='american'>American</option>
+                        <option value='asian'>Asian</option>
+                        <option value='mexican'>Mexican</option>
+                        {/* <option value='mexican'>Mexican</option> */}
+                        <option value='mediterranean'>Mediterranean</option>
+                        <option value='pakistani'>Pakistani</option>
+                        <option value='japanese'>Japanese</option>
+                        <option value='moroccan'>Moroccan</option>
+                        <option value='greek'>Greek</option>
+                        <option value='korean'>Korean</option>
+                        <option value='thai'>Thai</option>
+                        <option value='indian'>Indian</option>
+                        <option value='turkish'>Turkish</option>
+                        <option value='russian'>Russian</option>
+                        <option value='lebanese'>Lebanese</option>
+                        <option value='brazilian'>Brazilian</option>
                     </select>
                 </div>
                 <div className='flex flex-col gap-2 text-sm'>
                     <p>Difficulty</p>
                     <div className='flex gap-2 items-center'>
-                        <input type='radio' name='difficulty' id='easy' />
+                        <input type='radio' name='difficulty' id='easy' onChange={filter} value={'easy'} />
                         <label htmlFor='easy'>Easy(under 30 mins)</label>
 
                     </div>
                     <div className='flex gap-2 items-center'>
-                        <input type='radio' name='difficulty' id='medium' />
+                        <input type='radio' name='difficulty' id='medium' onChange={filter} value={'medium'} />
                         <label htmlFor='medium'>Medium</label>
 
                     </div>
                     <div className='flex gap-2 items-center'>
-                        <input type='radio' name='difficulty' id='hard' className='bg-[#13ec6a]' />
+                        <input type='radio' name='difficulty' id='hard' className='bg-[#13ec6a]' onChange={filter} value={'hard'} />
                         <label htmlFor='hard'>Hard</label>
 
                     </div>
