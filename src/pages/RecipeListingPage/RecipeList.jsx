@@ -8,6 +8,8 @@ import RecipeCard from '../../components/Card/RecipeCard';
 import { app } from '../../utils/firebaseConfig';//import firebase configuration
 import { getFirestore, collection, getDocs, } from 'firebase/firestore'
 import { setRecipes } from '../../features/recipeSlice';
+import { ClipLoader } from 'react-spinners'
+import Spinner from '../../components/Card/Spinner';
 
 // Loader function
 
@@ -16,6 +18,9 @@ import { setRecipes } from '../../features/recipeSlice';
 function RecipeList() {
 
   let dispatch = useDispatch();
+  let [loading, setLoading] = useState(true);
+
+
 
   // Recipes from firbase firestore
 
@@ -38,13 +43,15 @@ function RecipeList() {
   const recipes = useSelector((state) => state.recipes.recipes);
   // let recipes = useLoaderData();
   const [fileterdRecipe, setFiletered] = useState(recipes);
-  // useEffect(() => {
-  //   getData()
-  // }, [])
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);//runs on mounting
+  }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     setFiletered(recipes);
-  },[recipes])
+  }, [recipes])
 
 
   let [searchContent, setSearchContent] = useState('');
@@ -101,21 +108,23 @@ function RecipeList() {
 
         {/* Recipe list section */}
 
-        <section className='basis-3/4'>
-          <div>
-            <h4 className='text-gray-500 mb-3 text-[16px]'>Found {fileterdRecipe?.length} Recipes</h4>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-              {
-                fileterdRecipe.map((recipe,index) => {
-                  return (
-                    <RecipeCard key={recipe?.uniqueId || index} recipe={recipe} />//use uniqueId if available, otherwise fallback to index.
-                    
-                  )
-                })
-              }
+        <section className='basis-3/4 relative'>
+          {loading ? <Spinner loading={loading} /> :
+            <div>
+              <h4 className='text-gray-500 mb-3 text-[16px]'>Found {fileterdRecipe?.length} Recipes</h4>
+              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+                {
+                  fileterdRecipe.map((recipe, index) => {
+                    return (
+                      <RecipeCard key={recipe?.uniqueId || index} recipe={recipe} />//use uniqueId if available, otherwise fallback to index.
 
-            </div>
-          </div>
+                    )
+                  })
+                }
+
+              </div>
+            </div>}
+
 
         </section>
 

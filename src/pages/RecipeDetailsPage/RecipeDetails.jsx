@@ -14,7 +14,8 @@ import { Link, useParams } from 'react-router-dom';
 import { getDoc, doc, getFirestore } from 'firebase/firestore';
 import { app } from '../../utils/firebaseConfig'
 import { setSelectedRecipe, clearSelectedRecipe } from '../../features/recipeSlice';
-import { setSavedRecipes,removeSavedRecipe } from '../../features/favoritesSlice'
+import { setSavedRecipes, removeSavedRecipe } from '../../features/favoritesSlice'
+import Spinner from '../../components/Card/Spinner';
 
 function RecipeDetails() {
 
@@ -23,14 +24,15 @@ function RecipeDetails() {
 
   let dispatch = useDispatch();
 
- 
 
-  
+
+
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const recipe = useSelector((state) => state.recipes.selectedRecipe);
   const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
-  const [isSaved,setIsSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
 
   // Initialize Cloud Firestore and get a reference to the service
   const db = getFirestore(app);
@@ -38,7 +40,7 @@ function RecipeDetails() {
   //firebase function to get a single recipe
 
   useEffect(() => {
-    
+
     const getRecipe = async () => {
       try {
 
@@ -53,13 +55,19 @@ function RecipeDetails() {
 
     }
     getRecipe();//call the function to get the recipe
-    setIsSaved(savedRecipes.some((recipe)=>recipe.uniqueId === recipe?.uniqueId))
+    setIsSaved(savedRecipes.some((recipe) => recipe.uniqueId === recipe?.uniqueId))
 
     return () => {
       dispatch(clearSelectedRecipe());//Anything returned from useEffect is a cleanup function.React calls this before the component unmounts or before running the effect next time (if dependencies changed).
     };//if we didn't clearup the selectedrecipe next time we are accessing another item, the previous item will show before ethe required one loads 
-  
+
   }, [id])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000);
+  }, [])//runs on mounting to show spinner while loading
 
 
 
@@ -75,112 +83,115 @@ function RecipeDetails() {
 
 
       {/* Recipe details section */}
-      <section className='flex flex-col lg:flex-row gap-10 m-3 w-[85vw] mx-auto items-center lg:items-start'>
-        <div className=''>
+      {loading ? <Spinner loading={loading} /> :
+        <section className='flex flex-col lg:flex-row gap-10 m-3 w-[85vw] mx-auto items-center lg:items-start'>
+          <div className=''>
 
-          {/* Recipe section */}
+            {/* Recipe section */}
 
-          <div className='w-[90vw] lg:w-[60vw] aspect-square lg:aspect-3/2 rounded-xl relative'>
-            <img src={recipe?.image} className='w-full h-full rounded-xl' />
-            <div className='inset-0 bg-black/40 absolute top-0 left-0 rounded-xl'></div>
-            <div className='flex items-center gap-2 absolute top-3.5 right-2'>
-              <div className='rounded-full p-2 bg-black/65 text-white'>
-                {isSaved ? <FaHeart className='text-[#13ec6a] text-2xl' onClick={() => {
-                  dispatch(removeSavedRecipe(recipe.uniqueId))
-                  
-                }
-                } /> : <FaRegHeart onClick={() => {
-                  
-                  dispatch(setSavedRecipes(recipe));
+            <div className='w-[90vw] lg:w-[60vw] aspect-square lg:aspect-3/2 rounded-xl relative'>
+              <img src={recipe?.image} className='w-full h-full rounded-xl' />
+              <div className='inset-0 bg-black/40 absolute top-0 left-0 rounded-xl'></div>
+              <div className='flex items-center gap-2 absolute top-3.5 right-2'>
+                <div className='rounded-full p-2 bg-black/65 text-white'>
+                  {isSaved ? <FaHeart className='text-[#13ec6a] text-2xl' onClick={() => {
+                    dispatch(removeSavedRecipe(recipe.uniqueId))
 
-                }} className='text-2xl' />}
+                  }
+                  } /> : <FaRegHeart onClick={() => {
 
-              </div>
-              <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
-                <FiShare2 className='text-2xl' />
+                    dispatch(setSavedRecipes(recipe));
 
-              </div>
-              <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
-                <FiPrinter className='text-2xl' />
+                  }} className='text-2xl' />}
+
+                </div>
+                <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
+                  <FiShare2 className='text-2xl' />
+
+                </div>
+                <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
+                  <FiPrinter className='text-2xl' />
+
+                </div>
 
               </div>
 
             </div>
+            <div className='flex flex-col lg:flex-row justify-between lg:items-center'>
+              <h1 className="text-3xl md:text-4xl font-bold text-white/90 my-4">{recipe?.name}</h1>
+              <div className='flex items-center gap-1 bg-yellow-500/10 border border-yellow-500/20 h-6 px-1 rounded-2xl w-fit'>
+                <FaStar className='text-yellow-500 text-sm' />
+                <p className='text-xs font-medium text-yellow-500'>{recipe?.rating} ({recipe?.reviewCount})</p>
+              </div>
 
-          </div>
-          <div className='flex flex-col lg:flex-row justify-between lg:items-center'>
-            <h1 className="text-3xl md:text-4xl font-bold text-white/90 my-4">{recipe?.name}</h1>
-            <div className='flex items-center gap-1 bg-yellow-500/10 border border-yellow-500/20 h-6 px-1 rounded-2xl w-fit'>
-              <FaStar className='text-yellow-500 text-sm' />
-              <p className='text-xs font-medium text-yellow-500'>{recipe?.rating} ({recipe?.reviewCount})</p>
             </div>
 
-          </div>
+            <p className='text-gray-500 my-2 text-sm md:text-base'>{recipe?.description}</p>
 
-          <p className='text-gray-500 my-2 text-sm md:text-base'>{recipe?.description}</p>
-
-          {/* Gemini Button */}
-          <div className='hidden bg-linear-to-r from-blue-900/40 to-purple-900/40 border border-blue-500/30 rounded-2xl p-2 md:flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-2'>
-            <div className='flex items-center gap-3'>
-              <div className='bg-white/10 rounded-full p-2'>
-                <SiGooglegemini className='text-blue-300' />
+            {/* Gemini Button */}
+            <div className='hidden bg-linear-to-r from-blue-900/40 to-purple-900/40 border border-blue-500/30 rounded-2xl p-2 md:flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-2'>
+              <div className='flex items-center gap-3'>
+                <div className='bg-white/10 rounded-full p-2'>
+                  <SiGooglegemini className='text-blue-300' />
+                </div>
+                <div className=''>
+                  <p className='text-sm text-blue-100'>Want a quick overview?</p>
+                  <p className='text-xs text-blue-200/70 hidden md:block'>Get a concise summary and chef tips powered by Gemini AI</p>
+                </div>
               </div>
-              <div className=''>
-                <p className='text-sm text-blue-100'>Want a quick overview?</p>
-                <p className='text-xs text-blue-200/70 hidden md:block'>Get a concise summary and chef tips powered by Gemini AI</p>
-              </div>
+              <button className='text-xs text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-full flex items-center gap-2 px-2 py-1.5  '>
+                <p>Summarize with Gemini</p>
+                <IoMdArrowRoundForward className='' />
+              </button>
             </div>
-            <button className='text-xs text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-full flex items-center gap-2 px-2 py-1.5  '>
+
+            {/* Gemini button in small screens */}
+
+            <button className='text-xs text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-full md:hidden items-center gap-2 px-2 py-1.5 flex '>
               <p>Summarize with Gemini</p>
               <IoMdArrowRoundForward className='' />
             </button>
+
+            <div className='grid grid-cols-3 md:grid-cols-5 gap-4 my-3 py-3'>
+              <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white gap-1'>
+                <MdAccessTime />
+                <p >{recipe?.cookTimeMinutes} Mins</p>
+              </div>
+              <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.difficulty}</div>
+              <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.cuisine}</div>
+              <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.dietType}</div>
+              <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white gap-1'>
+                <LuChefHat />
+                <p>{recipe?.author}</p>
+              </div>
+            </div>
+
+            {/* Instructions */}
+            <div className='m-3 py-5 border-b border-gray-600'>
+              <div className='flex justify-between items-center'>
+                <h3 className='text-2xl font-bold text-white'>Instructions</h3>
+                <div>counter</div>
+              </div>
+              <div className='py-4'>
+                {
+                  (recipe?.instructions || []).map((instruction, index) => {
+                    return <InstructionCard instruction={instruction} index={index} key={index} />
+                  })
+                }
+                {/* If instruction isn't loade yet loop through empty array instead of looping through undefined which throw error and stop page from loading */}
+              </div>
+            </div>
+
+
+
           </div>
 
-          {/* Gemini button in small screens */}
+          {/* Ingredients list*/}
+          <Ingredients ingredients={recipe?.ingredients} />
 
-          <button className='text-xs text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-full md:hidden items-center gap-2 px-2 py-1.5 flex '>
-            <p>Summarize with Gemini</p>
-            <IoMdArrowRoundForward className='' />
-          </button>
+        </section>
+      }
 
-          <div className='grid grid-cols-3 md:grid-cols-5 gap-4 my-3 py-3'>
-            <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white gap-1'>
-              <MdAccessTime />
-              <p >{recipe?.cookTimeMinutes} Mins</p>
-            </div>
-            <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.difficulty}</div>
-            <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.cuisine}</div>
-            <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.dietType}</div>
-            <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white gap-1'>
-              <LuChefHat />
-              <p>{recipe?.author}</p>
-            </div>
-          </div>
-
-          {/* Instructions */}
-          <div className='m-3 py-5 border-b border-gray-600'>
-            <div className='flex justify-between items-center'>
-              <h3 className='text-2xl font-bold text-white'>Instructions</h3>
-              <div>counter</div>
-            </div>
-            <div className='py-4'>
-              {
-                (recipe?.instructions || []).map((instruction, index) => {
-                  return <InstructionCard instruction={instruction} index={index} key={index} />
-                })
-              }
-              {/* If instruction isn't loade yet loop through empty array instead of looping through undefined which throw error and stop page from loading */}
-            </div>
-          </div>
-
-
-
-        </div>
-
-        {/* Ingredients list*/}
-        <Ingredients ingredients={recipe?.ingredients} />
-
-      </section>
     </main>
   )
 }
