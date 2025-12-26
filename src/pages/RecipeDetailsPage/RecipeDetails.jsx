@@ -117,7 +117,7 @@ function RecipeDetails() {
 
           </div>
 
-          <p className='text-gray-500 my-2 text-sm md:text-base'>A rich and creamy pasta dish with garlic, parmesan, and fresh herbs</p>
+          <p className='text-gray-500 my-2 text-sm md:text-base'>{recipe?.description}</p>
 
           {/* Gemini Button */}
           <div className='hidden bg-linear-to-r from-blue-900/40 to-purple-900/40 border border-blue-500/30 rounded-2xl p-2 md:flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-2'>
