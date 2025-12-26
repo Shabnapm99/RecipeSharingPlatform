@@ -35,8 +35,8 @@ function RecipeCard({ recipe }) {
                     <div className='text-[#13ec13]'>{recipe?.difficulty}</div>
 
                 </div>
-                <h3 className='text-white font-semibold group-hover:text-[#13ec13]'>{recipe?.name}</h3>
-                <p>{recipe?.author}</p>
+                <h3 className='text-white font-semibold group-hover:text-[#13ec13] mb-4'>{recipe?.name}</h3>
+                <p className='text-white/80 text-sm pt-4 ps-1 border-t border-gray-500'>{recipe?.author}</p>
                 <p></p>
 
             </div>

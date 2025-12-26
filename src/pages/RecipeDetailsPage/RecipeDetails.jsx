@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaStar } from 'react-icons/fa';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdAccessTime } from 'react-icons/md';
@@ -8,12 +8,13 @@ import Ingredients from './Ingredients';
 import { SiGooglegemini } from "react-icons/si";
 import { IoMdArrowRoundForward } from "react-icons/io";
 import InstructionCard from '../../components/Card/InstructionCard';
-import { FaRegHeart } from "react-icons/fa6";
+import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { FiShare2, FiPrinter } from "react-icons/fi";
 import { Link, useParams } from 'react-router-dom';
 import { getDoc, doc, getFirestore } from 'firebase/firestore';
 import { app } from '../../utils/firebaseConfig'
 import { setSelectedRecipe, clearSelectedRecipe } from '../../features/recipeSlice';
+import { setSavedRecipes,removeSavedRecipe } from '../../features/favoritesSlice'
 
 function RecipeDetails() {
 
@@ -22,8 +23,14 @@ function RecipeDetails() {
 
   let dispatch = useDispatch();
 
+ 
+
+  
+
   const recipes = useSelector((state) => state.recipes.recipes);
   const recipe = useSelector((state) => state.recipes.selectedRecipe);
+  const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
+  const [isSaved,setIsSaved] = useState(false);
 
   // Initialize Cloud Firestore and get a reference to the service
   const db = getFirestore(app);
@@ -31,6 +38,7 @@ function RecipeDetails() {
   //firebase function to get a single recipe
 
   useEffect(() => {
+    
     const getRecipe = async () => {
       try {
 
@@ -45,10 +53,12 @@ function RecipeDetails() {
 
     }
     getRecipe();//call the function to get the recipe
+    setIsSaved(savedRecipes.some((recipe)=>recipe.uniqueId === recipe?.uniqueId))
 
     return () => {
       dispatch(clearSelectedRecipe());//Anything returned from useEffect is a cleanup function.React calls this before the component unmounts or before running the effect next time (if dependencies changed).
     };//if we didn't clearup the selectedrecipe next time we are accessing another item, the previous item will show before ethe required one loads 
+  
   }, [id])
 
 
@@ -73,16 +83,25 @@ function RecipeDetails() {
           <div className='w-[90vw] lg:w-[60vw] aspect-square lg:aspect-3/2 rounded-xl relative'>
             <img src={recipe?.image} className='w-full h-full rounded-xl' />
             <div className='inset-0 bg-black/40 absolute top-0 left-0 rounded-xl'></div>
-            <div className='flex items-center gap-2 absolute top-2 right-2'>
+            <div className='flex items-center gap-2 absolute top-3.5 right-2'>
               <div className='rounded-full p-2 bg-black/65 text-white'>
-                <FaRegHeart />
-              </div>
-              <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
-                <FiShare2 />
+                {isSaved ? <FaHeart className='text-[#13ec6a] text-2xl' onClick={() => {
+                  dispatch(removeSavedRecipe(recipe.uniqueId))
+                  
+                }
+                } /> : <FaRegHeart onClick={() => {
+                  
+                  dispatch(setSavedRecipes(recipe));
+
+                }} className='text-2xl' />}
 
               </div>
               <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
-                <FiPrinter />
+                <FiShare2 className='text-2xl' />
+
+              </div>
+              <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
+                <FiPrinter className='text-2xl' />
 
               </div>
 

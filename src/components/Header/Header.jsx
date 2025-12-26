@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 function Header() {
 
     const isLoggedIn = useSelector((state) => state.users.isLoggedIn);
-    const favoriteCount = useSelector((state)=>state.favorites.favoriteCount);
+    const favoriteCount = useSelector((state)=>state.favorites.savedRecipes).length;
     let navigate = useNavigate();
     return (
         <header className='bg-[#102217] text-white sticky top-0 left-0 z-50'>
@@ -35,7 +35,7 @@ function Header() {
                             <Link to={'/favorites'}>
                                 <div className='relative'>
                                     <button className='text-2xl cursor-pointer'><FaRegHeart /></button>
-                                    {favoriteCount&&<div className='bg-[#13ec6a] text-white text-xs w-3.5 h-3.5 rounded-full flex justify-center font-bold items-center absolute top-0 right-0 -translate-y-1 translate-x-2'>{favoriteCount}</div>}
+                                    {favoriteCount>0&&<div className='bg-[#13ec6a] text-white text-xs w-3.5 h-3.5 rounded-full flex justify-center font-bold items-center absolute top-0 right-0 -translate-y-1 translate-x-2'>{favoriteCount}</div>}
                                 </div></Link>
                             <Link><button className='text-2xl bg-[#3c4f43] p-2 rounded-full text-[#13ec6a] cursor-pointer'><FaRegUser /></button></Link>
                         </div>

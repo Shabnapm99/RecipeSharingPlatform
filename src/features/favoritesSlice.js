@@ -1,23 +1,25 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 const favoritesSlice = createSlice({
-    name:'favorites',
-    initialState:{
-        favoriteCount:null,
-        isFavorite:false,
+    name: 'favorites',
+    initialState: {
+
+        savedRecipes: []
     },
-    reducers:{
-        incrementCount:(state)=>{
-            state.favoriteCount += 1
+    reducers: {
+
+        
+        setSavedRecipes: (state, action) => {
+            let newSavedRecipe = action.payload;
+            let duplicate = state.savedRecipes.some((duplicate)=>duplicate.uniqueId===newSavedRecipe.uniqueId)
+            if(!duplicate){state.savedRecipes = [...state.savedRecipes, newSavedRecipe];}
+
         },
-        decrementCount:(state)=>{
-            if(state.favoriteCount>0){state.favoriteCount -= 1}
-        },
-        setIsFavorite:(state,action)=>{
-            state.isFavorite = action.payload
+        removeSavedRecipe: (state, action) => {
+            state.savedRecipes = state.savedRecipes.filter(recipe => recipe.uniqueId !== action.payload);
         }
 
     }
 })
-export const{} = favoritesSlice.actions;
+export const { setFavoriteCount,setSavedRecipes,removeSavedRecipe } = favoritesSlice.actions;
 export default favoritesSlice.reducer;

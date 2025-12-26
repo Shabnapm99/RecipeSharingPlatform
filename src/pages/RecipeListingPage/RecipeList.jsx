@@ -96,14 +96,14 @@ function RecipeList() {
         {/* Filter section */}
 
         <section className='basis-1/4'>
-          <FilterComponent />
+          <FilterComponent fileterdRecipe={fileterdRecipe} setFiletered={setFiletered} />
         </section>
 
         {/* Recipe list section */}
 
         <section className='basis-3/4'>
           <div>
-            <h4 className='text-gray-500 mb-3 text-[16px]'>Found {recipes?.length} Recipes</h4>
+            <h4 className='text-gray-500 mb-3 text-[16px]'>Found {fileterdRecipe?.length} Recipes</h4>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
               {
                 fileterdRecipe.map((recipe,index) => {
