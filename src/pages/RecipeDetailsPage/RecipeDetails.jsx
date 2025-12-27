@@ -17,19 +17,29 @@ import { setSelectedRecipe, clearSelectedRecipe } from '../../features/recipeSli
 import { setSavedRecipes, removeSavedRecipe } from '../../features/favoritesSlice'
 import Spinner from '../../components/Card/Spinner';
 import StopWatch from '../../components/Card/stopWatch';
+import { GoogleGenerativeAI } from '@google/generative-ai'
+import ButtonSpinner from '../../components/Card/ButtonSpinner';
 
 function RecipeDetails() {
 
   const urlParam = useParams();
   const id = urlParam.id;
 
+  //Gemini API key
+
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  const genAi = new GoogleGenerativeAI(apiKey);
+
+
   let dispatch = useDispatch();
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const recipe = useSelector((state) => state.recipes.selectedRecipe);
-  const [author,setAuthor] = useState('');
+  const [author, setAuthor] = useState('');
   // const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
   const [loading, setLoading] = useState(true);
+  const [summary,setsummary] = useState("");
+  const [buttonLoading,setButtonLoading] = useState(false);
 
   const [isSaved, setIsSaved] = useState(false);
 
@@ -62,8 +72,22 @@ function RecipeDetails() {
 
   }, [id])
 
+  // gemini summary function
 
+  async function getSummary() {
+    setButtonLoading(true);
+    let ingredients = recipe?.ingredients?.join('.');
+    let instructions = recipe?.instructions?.join('.');
 
+    const model = genAi.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const prompt = `Give me a summary of the following recipe in a clear and concise format.Dish:${recipe?.name},ingredients:${ingredients} and instructions:${instructions}.Keep the language simple and easy to understand.`;
+    const result = await model.generateContent(prompt);
+    const summary = result.response.text();
+    setsummary(summary);
+  }
+  useEffect(()=>{
+    if(summary) setButtonLoading(false);
+  },[summary])
 
 
   return (
@@ -134,18 +158,24 @@ function RecipeDetails() {
                   <p className='text-xs text-blue-200/70 hidden md:block'>Get a concise summary and chef tips powered by Gemini AI</p>
                 </div>
               </div>
-              <button className='text-xs text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-full flex items-center gap-2 px-2 py-1.5  '>
-                <p>Summarize with Gemini</p>
+              <button className='text-xs text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-full flex items-center gap-2 px-2 py-1.5  cursor-pointer relative'
+                onClick={getSummary}>
+                  {buttonLoading?<ButtonSpinner loading={buttonLoading}/>:<p>Summarize with Gemini</p>}
                 <IoMdArrowRoundForward className='' />
               </button>
             </div>
 
             {/* Gemini button in small screens */}
 
-            <button className='text-xs text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-full md:hidden items-center gap-2 px-2 py-1.5 flex '>
+            <button className='text-xs text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-full md:hidden items-center gap-2 px-2 py-1.5 flex cursor-pointer relative '
+              onClick={getSummary}>
               <p>Summarize with Gemini</p>
               <IoMdArrowRoundForward className='' />
             </button>
+            {/* summary div */}
+            <div className='text-white text-xs md:text-sm border border-purple-900 p-2 '>
+              {summary}
+            </div>
 
             <div className='grid grid-cols-3 md:grid-cols-5 gap-4 my-3 py-3'>
               <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white gap-1'>

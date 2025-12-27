@@ -20,7 +20,7 @@ function Ingredients({ setIngredients, ingredients }) {
         <div className='flex flex-col gap-4'>
             <p className='text-white p-2' htmlFor='ingredients'>Ingredients</p>
             <div className='relative'>
-                <input type='text' className='border border-[#3b5445] rounded p-2 bg-[#1c2720] w-full text-gray-400 placeholder:text-gray-400' placeholder='Ingredient 1' value={ingredient} onChange={(e) => setIngredient(e.target.value)} />
+                <input type='text' className='border border-[#3b5445] rounded p-2 bg-[#1c2720] w-full text-gray-400 placeholder:text-gray-400' placeholder='Type Ingredient ' value={ingredient} onChange={(e) => setIngredient(e.target.value)} />
             </div>
             {
                 ingredients.map((item,index) => {

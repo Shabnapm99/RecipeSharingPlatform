@@ -25,17 +25,6 @@ function FilterComponent({ setFiletered }) {
             const recipeDietType = recipe?.dietType?.toLowerCase();
             const RecipeCookingTime = recipe?.cookTimeMinutes
 
-            console.log(
-                recipeCuisine,
-                recipeDifficulty,
-                recipeDietType,
-                RecipeCookingTime,
-                cuisine,
-                difficulty,
-                dietType,
-                cookingTime
-            );
-
             // apply cuisine filter only if selected
             if (cuisine && recipeCuisine !== cuisine) return false;
 

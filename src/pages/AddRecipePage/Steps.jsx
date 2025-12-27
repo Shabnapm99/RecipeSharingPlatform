@@ -19,7 +19,7 @@ function Steps({ setInstructions, instructions }) {
         <div className='flex flex-col gap-4'>
             <p className='text-white p-2' htmlFor='ingredients'>Instructions</p>
             <div className='flex gap-3 items-center'>
-                <textarea className='border border-[#3b5445] rounded p-2 bg-[#1c2720] w-full text-gray-400 placeholder:text-gray-400' placeholder='Step 1 Instsructions...' 
+                <textarea className='border border-[#3b5445] rounded p-2 bg-[#1c2720] w-full text-gray-400 placeholder:text-gray-400' placeholder='Type Instruction...' 
                 value={instruction} onChange={(e)=>setinstruction(e.target.value)}/>
             </div>
             {
