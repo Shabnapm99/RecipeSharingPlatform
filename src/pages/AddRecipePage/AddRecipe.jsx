@@ -6,8 +6,10 @@ import Ingredients from './Ingredients';
 import Steps from './Steps';
 import Modal from '../../components/Card/Modal';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
+import { useSelector } from 'react-redux';
 
 function AddRecipe() {
+  let user = useSelector((state)=>state.users.authUser);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [cookingTime, setCookingTime] = useState(5);
@@ -18,7 +20,7 @@ function AddRecipe() {
   const [imageUrl, setImageUrl] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState({});
 
 
   useEffect(() => {
@@ -38,6 +40,11 @@ function AddRecipe() {
 
   }, [title, description, cookingTime, difficulty, author, dietType, cuisine, imageUrl, ingredients, instructions])
 
+  useEffect(()=>{
+
+    setAuthor(user?.name);
+    
+  },[user]);//to set the author name as current user
   return (
     <main className='bg-[#1c2720] py-9 flex flex-col items-center'>
       <section className='w-[80%]'>
@@ -72,10 +79,10 @@ function AddRecipe() {
               </div>
 
               {/* Author name */}
-              <div className='flex flex-col gap-2'>
+              {/* <div className='flex flex-col gap-2'>
                 <label htmlFor='title' className='font-medium text-[#13ec6a]/50'>Author</label>
                 <input type='text' id='title' placeholder='Enter author name' className='border border-[#3b5445] rounded p-2 bg-[#1c2720] text-sm' required value={author} onChange={(e) => setAuthor(e.target.value)} />
-              </div>
+              </div> */}
               {/* Description input */}
               <div className='flex flex-col gap-2'>
                 <label htmlFor='description' className='text-[#13ec6a]/50 font-medium'>Description</label>

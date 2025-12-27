@@ -17,6 +17,7 @@ function SaveCard({ recipe, setFormData }) {
     let dispatch = useDispatch();
     let navigate = useNavigate();
     let recipes = useSelector((state)=>state.recipes.recipes);
+    let user = useSelector((state)=>state.users.authUser);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -40,6 +41,7 @@ function SaveCard({ recipe, setFormData }) {
                         cookTimeMinutes: recipe.cookTimeMinutes,
                         ingredients: recipe.ingredients,
                         instructions: recipe.instructions,
+                        userId:user.id,//to know which user is adding the recipe
                         rating:4.6,
                         reviewCount:51,
                         createdAt: date.toDateString(),
@@ -49,7 +51,7 @@ function SaveCard({ recipe, setFormData }) {
                    dispatch(setRecipes([...recipes,newRecipe]));
 
                    setFormData({});//clear the input fields
-                navigate(`/recipes/${uniqueId}`);//navigate to details page of new recipe
+                navigate(`/recipes`);//navigate to listing page
 
             } catch (error) {
                 console.log(`Error || ${error}`)
@@ -64,6 +66,7 @@ function SaveCard({ recipe, setFormData }) {
 
 return (
     <div className='border border-[#3b5445] p-5 rounded-2xl my-4 bg-[#102217] text-white/90 flex flex-col gap-3'>
+
         <button className='border rounded-lg text-sm py-1 border-[#3b5445] flex items-center justify-center gap-4 bg-[#13ec6a]/60' type='submit'
             onClick={handleSubmit}>
             <FaPrint />

@@ -27,12 +27,9 @@ function RecipeDetails() {
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const recipe = useSelector((state) => state.recipes.selectedRecipe);
+  const [author,setAuthor] = useState('');
   // const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
   const [loading, setLoading] = useState(true);
-
-  
-  const [expirationTime,setExpirationTime] = useState(null);
-  // 
 
   const [isSaved, setIsSaved] = useState(false);
 
@@ -53,7 +50,7 @@ function RecipeDetails() {
         dispatch(setSelectedRecipe(getSnap.data()))
       } catch (error) {
         console.error(`Error occured : ${error.message}`);
-      }finally {setLoading(false)}
+      } finally { setLoading(false) }
 
     }
     getRecipe();//call the function to get the recipe
@@ -65,21 +62,7 @@ function RecipeDetails() {
 
   }, [id])
 
-  useEffect(()=>{
-    if(!recipe?.cookTimeMinutes) return
-    // console.log(typeof(recipe?.cookTimeMinutes))
-    
-    const time = new Date();
-    time.setMinutes(time.getMinutes() + recipe?.cookTimeMinutes); //  minutes timer
-    setExpirationTime(time);
 
-  },[recipe?.cookTimeMinutes])
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setLoading(false)
-  //   }, 3000);
-  // }, [])//runs on mounting to show spinner while loading
 
 
 
@@ -182,7 +165,7 @@ function RecipeDetails() {
             <div className='m-3 py-5 border-b border-gray-600'>
               <div className='flex flex-col md:flex-row justify-between md:items-center'>
                 <h3 className='text-2xl font-bold text-white mb-2'>Instructions</h3>
-                <StopWatch/>
+                <StopWatch />
               </div>
               <div className='py-4'>
                 {
@@ -196,7 +179,7 @@ function RecipeDetails() {
           </div>
 
           {/* Ingredients list*/}
-          <Ingredients ingredients={recipe?.ingredients} className=''/>
+          <Ingredients ingredients={recipe?.ingredients} className='' />
 
         </section>
       }

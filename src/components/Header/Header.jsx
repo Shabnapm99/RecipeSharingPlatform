@@ -70,9 +70,7 @@ function Header() {
                                     <div>
                                         <button className='text-[#13ec6a] font-medium cursor-pointer' onClick={()=>{
                                             signOut(auth).then(()=>console.log("Signed out of user"))
-
-
-                                        }}>Logout</button>
+                                            .then(()=>navigate('/login'))}}>Logout</button>
                                     </div>
 
                                 </div>}
