@@ -10,7 +10,7 @@ function Ingredients({ ingredients=[]}) {//take the default value of ingredients
                     return (
                         <div key={index} className='flex gap-3 p-2'>
                            
-                            <input type="checkbox" className='bg-green-900' />
+                            <input type="checkbox" className='accent-[#13ec6a]' />
                              <label>{ingredient}</label>
                         </div>
                     )

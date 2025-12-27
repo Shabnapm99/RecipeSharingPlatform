@@ -16,6 +16,7 @@ import { app } from '../../utils/firebaseConfig'
 import { setSelectedRecipe, clearSelectedRecipe } from '../../features/recipeSlice';
 import { setSavedRecipes, removeSavedRecipe } from '../../features/favoritesSlice'
 import Spinner from '../../components/Card/Spinner';
+import StopWatch from '../../components/Card/stopWatch';
 
 function RecipeDetails() {
 
@@ -30,8 +31,13 @@ function RecipeDetails() {
 
   const recipes = useSelector((state) => state.recipes.recipes);
   const recipe = useSelector((state) => state.recipes.selectedRecipe);
-  const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
+  // const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
   const [loading, setLoading] = useState(true);
+
+  
+  const [expirationTime,setExpirationTime] = useState(null);
+  // 
+
   const [isSaved, setIsSaved] = useState(false);
 
   // Initialize Cloud Firestore and get a reference to the service
@@ -55,13 +61,23 @@ function RecipeDetails() {
 
     }
     getRecipe();//call the function to get the recipe
-    setIsSaved(savedRecipes.some((recipe) => recipe.uniqueId === recipe?.uniqueId))
+    // setIsSaved(savedRecipes.some((recipe) => recipe.uniqueId === recipe?.uniqueId))
 
     return () => {
       dispatch(clearSelectedRecipe());//Anything returned from useEffect is a cleanup function.React calls this before the component unmounts or before running the effect next time (if dependencies changed).
     };//if we didn't clearup the selectedrecipe next time we are accessing another item, the previous item will show before ethe required one loads 
 
   }, [id])
+
+  useEffect(()=>{
+    if(!recipe?.cookTimeMinutes) return
+    // console.log(typeof(recipe?.cookTimeMinutes))
+    
+    const time = new Date();
+    time.setMinutes(time.getMinutes() + recipe?.cookTimeMinutes); //  minutes timer
+    setExpirationTime(time);
+
+  },[recipe?.cookTimeMinutes])
 
   useEffect(() => {
     setTimeout(() => {
@@ -168,9 +184,9 @@ function RecipeDetails() {
 
             {/* Instructions */}
             <div className='m-3 py-5 border-b border-gray-600'>
-              <div className='flex justify-between items-center'>
-                <h3 className='text-2xl font-bold text-white'>Instructions</h3>
-                <div>counter</div>
+              <div className='flex flex-col md:flex-row justify-between md:items-center'>
+                <h3 className='text-2xl font-bold text-white mb-2'>Instructions</h3>
+                <StopWatch/>
               </div>
               <div className='py-4'>
                 {
@@ -181,9 +197,6 @@ function RecipeDetails() {
                 {/* If instruction isn't loade yet loop through empty array instead of looping through undefined which throw error and stop page from loading */}
               </div>
             </div>
-
-
-
           </div>
 
           {/* Ingredients list*/}

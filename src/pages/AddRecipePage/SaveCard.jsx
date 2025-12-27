@@ -40,6 +40,8 @@ function SaveCard({ recipe, setFormData }) {
                         cookTimeMinutes: recipe.cookTimeMinutes,
                         ingredients: recipe.ingredients,
                         instructions: recipe.instructions,
+                        rating:4.6,
+                        reviewCount:51,
                         createdAt: date.toDateString(),
 
                     })

@@ -11,7 +11,7 @@ function FilterComponent({ setFiletered }) {
     const [cookingTime, setCookingTime] = useState(60);
     const recipes = useSelector((state) => state.recipes.recipes);
     const filteredRecipes = recipes;//to make sure this is looping thorugh original full array while filterin
-
+    
     //Filter function
 
 
@@ -43,7 +43,7 @@ function FilterComponent({ setFiletered }) {
 
             if (dietType && recipeDietType !== dietType) return false;
 
-            if(cookingTime &&  RecipeCookingTime > cookingTime) return false;
+            if (cookingTime && RecipeCookingTime > cookingTime) return false;
 
             return true;
 
@@ -97,17 +97,17 @@ function FilterComponent({ setFiletered }) {
                 <div className='flex flex-col gap-2 text-sm'>
                     <p>Difficulty</p>
                     <div className='flex gap-2 items-center'>
-                        <input type='radio' name='difficulty' id='easy' onChange={(e) => setDifficulty(e.target.value)} value={'easy'} />
+                        <input type='radio' className='cursor-pointer accent-[#13ec6a]' name='difficulty' id='easy' onChange={(e) => setDifficulty(e.target.value)} value={'easy'} />
                         <label htmlFor='easy'>Easy(under 30 mins)</label>
 
                     </div>
                     <div className='flex gap-2 items-center'>
-                        <input type='radio' name='difficulty' id='medium' onChange={(e) => setDifficulty(e.target.value)} value={'medium'} />
+                        <input type='radio' className='cursor-pointer accent-[#13ec6a]' name='difficulty' id='medium' onChange={(e) => setDifficulty(e.target.value)} value={'medium'} />
                         <label htmlFor='medium'>Medium</label>
 
                     </div>
                     <div className='flex gap-2 items-center'>
-                        <input type='radio' name='difficulty' id='hard' className='bg-[#13ec6a]' onChange={(e) => setDifficulty(e.target.value)} value={'hard'} />
+                        <input type='radio' className='cursor-pointer accent-[#13ec6a]' name='difficulty' id='hard' onChange={(e) => setDifficulty(e.target.value)} value={'hard'} />
                         <label htmlFor='hard'>Hard</label>
 
                     </div>
@@ -116,8 +116,10 @@ function FilterComponent({ setFiletered }) {
                 <div className='flex flex-col gap-2'>
                     <p className='text-sm '>DIET TYPE</p>
                     <div className='grid grid-cols-3 gap-2'>
-                        <div className='border border-[#1c2720] rounded-2xl text-sm py-0.5 active:bg-[#13ec6a] flex justify-center items-center' onClick={(e) => setDietType('vegetarian')}>Vegetarian</div>
-                        <div className='border border-[#1c2720] rounded-2xl text-sm py-0.5 active:bg-[#13ec6a] flex justify-center items-center' onClick={(e) => setDietType('non-vegetarian')}>Non-veg</div>
+                        <div className={`rounded-2xl text-sm py-0.5  flex justify-center items-center cursor-pointer ${dietType==='vegetarian'? 'bg-[#13ec6a] border-none':'border border-[#1c2720]'}`}
+                            onClick={(e) =>setDietType('vegetarian')}>Vegetarian</div>
+                        <div className={`rounded-2xl text-sm py-0.5 flex justify-center items-center cursor-pointer ${dietType === 'non-vegetarian'?'bg-[#13ec6a] border-none':'border border-[#1c2720]'}`} 
+                        onClick={(e) => setDietType('non-vegetarian')} >Non-veg</div>
                         {/* <div className='border border-[#1c2720] rounded-2xl text-sm py-0.5 active:bg-[#13ec6a] flex justify-center items-center' onClick={(e) => setDietType(e.target.value)}>keto</div>
                         <div className='border border-[#1c2720] rounded-2xl text-sm py-0.5 active:bg-[#13ec6a] flex justify-center items-center' onClick={(e) => setDietType(e.target.value)}>Vegan</div> */}
                     </div>

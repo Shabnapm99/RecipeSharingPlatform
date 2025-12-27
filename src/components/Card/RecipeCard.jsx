@@ -1,5 +1,6 @@
 import React from 'react'
 import { FaStar } from "react-icons/fa";
+import { LuChefHat } from 'react-icons/lu';
 import { MdAccessTime } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +9,7 @@ function RecipeCard({ recipe }) {
     let navigate = useNavigate();
 
     return (
-        <div className='bg-[#3c4f43] flex flex-col gap-1 rounded-xl cursor-pointer hover:-translate-y-1 group' onClick={()=>navigate(`/recipes/${recipe.uniqueId}`)}>
+        <div className='bg-[#3c4f43] flex flex-col gap-1 rounded-xl cursor-pointer hover:-translate-y-1 group' onClick={() => navigate(`/recipes/${recipe.uniqueId}`)}>
             <div className='w-[full] relative'>
                 <img src={recipe?.image} className='max-w-full max-h-full rounded-t-xl relative' />
                 <div className='absolute top-0 left-0 bg-black/35 z-40 w-full h-full rounded-t-xl'></div>
@@ -36,8 +37,12 @@ function RecipeCard({ recipe }) {
 
                 </div>
                 <h3 className='text-white font-semibold group-hover:text-[#13ec13] mb-4'>{recipe?.name}</h3>
-                <p className='text-white/80 text-sm pt-4 ps-1 border-t border-gray-500'>{recipe?.author}</p>
-                <p></p>
+                <div className='text-white/80 text-sm pt-4 ps-1 border-t border-gray-500 flex gap-3 items-center'>
+                    <LuChefHat />
+                    <p className=' '>{recipe?.author}</p>
+                </div>
+
+
 
             </div>
 

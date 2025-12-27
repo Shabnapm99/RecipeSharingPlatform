@@ -11,10 +11,10 @@ function AddRecipe() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [cookingTime, setCookingTime] = useState(5);
-  const [difficulty, setDifficulty] = useState('easy');
+  const [difficulty, setDifficulty] = useState('Easy');
   const [author, setAuthor] = useState('');
-  const [dietType, setDietType] = useState('vegetarian');
-  const [cuisine, setCuisine] = useState('italian');
+  const [dietType, setDietType] = useState('Vegetarian');
+  const [cuisine, setCuisine] = useState('Italian');
   const [imageUrl, setImageUrl] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
@@ -91,41 +91,41 @@ function AddRecipe() {
                 <div className='flex flex-col gap-1'>
                   <label className='text-[#13ec6a]/50 font-medium'>Difficulty</label>
                   <select className='bg-[#1c2720] block p-1.5 rounded border border-[#3b5445] text-sm' required value={difficulty} onChange={(e) => setDifficulty(e.target.value)} >
-                    <option value={'easy'}  >Easy</option>
-                    <option value={'hard'}>Hard</option>
-                    <option value={'medium'}>Medium</option>
+                    <option value={'Easy'}  >Easy</option>
+                    <option value={'Hard'}>Hard</option>
+                    <option value={'Medium'}>Medium</option>
                   </select>
                 </div>
 
                 <div className='flex flex-col gap-1'>
                   <label className='text-[#13ec6a]/50 font-medium'>Diet type</label>
                   <select className='bg-[#1c2720] block p-1.5 rounded border border-[#3b5445] text-sm' required value={dietType} onChange={(e) => setDietType(e.target.value)}>
-                    <option value={'vegetarian'}>Vegetarian</option>
-                    <option value={"vegan"}>Vegan</option>
-                    <option value={"keto"}>Keto</option>
-                    <option value={'non-vegetarian'}>Non-veg</option>
+                    <option value={'Vegetarian'}>Vegetarian</option>
+                    <option value={"Vegan"}>Vegan</option>
+                    <option value={"Keto"}>Keto</option>
+                    <option value={'Non-vegetarian'}>Non-veg</option>
                   </select>
                 </div>
 
                 <div className='flex flex-col gap-1'>
                   <label className='text-[#13ec6a]/50 font-medium'>Cuisine</label>
                   <select className='bg-[#1c2720] block p-1.5 rounded border border-[#3b5445] text-sm' required value={cuisine} onChange={(e) => setCuisine(e.target.value)}>
-                    <option value={'italian'}>Italian</option>
-                    <option value={'american'}>American</option>
-                    <option value={'asian'}>Asian</option>
-                    <option value={'mexican'}>Mexican</option>
-                    <option value={'mediterranean'}>Mediterranean</option>
-                    <option value={'pakistani'}>Pakistani</option>
-                    <option value={'japanese'}>Japanese</option>
-                    <option value={'moroccan'}>Moroccan</option>
-                    <option value={'greek'}>Greek</option>
-                    <option value={'korean'}>Korean</option>
-                    <option value={'thai'}>Thai</option>
-                    <option value={'indian'}>Indian</option>
-                    <option value={'turkish'}>Turkish</option>
-                    <option value={'russian'}>Russian</option>
-                    <option value={'lebanese'}>Lebanese</option>
-                    <option value={'brazilian'}>Brazilian</option>
+                    <option value={'Italian'}>Italian</option>
+                    <option value={'American'}>American</option>
+                    <option value={'Asian'}>Asian</option>
+                    <option value={'Mexican'}>Mexican</option>
+                    <option value={'Mediterranean'}>Mediterranean</option>
+                    <option value={'Pakistani'}>Pakistani</option>
+                    <option value={'Japanese'}>Japanese</option>
+                    <option value={'Moroccan'}>Moroccan</option>
+                    <option value={'Greek'}>Greek</option>
+                    <option value={'Korean'}>Korean</option>
+                    <option value={'Thai'}>Thai</option>
+                    <option value={'Indian'}>Indian</option>
+                    <option value={'Turkish'}>Turkish</option>
+                    <option value={'Russian'}>Russian</option>
+                    <option value={'Lebanese'}>Lebanese</option>
+                    <option value={'Brazilian'}>Brazilian</option>
                   </select>
                 </div>
               </div>
