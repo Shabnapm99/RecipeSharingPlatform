@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Modal from '../components/Card/Modal';
+import {getAuth,createUserWithEmailAndPassword} from 'firebase/auth'
+import { app } from '../utils/firebaseConfig';
+
+// Initialize Firebase Authentication and get a reference to the service
+const auth = getAuth(app);
 
 function SignUp() {
 
@@ -12,8 +17,17 @@ function SignUp() {
   const [alertMessage,setAlertMessage] = useState('');
   const [showErrorPara,setShowErrorPara] = useState(false);
 
+  // Fire base auth
+  const signUpUser = ()=>{
+    createUserWithEmailAndPassword(auth,email,password).then((userCredential)=>{
+      const user = userCredential.user;
+    console.log(user)})
+  };
+
+  // submit button handler
+
   function handleSubmit(event) {
-    event.preventDefault();
+    event.preventDefault();//prevent from reloading
     setShowErrorPara(!showErrorPara);
     let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     let passWordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[A-Za-z].{7,}$/;
@@ -31,13 +45,20 @@ function SignUp() {
       setAlertMessage('passwords Do not match');
       return;
 
-    } else setShowModal(true);
+    } else {
+      
+      signUpUser();
+      setShowModal(true);
+
+    }
     setName('');
     setEmail('');
     setPassword('');
     setConfirmPassword('');
 
   }
+
+
 
   return (
     <div className='bg-[#1c2720] w-screen h-screen flex justify-center items-center'>
@@ -110,14 +131,14 @@ function SignUp() {
 
 
                 {/* Submit button */}
-                <button className='rounded-2xl py-2.5 px-5  text-sm font-bold text-[#102217] bg-[#13ec6a] hover:bg-[#13ec6a]/90' type='submit'>Login</button>
+                <button className='rounded-2xl py-2.5 px-5  text-sm font-bold text-[#102217] bg-[#13ec6a] hover:bg-[#13ec6a]/90' type='submit'>Create Account</button>
 
               </div>
 
             </form>
             {/* SuccesFul Modal */}
             {
-              showModal && <Modal onClose={() => setShowModal(false)} text='Successfully registered to CookBook' />
+              showModal && <Modal onClose={() => setShowModal(false)} text='Successfully registered to CookBook.' />
             }
             <hr className='text-[#28392f] mt-6' />
             {/* Sign up link */}

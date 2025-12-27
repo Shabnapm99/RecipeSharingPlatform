@@ -1,13 +1,42 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth'
+import { useNavigate } from 'react-router-dom';
+import {setAuthUser,setIsLoggedIn} from '../features/userSlice'
+import {useDispatch} from 'react-redux'
+
+const auth = getAuth();
 
 function Login() {
 
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
+  let navigate = useNavigate();
+  let dispatch = useDispatch();
+  const [showErrorPara,setShowErrorPara] = useState(false);
+  const [alertMessage,setAlertMessage] = useState('');
+
+  const loginUser = ()=>{
+    signInWithEmailAndPassword(auth,email,password).then((userCredential)=>{
+      const user = userCredential.user;
+      dispatch(setIsLoggedIn(auth.currentUser))
+      console.log('successfully logged in');
+      navigate('/');
+    }).catch((error)=>{
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setAlertMessage(errorMessage,errorCode);
+      setShowErrorPara(true);
+    })
+  }
 
   function handleSubmit(e){
     e.preventDefault();
+    setShowErrorPara(false)
+    loginUser();
+    setEmail('');
+    setPassword('');
+    
   }
   return (
     <div className='bg-[#1c2720] w-screen h-screen flex justify-center items-center'>
@@ -28,6 +57,7 @@ function Login() {
           <div>
             <h1 className='text-3xl font-bold text-white'>Welcome Back</h1>
             <p className='text-base text-gray-400 mt-2'>Login to access your saved recipes and share you new recipe.</p>
+            {showErrorPara&& <p className='text-sm text-red-500 mt-1'>{alertMessage}</p>}
           </div>
           {/* Form */}
           <div className='mt-8'>
