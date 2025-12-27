@@ -25,10 +25,6 @@ function RecipeDetails() {
 
   let dispatch = useDispatch();
 
-
-
-
-
   const recipes = useSelector((state) => state.recipes.recipes);
   const recipe = useSelector((state) => state.recipes.selectedRecipe);
   // const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
@@ -57,7 +53,7 @@ function RecipeDetails() {
         dispatch(setSelectedRecipe(getSnap.data()))
       } catch (error) {
         console.error(`Error occured : ${error.message}`);
-      }
+      }finally {setLoading(false)}
 
     }
     getRecipe();//call the function to get the recipe
@@ -79,11 +75,11 @@ function RecipeDetails() {
 
   },[recipe?.cookTimeMinutes])
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 3000);
-  }, [])//runs on mounting to show spinner while loading
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false)
+  //   }, 3000);
+  // }, [])//runs on mounting to show spinner while loading
 
 
 
@@ -101,11 +97,11 @@ function RecipeDetails() {
       {/* Recipe details section */}
       {loading ? <Spinner loading={loading} /> :
         <section className='flex flex-col lg:flex-row gap-10 m-3 w-[85vw] mx-auto items-center lg:items-start'>
-          <div className=''>
+          <div className='w-[90vw] lg:w-[60vw]'>
 
             {/* Recipe section */}
 
-            <div className='w-[90vw] lg:w-[60vw] aspect-square lg:aspect-3/2 rounded-xl relative'>
+            <div className='w-full aspect-square lg:aspect-3/2 rounded-xl relative'>
               <img src={recipe?.image} className='w-full h-full rounded-xl' />
               <div className='inset-0 bg-black/40 absolute top-0 left-0 rounded-xl'></div>
               <div className='flex items-center gap-2 absolute top-3.5 right-2'>
@@ -200,7 +196,7 @@ function RecipeDetails() {
           </div>
 
           {/* Ingredients list*/}
-          <Ingredients ingredients={recipe?.ingredients} />
+          <Ingredients ingredients={recipe?.ingredients} className=''/>
 
         </section>
       }

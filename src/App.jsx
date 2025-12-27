@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Root from './routes/Root';
@@ -11,9 +11,40 @@ import Favorites from './pages/Favorites';
 import NotFound from './pages/NotFound';
 // import { recipeLoader } from './pages/RecipeListingPage/RecipeList';
 import AddRecipe from './pages/AddRecipePage/AddRecipe';
+import {getAuth, onAuthStateChanged} from 'firebase/auth'
+import { app } from './utils/firebaseConfig';
+import { useDispatch, useSelector } from 'react-redux';
+import {setAuthUser,setIsLoggedIn} from './features/userSlice'
+
+
+const auth = getAuth(app);
 
 function App() {
 
+  let dispatch = useDispatch();
+  let user = useSelector((state)=>state.users.authUser);
+  let loggedIn = useSelector((state)=>state.users.isLoggedIn);
+  console.log(user,loggedIn);
+
+
+  //to observe the signIn changes and store the details
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(setAuthUser({
+          name:user.displayName,
+          id:user.uid,
+          email:user.email
+        }));//since user conatin many other methods classes etc. so store only the datas we needed
+        dispatch(setIsLoggedIn(true))
+        // console.log(useSelector((state)=>state.user.authUser))
+      }
+      else {
+        dispatch(setAuthUser(null));
+        dispatch(setIsLoggedIn(false))
+      }
+    })
+  }, [])
 
   // Router setup using createBrowserRouter
 
@@ -40,7 +71,7 @@ function App() {
           path: '/favorites',
           element: <Favorites />
         },
-                {
+        {
           path: '/add',
           element: <AddRecipe />
         }
@@ -50,12 +81,12 @@ function App() {
     {
       path: '/login',
       element: <Login />,
-      errorElement:<NotFound/>
+      errorElement: <NotFound />
     },
     {
       path: '/signup',
       element: <SignUp />,
-      errorElement:<NotFound/>
+      errorElement: <NotFound />
     },
 
 

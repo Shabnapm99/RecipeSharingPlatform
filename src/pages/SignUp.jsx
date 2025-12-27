@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Modal from '../components/Card/Modal';
-import {getAuth,createUserWithEmailAndPassword} from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { app } from '../utils/firebaseConfig';
+import { getFirestore, addDoc, collection, setDoc, doc } from 'firebase/firestore'
+import Spinner from '../components/Card/Spinner';
+
+const db = getFirestore(app);
 
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
@@ -14,15 +18,38 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [alertMessage,setAlertMessage] = useState('');
-  const [showErrorPara,setShowErrorPara] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showErrorPara, setShowErrorPara] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // Fire base auth
-  const signUpUser = ()=>{
-    createUserWithEmailAndPassword(auth,email,password).then((userCredential)=>{
-      const user = userCredential.user;
-    console.log(user)})
-  };
+  // Fire base auth: create authentication and add the user into user document in firestore
+  const signUpUser = async () => {
+    try {
+      setLoading(true);
+      let userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+      let user = userCredentials.user;
+      await updateProfile(user, { displayName: name, });
+      // To add the user to users collection
+      await setDoc(doc(db, "users",user.uid), {//create a document with id = user.uid in users collection
+        id: user.uid,
+        userName: name,
+        email: user.email,
+        createdAt: new Date(),
+      });
+      setShowModal(true);//show success Modal only after all these steps done
+
+
+    } catch (error) {
+      setAlertMessage(error.code, error.message);
+      setShowErrorPara(true);
+      console.log(error.code, error.message)
+
+    }finally{
+      setLoading(false);
+    }
+
+  }
+
 
   // submit button handler
 
@@ -31,7 +58,7 @@ function SignUp() {
     setShowErrorPara(!showErrorPara);
     let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     let passWordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[A-Za-z].{7,}$/;
-    if (name.trim() === '' || name.trim().length<3 || name.trim().length>50)  {
+    if (name.trim() === '' || name.trim().length < 3 || name.trim().length > 50) {
       setAlertMessage('please provide a valid name');
       return;
     } else if (email.trim() === '' || emailRegex.test(email) === false) {
@@ -46,9 +73,10 @@ function SignUp() {
       return;
 
     } else {
-      
+
       signUpUser();
-      setShowModal(true);
+      
+
 
     }
     setName('');
@@ -61,7 +89,8 @@ function SignUp() {
 
 
   return (
-    <div className='bg-[#1c2720] w-screen h-screen flex justify-center items-center'>
+    <div className='bg-[#1c2720] w-screen h-screen flex justify-center items-center relative'>
+      {loading ? <Spinner loading={loading} />:
 
       <div className='flex flex-col md:flex-row rounded-lg bg-[#102217] h-screen md:h-[70vh] lg:h-screen w-full lg:w-[80%]'>
 
@@ -100,7 +129,7 @@ function SignUp() {
           <div>
             <h1 className='text-2xl font-bold text-white'>Create an Account</h1>
             {/* Error message */}
-             {showErrorPara&& <p className='text-sm text-red-500 mt-1'>{alertMessage}</p>}
+            {showErrorPara && <p className='text-sm text-red-500 mt-1'>{alertMessage}</p>}
           </div>
           {/* Form */}
           <div className='mt-5'>
@@ -138,7 +167,7 @@ function SignUp() {
             </form>
             {/* SuccesFul Modal */}
             {
-              showModal && <Modal onClose={() => setShowModal(false)} text='Successfully registered to CookBook.' />
+              showModal && <Modal onClose={() => setShowModal(false)} text={`Successfully registered to CookBook ${name}.`} />
             }
             <hr className='text-[#28392f] mt-6' />
             {/* Sign up link */}
@@ -150,7 +179,7 @@ function SignUp() {
           </div>
         </div>
 
-      </div>
+      </div>}
     </div>
   )
 }

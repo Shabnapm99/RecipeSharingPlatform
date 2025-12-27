@@ -1,43 +1,60 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom';
-import {setAuthUser,setIsLoggedIn} from '../features/userSlice'
-import {useDispatch} from 'react-redux'
+import { setAuthUser, setIsLoggedIn } from '../features/userSlice'
+import { useDispatch } from 'react-redux'
+import { app } from '../utils/firebaseConfig';
 
-const auth = getAuth();
+const auth = getAuth(app);
 
 function Login() {
 
-  const [email,setEmail] = useState('');
-  const [password,setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  const [showErrorPara,setShowErrorPara] = useState(false);
-  const [alertMessage,setAlertMessage] = useState('');
+  const [showErrorPara, setShowErrorPara] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
-  const loginUser = ()=>{
-    signInWithEmailAndPassword(auth,email,password).then((userCredential)=>{
-      const user = userCredential.user;
-      dispatch(setIsLoggedIn(auth.currentUser))
-      console.log('successfully logged in');
+  // const loginUser = ()=>{
+  //   signInWithEmailAndPassword(auth,email,password).then((userCredential)=>{
+  //     const user = userCredential.user;
+  //     // dispatch(setIsLoggedIn(auth.currentUser));
+  //     // dispatch(setAuthUser(user));
+  //     console.log('successfully logged in');
+  //     navigate('/');
+  //   }).catch((error)=>{
+  //     const errorCode = error.code;
+  //     const errorMessage = error.message;
+  //     setAlertMessage(errorMessage,errorCode);
+  //     setShowErrorPara(true);
+  //   })
+  // }
+
+  const loginUser = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
       navigate('/');
-    }).catch((error)=>{
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setAlertMessage(errorMessage,errorCode);
+
+    } catch (error) {
+      setAlertMessage(error.message);
       setShowErrorPara(true);
-    })
+    }
+
+
   }
 
-  function handleSubmit(e){
+  function handleSubmit(e) {
     e.preventDefault();
     setShowErrorPara(false)
     loginUser();
     setEmail('');
     setPassword('');
-    
+
   }
+
+
   return (
     <div className='bg-[#1c2720] w-screen h-screen flex justify-center items-center'>
 
@@ -57,7 +74,7 @@ function Login() {
           <div>
             <h1 className='text-3xl font-bold text-white'>Welcome Back</h1>
             <p className='text-base text-gray-400 mt-2'>Login to access your saved recipes and share you new recipe.</p>
-            {showErrorPara&& <p className='text-sm text-red-500 mt-1'>{alertMessage}</p>}
+            {showErrorPara && <p className='text-sm text-red-500 mt-1'>{alertMessage}</p>}
           </div>
           {/* Form */}
           <div className='mt-8'>
@@ -66,12 +83,12 @@ function Login() {
                 <div className=''>
                   <label htmlFor='email' className='text-white block text-sm'>Email or UserName</label>
                   <input className='mt-2 rounded-2xl py-2.5 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='email' id='email' required placeholder='example@gmail.com' value={email}
-                  onChange={(e)=>setEmail(e.target.value)} />
+                    onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div className=''>
                   <label htmlFor='pswd' className='text-white block text-sm'>Password</label>
                   <input className='mt-2 rounded-2xl py-2.5 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' type='password' id='pswd' required placeholder='.......' value={password}
-                  onChange={(e)=>setPassword(e.target.value)}/>
+                    onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <div className='text-end'>
                   <a className='text-sm font-medium text-[#13ec6a]' href='#'>Forgot password?</a>

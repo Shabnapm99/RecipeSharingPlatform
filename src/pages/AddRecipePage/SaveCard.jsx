@@ -49,6 +49,7 @@ function SaveCard({ recipe, setFormData }) {
                    dispatch(setRecipes([...recipes,newRecipe]));
 
                    setFormData({});//clear the input fields
+                navigate(`/recipes/${uniqueId}`);//navigate to details page of new recipe
 
             } catch (error) {
                 console.log(`Error || ${error}`)
@@ -56,9 +57,8 @@ function SaveCard({ recipe, setFormData }) {
         }
 
         addData();
-        navigate('/');//on save navigate to home page
-        
-
+        // navigate('/');//on save navigate to home page
+    
     }
 
 

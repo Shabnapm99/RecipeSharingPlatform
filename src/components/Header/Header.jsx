@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaRegUser } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa6";
 import { MdNotificationsNone } from "react-icons/md";
@@ -6,16 +6,33 @@ import { IoSearchSharp } from "react-icons/io5";
 import { useNavigate, Link } from 'react-router-dom';
 import { IoHomeOutline } from "react-icons/io5";
 import { useSelector } from 'react-redux';
+import { app } from '../../utils/firebaseConfig';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth'
+
+const auth = getAuth(app);
+
 function Header() {
 
     const isLoggedIn = useSelector((state) => state.users.isLoggedIn);
-    const favoriteCount = useSelector((state)=>state.favorites.savedRecipes).length;
+    const user = useSelector((state) => state.users.authUser);
+    const [initials, setInitials] = useState('UU');
+    const [showAccountDetails, setShowAccountDetails] = useState(false);
+
+    // const userAccount = 
+    const favoriteCount = useSelector((state) => state.favorites.savedRecipes).length;
     let navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user?.name) return;
+        const fName = user.name.split(' ')[0];
+        const lName = user.name.split(' ')[1] || '';
+        setInitials((lName.charAt(0).toUpperCase()) + (fName?.charAt(0).toUpperCase()));
+    }, [user])
     return (
         <header className='bg-[#102217] text-white sticky top-0 left-0 z-50'>
             <div>
 
-                <nav className='px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center'>
+                <nav className='px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center relative'>
                     <div className='flex gap-3 items-center cursor-pointer' onClick={() => navigate('/')}>
                         <img src='/images/BrandIcons.png' alt='BrandIcon' />
                         <span className='text-xl md:text-2xl font-bold'>CookBook</span>
@@ -30,15 +47,36 @@ function Header() {
                         !isLoggedIn ? <div className='flex gap-4 items-center'>
                             <Link to={'/login'}><button className='border border-[#3c4f43] py-1.5 px-2.5 rounded-md cursor-pointer hover:border-none hover:bg-[#3c4f43]'>Sign In</button></Link>
                             <Link to={'/signup'}><button className='py-1.5 px-2.5 bg-[#13ec6a] text-[#111814] rounded-md cursor-pointer hover:bg-[#0f9444]'>Sign Up</button></Link>
-                        </div> : <div className='flex gap-4 items-center'>
-                            <Link><button className='text-3xl cursor-pointer hidden md:block'><MdNotificationsNone /></button></Link>
-                            <Link to={'/favorites'}>
-                                <div className='relative'>
-                                    <button className='text-2xl cursor-pointer'><FaRegHeart /></button>
-                                    {favoriteCount>0&&<div className='bg-[#13ec6a] text-white text-xs w-3.5 h-3.5 rounded-full flex justify-center font-bold items-center absolute top-0 right-0 -translate-y-1 translate-x-2'>{favoriteCount}</div>}
-                                </div></Link>
-                            <Link><button className='text-2xl bg-[#3c4f43] p-2 rounded-full text-[#13ec6a] cursor-pointer'><FaRegUser /></button></Link>
-                        </div>
+                        </div> :
+                            <div className='flex gap-4 items-center relative'>
+                                <Link><button className='text-4xl cursor-pointer hidden md:block'><MdNotificationsNone /></button></Link>
+                                <Link to={'/favorites'}>
+                                    <div className='relative'>
+                                        <button className='text-3xl cursor-pointer'><FaRegHeart /></button>
+                                        {favoriteCount > 0 && <div className='bg-[#13ec6a] text-white text-xs w-3.5 h-3.5 rounded-full flex justify-center font-bold items-center absolute top-0 right-0 -translate-y-1 translate-x-2'>{favoriteCount}</div>}
+                                    </div></Link>
+                                <Link><button className='text-3xl bg-[#3c4f43] w-12 h-12 rounded-full text-[#13ec6a] cursor-pointer flex justify-center items-center font-semibold' onClick={() => setShowAccountDetails(!showAccountDetails)}>
+                                    {/* <FaRegUser /> */}
+                                    <h2 className='flex justify-center items-center'>{initials}</h2></button></Link>
+                                {/* Account details */}
+                                {showAccountDetails &&
+                                <div className='bg-black/60 p-4 rounded-lg absolute bottom-0 left-0 translate-y-36 flex flex-col gap-3'>
+                                    <div>
+                                        <p>{user?.name}</p>
+                                        <p>{user?.email}</p>
+
+                                    </div>
+                                    <div className='border border-gray-500'></div>
+                                    <div>
+                                        <button className='text-[#13ec6a] font-medium cursor-pointer' onClick={()=>{
+                                            signOut(auth).then(()=>console.log("Signed out of user"))
+
+
+                                        }}>Logout</button>
+                                    </div>
+
+                                </div>}
+                            </div>
                     }
 
 
