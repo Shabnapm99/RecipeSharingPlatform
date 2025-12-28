@@ -11,20 +11,66 @@ import Favorites from './pages/Favorites';
 import NotFound from './pages/NotFound';
 // import { recipeLoader } from './pages/RecipeListingPage/RecipeList';
 import AddRecipe from './pages/AddRecipePage/AddRecipe';
-import {getAuth, onAuthStateChanged} from 'firebase/auth'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { app } from './utils/firebaseConfig';
 import { useDispatch, useSelector } from 'react-redux';
-import {setAuthUser,setIsLoggedIn} from './features/userSlice'
+import { setAuthUser, setIsLoggedIn } from './features/userSlice'
 
 
 const auth = getAuth(app);
 
+// Router setup using createBrowserRouter
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Root />,
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+        // loader: recipeLoader
+      },
+      {
+        path: '/recipes',
+        element: <RecipeList />,
+        // loader: recipeLoader
+      },
+      {
+        path: '/recipes/:id',
+        element: <RecipeDetails />
+      },
+      {
+        path: '/favorites',
+        element: <Favorites />
+      },
+      {
+        path: '/add',
+        element: <AddRecipe />
+      }
+    ],
+    errorElement: <NotFound />
+  },
+  {
+    path: '/login',
+    element: <Login />,
+    errorElement: <NotFound />
+  },
+  {
+    path: '/signup',
+    element: <SignUp />,
+    errorElement: <NotFound />
+  },
+
+
+]);
+
 function App() {
 
   let dispatch = useDispatch();
-  let user = useSelector((state)=>state.users.authUser);
-  let loggedIn = useSelector((state)=>state.users.isLoggedIn);
-  console.log(user,loggedIn);
+  let user = useSelector((state) => state.users.authUser);
+  let loggedIn = useSelector((state) => state.users.isLoggedIn);
+  console.log(user, loggedIn);
 
 
   //to observe the signIn changes and store the details
@@ -32,11 +78,12 @@ function App() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         dispatch(setAuthUser({
-          name:user.displayName,
-          id:user.uid,
-          email:user.email
+          name: user.displayName,
+          id: user.uid,
+          email: user.email
         }));//since user conatin many other methods classes etc. so store only the datas we needed
-        dispatch(setIsLoggedIn(true))
+        dispatch(setIsLoggedIn(true));
+        console.log("Auth state changed, user is:", user?.email)
         // console.log(useSelector((state)=>state.user.authUser))
       }
       else {
@@ -46,51 +93,7 @@ function App() {
     })
   }, [])
 
-  // Router setup using createBrowserRouter
 
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <Root />,
-      children: [
-        {
-          path: '/',
-          element: <Home />,
-          // loader: recipeLoader
-        },
-        {
-          path: '/recipes',
-          element: <RecipeList />,
-          // loader: recipeLoader
-        },
-        {
-          path: '/recipes/:id',
-          element: <RecipeDetails />
-        },
-        {
-          path: '/favorites',
-          element: <Favorites />
-        },
-        {
-          path: '/add',
-          element: <AddRecipe />
-        }
-      ],
-      errorElement: <NotFound />
-    },
-    {
-      path: '/login',
-      element: <Login />,
-      errorElement: <NotFound />
-    },
-    {
-      path: '/signup',
-      element: <SignUp />,
-      errorElement: <NotFound />
-    },
-
-
-  ]);
 
 
   return (

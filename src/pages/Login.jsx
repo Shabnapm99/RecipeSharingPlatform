@@ -38,12 +38,15 @@ function Login() {
     try {
       setLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/');
+      setEmail('');
+      setPassword('');//reset the fields only after signinwithemailandpassword completed
+      console.log("Login successful, navigating...");
+      navigate('/', { replace: true });
 
     } catch (error) {
       setAlertMessage(error.message);
       setShowErrorPara(true);
-    }finally{
+    } finally {
       setLoading(false);
     }
 
@@ -54,8 +57,6 @@ function Login() {
     e.preventDefault();
     setShowErrorPara(false)
     loginUser();
-    setEmail('');
-    setPassword('');
 
   }
 
@@ -101,7 +102,7 @@ function Login() {
 
                 {/* Submit button */}
                 <button className='rounded-2xl py-2.5 px-5  text-sm font-bold text-[#102217] bg-[#13ec6a] hover:bg-[#13ec6a]/90 relative' type='submit'>Login
-                {loading&&<ButtonSpinner loading={loading}/>}</button>
+                  {loading && <ButtonSpinner loading={loading} />}</button>
 
               </div>
 

@@ -23,11 +23,11 @@ function Header() {
     let navigate = useNavigate();
 
     useEffect(() => {
-        if (!user?.name) return;
+        if (isLoggedIn&&user?.name){
         const fName = user.name.split(' ')[0];
         const lName = user.name.split(' ')[1] || '';
-        setInitials((lName.charAt(0).toUpperCase()) + (fName?.charAt(0).toUpperCase()));
-    }, [user])
+        setInitials((lName.charAt(0).toUpperCase()) + (fName?.charAt(0).toUpperCase()));}
+    }, [user,isLoggedIn])
     return (
         <header className='bg-[#102217] text-white sticky top-0 left-0 z-50'>
             <div>
@@ -55,25 +55,28 @@ function Header() {
                                         <button className='text-3xl cursor-pointer'><FaRegHeart /></button>
                                         {favoriteCount > 0 && <div className='bg-[#13ec6a] text-white text-xs w-3.5 h-3.5 rounded-full flex justify-center font-bold items-center absolute top-0 right-0 -translate-y-1 translate-x-2'>{favoriteCount}</div>}
                                     </div></Link>
-                                <Link><button className='text-3xl bg-[#3c4f43] w-12 h-12 rounded-full text-[#13ec6a] cursor-pointer flex justify-center items-center font-semibold' onClick={() => setShowAccountDetails(!showAccountDetails)}>
+                                <button className='text-2xl md:text-3xl bg-[#3c4f43] w-12 h-12 rounded-full text-[#13ec6a] cursor-pointer flex justify-center items-center font-semibold' onClick={() => setShowAccountDetails(!showAccountDetails)}>
                                     {/* <FaRegUser /> */}
-                                    <h2 className='flex justify-center items-center'>{initials}</h2></button></Link>
+                                    <h2 className='flex justify-center items-center'>{initials}</h2>
+                                </button>
+                            
                                 {/* Account details */}
                                 {showAccountDetails &&
-                                <div className='bg-black/60 p-4 rounded-lg absolute bottom-0 left-0 translate-y-36 flex flex-col gap-3'>
-                                    <div>
-                                        <p>{user?.name}</p>
-                                        <p>{user?.email}</p>
+                                    <div className='bg-black/60 px-2 py-4 md:p-4 rounded-lg absolute bottom-0 left-0 translate-y-36 -translate-x-4 md:-translate-x-2 flex flex-col gap-3'>
+                                        <div>
+                                            <p>{user?.name}</p>
+                                            <p>{user?.email}</p>
 
-                                    </div>
-                                    <div className='border border-gray-500'></div>
-                                    <div>
-                                        <button className='text-[#13ec6a] font-medium cursor-pointer' onClick={()=>{
-                                            signOut(auth).then(()=>console.log("Signed out of user"))
-                                            .then(()=>navigate('/login'))}}>Logout</button>
-                                    </div>
+                                        </div>
+                                        <div className='border border-gray-500'></div>
+                                        <div>
+                                            <button className='text-[#13ec6a] font-medium cursor-pointer' onClick={() => {
+                                                signOut(auth).then(() => console.log("Signed out of user"))
+                                                    .then(() => navigate('/login'))
+                                            }}>Logout</button>
+                                        </div>
 
-                                </div>}
+                                    </div>}
                             </div>
                     }
 
