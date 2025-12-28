@@ -66,7 +66,6 @@ function Header() {
                                         <div>
                                             <p>{user?.name}</p>
                                             <p>{user?.email}</p>
-
                                         </div>
                                         <div className='border border-gray-500'></div>
                                         <div>

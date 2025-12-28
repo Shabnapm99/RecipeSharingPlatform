@@ -15,6 +15,8 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { app } from './utils/firebaseConfig';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthUser, setIsLoggedIn } from './features/userSlice'
+import { fetchUserfavorites } from './utils/favorite';
+import { setSavedRecipes } from './features/favoritesSlice';
 
 
 const auth = getAuth(app);
@@ -70,6 +72,8 @@ function App() {
   let dispatch = useDispatch();
   let user = useSelector((state) => state.users.authUser);
   let loggedIn = useSelector((state) => state.users.isLoggedIn);
+  const recipes = useSelector((state) => state.recipes.recipes);
+  // let saved = useSelector((state)=>state.Favorites.savedRecipes);
   console.log(user, loggedIn);
 
 
@@ -90,9 +94,56 @@ function App() {
         dispatch(setAuthUser(null));
         dispatch(setIsLoggedIn(false))
       }
-    })
+    });
+
+
   }, [])
 
+  //When a user logged in fetch the users favorite recipe list
+
+  useEffect(() => {
+    if (user?.id && recipes.length > 0) {
+      const setFav = async () => {
+        if (user?.id) {
+          let userSavedId = await fetchUserfavorites(user?.id);
+
+    let userSavedRecipes = userSavedId?.map((id) => {
+  const match = recipes?.find((recipe) => recipe?.uniqueId === id);
+  return match; // Ensure this is just the object {uniqueId: '...', name: '...'}
+}).filter(Boolean);
+
+console.log("CHECK THIS ARRAY:", userSavedRecipes);
+
+
+          // let userSavedRecipes = userSavedId.map((id) => {
+
+          //   return recipes.find((recipe) => recipe?.uniqueId === id)
+          // })
+          // console.log(userSavedRecipes);
+          // console.log(userSavedId);
+
+           dispatch(setSavedRecipes(userSavedRecipes))
+        }
+
+
+
+
+        
+      }
+
+
+      
+
+      
+    
+    setFav();}
+
+
+
+  }, [user?.id, recipes])
+
+
+  // Router setup using createBrowserRouter
 
 
 
