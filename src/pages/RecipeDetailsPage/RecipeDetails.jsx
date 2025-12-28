@@ -36,12 +36,20 @@ function RecipeDetails() {
   const recipes = useSelector((state) => state.recipes.recipes);
   const recipe = useSelector((state) => state.recipes.selectedRecipe);
   const [author, setAuthor] = useState('');
-  // const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
+  const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
   const [loading, setLoading] = useState(true);
-  const [summary,setsummary] = useState("");
-  const [buttonLoading,setButtonLoading] = useState(false);
+  const [summary, setsummary] = useState("");
+  const [buttonLoading, setButtonLoading] = useState(false);
 
-  const [isSaved, setIsSaved] = useState(false);
+  //  const [isSaved, setIsSaved] = useState(false);
+  const isSaved = savedRecipes.some((savedRecipe) => savedRecipe.uniqueId === recipe?.uniqueId);//this will return true if the recipe is in savedRecipeList
+
+  // useEffect(() => {
+  //   // Check whether the recipe is in savedRecipes list or not. if present make isSaved as true
+  //   const recipeSelected = savedRecipes.find((savedRecipe)=>savedRecipe.uniqueId === recipe?.uniqueId);
+  //   if(recipeSelected) setIsSaved(true);
+  //   else setIsSaved(false);
+  // }, [])
 
   // Initialize Cloud Firestore and get a reference to the service
   const db = getFirestore(app);
@@ -57,7 +65,10 @@ function RecipeDetails() {
         const getSnap = await getDoc(docRef);
         console.log(getSnap.data());
 
-        dispatch(setSelectedRecipe(getSnap.data()))
+        dispatch(setSelectedRecipe({
+          uniqueId: getSnap.id,
+          ...getSnap.data()
+        }))
       } catch (error) {
         console.error(`Error occured : ${error.message}`);
       } finally { setLoading(false) }
@@ -85,9 +96,9 @@ function RecipeDetails() {
     const summary = result.response.text();
     setsummary(summary);
   }
-  useEffect(()=>{
-    if(summary) setButtonLoading(false);
-  },[summary])
+  useEffect(() => {
+    if (summary) setButtonLoading(false);
+  }, [summary])
 
 
   return (
@@ -114,12 +125,14 @@ function RecipeDetails() {
               <div className='flex items-center gap-2 absolute top-3.5 right-2'>
                 <div className='rounded-full p-2 bg-black/65 text-white'>
                   {isSaved ? <FaHeart className='text-[#13ec6a] text-2xl' onClick={() => {
-                    dispatch(removeSavedRecipe(recipe.uniqueId))
+                    dispatch(removeSavedRecipe(recipe?.uniqueId))
+
 
                   }
                   } /> : <FaRegHeart onClick={() => {
 
                     dispatch(setSavedRecipes(recipe));
+
 
                   }} className='text-2xl' />}
 
@@ -160,7 +173,7 @@ function RecipeDetails() {
               </div>
               <button className='text-xs text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-full flex items-center gap-2 px-2 py-1.5  cursor-pointer relative'
                 onClick={getSummary}>
-                  {buttonLoading?<ButtonSpinner loading={buttonLoading}/>:<p>Summarize with Gemini</p>}
+                {buttonLoading ? <ButtonSpinner loading={buttonLoading} /> : <p>Summarize with Gemini</p>}
                 <IoMdArrowRoundForward className='' />
               </button>
             </div>

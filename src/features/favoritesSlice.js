@@ -7,8 +7,7 @@ const favoritesSlice = createSlice({
         savedRecipes: []
     },
     reducers: {
-
-        
+       
         setSavedRecipes: (state, action) => {
             let newSavedRecipe = action.payload;
             let duplicate = state.savedRecipes.some((duplicate)=>duplicate.uniqueId===newSavedRecipe.uniqueId)
@@ -17,9 +16,12 @@ const favoritesSlice = createSlice({
         },
         removeSavedRecipe: (state, action) => {
             state.savedRecipes = state.savedRecipes.filter(recipe => recipe.uniqueId !== action.payload);
+        },
+        clearSavedRecipes:(state)=>{
+            state.savedRecipes = [];
         }
 
     }
 })
-export const { setFavoriteCount,setSavedRecipes,removeSavedRecipe } = favoritesSlice.actions;
+export const { clearSavedRecipes,setSavedRecipes,removeSavedRecipe } = favoritesSlice.actions;
 export default favoritesSlice.reducer;

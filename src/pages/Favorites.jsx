@@ -1,16 +1,24 @@
 import React from 'react'
 import RecipeCard from '../components/Card/RecipeCard'
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { FaHeart } from "react-icons/fa6";
+import {clearSavedRecipes} from '../features/favoritesSlice';
 
 function Favorites() {
   const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
+  let dispatch = useDispatch();
   
   return (
     <div className='bg-[#1c2720] p-5'>
 
       <div className='w-[90vw] mx-auto rounded-lg'>
-            <h2 className='text-3xl font-semibold text-white mb-5'>Your CookBook</h2>
+        <div className='flex justify-between items-center'>
+          <h2 className='text-3xl font-semibold text-white mb-5'>Your CookBook</h2>
+          <button className='border border-green-500/80 py-0.5 px-3 rounded text-green-600 font-medium hover:bg-[#13ec6a] hover:text-white'
+          onClick={()=>dispatch(clearSavedRecipes())}>Clear Favorites</button>
+
+        </div>
+            
             <div className='flex items-center gap-2 mb-2 text-sm'>
               <FaHeart className='text-[#13ec6a]'/>
               <h6 className='font-semibold text-[#13ec6a]'>{savedRecipes.length} Recipes saved</h6>
