@@ -18,7 +18,7 @@ function StopWatch() {
     const format = (num) => String(num).padStart(2, '0');//to get time as 00:00:00
 
     return (
-        <div className='w-52 h-16 border rounded-2xl bg-[#0f311c]/50  border-[#13ec6a]/30 flex justify-center gap-5 items-center'>
+        <div className='w-52 h-16 border rounded-2xl bg-[#0f311c]/50  border-[#13ec6a]/30 flex justify-center gap-5 items-center print:hidden'>
             <div className='flex justify-center items-center gap-2'>
                 <div className='rounded-full p-2 bg-black/60' onClick={()=>reset(0,false)}><RiTimerFill className='text-[#13ec6a]' /></div>
                 <div className='flex flex-col font-semibold'>

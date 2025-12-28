@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { FaStar } from 'react-icons/fa';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdAccessTime } from 'react-icons/md';
@@ -21,6 +21,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 import ButtonSpinner from '../../components/Card/ButtonSpinner';
 import DeleteModal from '../../components/Card/DeleteModal';
 import Modal from '../../components/Card/Modal';
+import { useReactToPrint } from 'react-to-print'
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
@@ -52,10 +53,15 @@ function RecipeDetails() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   let navigate = useNavigate();
 
+  //Print logic
+  const contentToPrint = useRef(null);
+  const reactToPrintFunction = useReactToPrint({
+      contentRef: contentToPrint,
+  });
+
   // Check whether the recipe is in savedRecipes list or not. if present make isSaved as true
   const isSaved = savedRecipes.some((savedRecipe) => savedRecipe.uniqueId === recipe?.uniqueId);//this will return true if the recipe is in savedRecipeList
   const isAuthor = isLoggedIn && recipe?.userId === user?.id;//true only if any user is loggedIn and the user is the author
-
 
   //firebase function to get a single recipe
 
@@ -86,8 +92,6 @@ function RecipeDetails() {
 
   }, [id])
 
-
-
   // gemini summary function
 
   async function getSummary() {
@@ -107,11 +111,15 @@ function RecipeDetails() {
     if (summary) setButtonLoading(false);
   }, [summary])
 
+  //Print function
+
+
+
 
   return (
 
-    <main className='bg-[#1c2720] p-3 relative'>
-      <div className='flex justify-between'>
+    <main className='bg-[#1c2720] p-3 relative' ref={contentToPrint}>
+      <div className='flex justify-between print:hidden'>{/*to hide this element from printing*/}
         {/* Back button */}
         <div className='my-5 md:my-8  md:mx-5 lg:mx-14 '>
           <Link to={'/recipes'}><button className='text-gray-400 font-medium flex gap-3 items-center text-sm m-3 hover:border hover:border-bg-white/10 py-1 px-2 rounded-lg' ><IoMdArrowRoundBack />Back to Recipes</button>
@@ -136,7 +144,7 @@ function RecipeDetails() {
             <div className='w-full aspect-square lg:aspect-3/2 rounded-xl relative'>
               <img src={recipe?.image} className='w-full h-full rounded-xl' />
               <div className='inset-0 bg-black/40 absolute top-0 left-0 rounded-xl'></div>
-              <div className='flex items-center gap-2 absolute top-3.5 right-2'>
+              <div className='flex items-center gap-2 absolute top-3.5 right-2 print:hidden'>
                 <div className='rounded-full p-2 bg-black/65 text-white'>
                   {isSaved ? <FaHeart className='text-[#13ec6a] text-2xl' onClick={() => {
                     dispatch(removeSavedRecipe(recipe?.uniqueId))
@@ -151,7 +159,7 @@ function RecipeDetails() {
 
                 </div>
                 <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
-                  <FiPrinter className='text-2xl' />
+                  <FiPrinter className='text-2xl' onClick={reactToPrintFunction} />
 
                 </div>
 
@@ -170,7 +178,7 @@ function RecipeDetails() {
             <p className='text-gray-500 my-2 text-sm md:text-base'>{recipe?.description}</p>
 
             {/* Gemini Button */}
-            <div className='hidden bg-linear-to-r from-blue-900/40 to-purple-900/40 border border-blue-500/30 rounded-2xl p-2 md:flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-2'>
+            <div className='hidden bg-linear-to-r from-blue-900/40 to-purple-900/40 border border-blue-500/30 rounded-2xl p-2 md:flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 my-2 print:hidden'>
               <div className='flex items-center gap-3'>
                 <div className='bg-white/10 rounded-full p-2'>
                   <SiGooglegemini className='text-blue-300' />
@@ -189,7 +197,7 @@ function RecipeDetails() {
 
             {/* Gemini button in small screens */}
 
-            <button className='text-xs text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-full md:hidden items-center gap-2 px-2 py-1.5 flex cursor-pointer relative '
+            <button className='text-xs text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-full md:hidden items-center gap-2 px-2 py-1.5 flex cursor-pointer relative print:hidden'
               onClick={getSummary}>
               {buttonLoading ? <ButtonSpinner loading={buttonLoading} /> : <p>Summarize with Gemini</p>}
               <IoMdArrowRoundForward className='' />
