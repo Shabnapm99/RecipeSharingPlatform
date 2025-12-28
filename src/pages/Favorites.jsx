@@ -23,6 +23,8 @@ function Favorites() {
               <FaHeart className='text-[#13ec6a]'/>
               <h6 className='font-semibold text-[#13ec6a]'>{savedRecipes.length} Recipes saved</h6>
             </div>
+
+            {/* Saved Recipes section */}
             
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
                 {

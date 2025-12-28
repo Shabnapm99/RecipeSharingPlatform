@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { setAuthUser, setIsLoggedIn } from '../features/userSlice'
 import { useDispatch } from 'react-redux'
 import { app } from '../utils/firebaseConfig';
+import ButtonSpinner from '../components/Card/ButtonSpinner';
 
 const auth = getAuth(app);
 
@@ -16,6 +17,7 @@ function Login() {
   let dispatch = useDispatch();
   const [showErrorPara, setShowErrorPara] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   // const loginUser = ()=>{
   //   signInWithEmailAndPassword(auth,email,password).then((userCredential)=>{
@@ -34,12 +36,15 @@ function Login() {
 
   const loginUser = async () => {
     try {
+      setLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/');
 
     } catch (error) {
       setAlertMessage(error.message);
       setShowErrorPara(true);
+    }finally{
+      setLoading(false);
     }
 
 
@@ -95,7 +100,8 @@ function Login() {
                 </div>
 
                 {/* Submit button */}
-                <button className='rounded-2xl py-2.5 px-5  text-sm font-bold text-[#102217] bg-[#13ec6a] hover:bg-[#13ec6a]/90' type='submit'>Login</button>
+                <button className='rounded-2xl py-2.5 px-5  text-sm font-bold text-[#102217] bg-[#13ec6a] hover:bg-[#13ec6a]/90 relative' type='submit'>Login
+                {loading&&<ButtonSpinner loading={loading}/>}</button>
 
               </div>
 

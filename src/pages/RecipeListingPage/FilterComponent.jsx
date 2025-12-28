@@ -50,7 +50,7 @@ function FilterComponent({ setFiletered }) {
     }
 
     return (
-        <div className=' text-white bg-[#364f3f] rounded p-3 flex flex-col gap-3'>
+        <div className=' text-white bg-[#364f3f] rounded p-3 flex flex-col gap-3 md:sticky md:top-20 md:left-0'>
             <div className={`flex justify-between items-center md:border-b md:pb-3 ${showFiltersDiv && 'border-b pb-3'}`}>
                 <div className='flex justify-center items-center gap-2'>
                     <LuFilter />

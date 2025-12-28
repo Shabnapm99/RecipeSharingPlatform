@@ -7,12 +7,13 @@ import { getFirestore, doc, setDoc, addDoc, collection } from 'firebase/firestor
 import { app } from '../../utils/firebaseConfig'
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../../components/Card/Spinner';
+import ButtonSpinner from '../../components/Card/ButtonSpinner';
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 const date = new Date();
 
-function SaveCard({ recipe, setFormData }) {
+function SaveCard({ recipe, setFormData, setShowErrorPara }) {
 
     let dispatch = useDispatch();
     let navigate = useNavigate();
@@ -22,7 +23,7 @@ function SaveCard({ recipe, setFormData }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (!recipe.name.trim() || !recipe.image.trim() || !recipe.description.trim()) return;
+        if (!recipe.name.trim() || !recipe.image.trim() || !recipe.description.trim()) return setShowErrorPara(true);
         console.log(recipe);
 
         // dispatch(setRecipes(recipe));
@@ -69,10 +70,10 @@ function SaveCard({ recipe, setFormData }) {
     return (
         <div className='border border-[#3b5445] p-5 rounded-2xl my-4 bg-[#102217] text-white/90 flex flex-col gap-3'>
 
-            <button className='border rounded-lg text-sm py-1 border-[#3b5445] flex items-center justify-center gap-4 bg-[#13ec6a]/60 cursor-pointer' type='submit'
+            <button className='border rounded-lg text-sm py-1 border-[#3b5445]  bg-[#13ec6a]/60 cursor-pointer relative' type='submit'
                 onClick={handleSubmit}>
-                <FaPrint />
-                {loading ? <Spinner loading={loading} /> : <p>Publish Recipe</p>}
+                
+                {loading ? <ButtonSpinner loading={loading} /> :<div className='flex items-center justify-center gap-4'><FaPrint /><p>Publish Recipe</p></div> }
             </button>
             <button className='border rounded-lg text-sm py-1 border-[#3b5445] flex items-center justify-center gap-4 hover:bg-[#13ec6a]/30 cursor-pointer'>
                 <FaPrint />

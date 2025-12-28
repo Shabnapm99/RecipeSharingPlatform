@@ -124,8 +124,6 @@ function RecipeList() {
 
               </div>
             </div>}
-
-
         </section>
 
       </div>

@@ -21,7 +21,7 @@ function AddRecipe() {
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
   const [formData, setFormData] = useState({});
-
+  const [showErrorPara,setShowErrorPara] = useState(false);
 
   useEffect(() => {
 
@@ -62,6 +62,7 @@ function AddRecipe() {
           </div>
 
         </div>
+        {showErrorPara&&<p className='text-red-500 text-sm'>*Please provide all details</p>}
       </section>
 
       <section className='w-[80%] mx-auto flex flex-col lg:flex-row lg:gap-3'>
@@ -192,7 +193,7 @@ function AddRecipe() {
 
           </div>
 
-          <SaveCard recipe={formData} setFormData={setFormData} />
+          <SaveCard recipe={formData} setFormData={setFormData} setShowErrorPara={setShowErrorPara} />
 
         </div>
 

@@ -10,8 +10,8 @@ import { IoMdArrowRoundForward } from "react-icons/io";
 import InstructionCard from '../../components/Card/InstructionCard';
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { FiShare2, FiPrinter } from "react-icons/fi";
-import { Link, useParams } from 'react-router-dom';
-import { getDoc, doc, getFirestore } from 'firebase/firestore';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { getDoc, doc, getFirestore, deleteDoc } from 'firebase/firestore';
 import { app } from '../../utils/firebaseConfig'
 import { setSelectedRecipe, clearSelectedRecipe } from '../../features/recipeSlice';
 import { setSavedRecipes, removeSavedRecipe } from '../../features/favoritesSlice'
@@ -19,8 +19,15 @@ import Spinner from '../../components/Card/Spinner';
 import StopWatch from '../../components/Card/stopWatch';
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import ButtonSpinner from '../../components/Card/ButtonSpinner';
+import DeleteModal from '../../components/Card/DeleteModal';
+import Modal from '../../components/Card/Modal';
+
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
 
 function RecipeDetails() {
+
+  //get URL params to fetch recipe details
 
   const urlParam = useParams();
   const id = urlParam.id;
@@ -32,7 +39,8 @@ function RecipeDetails() {
 
 
   let dispatch = useDispatch();
-
+  let user = useSelector((state) => state.users.authUser);
+  let isLoggedIn = useSelector((state) => state.users.isLoggedIn);
   const recipes = useSelector((state) => state.recipes.recipes);
   const recipe = useSelector((state) => state.recipes.selectedRecipe);
   const [author, setAuthor] = useState('');
@@ -40,19 +48,14 @@ function RecipeDetails() {
   const [loading, setLoading] = useState(true);
   const [summary, setsummary] = useState("");
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  let navigate = useNavigate();
 
-  //  const [isSaved, setIsSaved] = useState(false);
+  // Check whether the recipe is in savedRecipes list or not. if present make isSaved as true
   const isSaved = savedRecipes.some((savedRecipe) => savedRecipe.uniqueId === recipe?.uniqueId);//this will return true if the recipe is in savedRecipeList
+  const isAuthor = isLoggedIn && recipe?.userId === user?.id;//true only if any user is loggedIn and the user is the author
 
-  // useEffect(() => {
-  //   // Check whether the recipe is in savedRecipes list or not. if present make isSaved as true
-  //   const recipeSelected = savedRecipes.find((savedRecipe)=>savedRecipe.uniqueId === recipe?.uniqueId);
-  //   if(recipeSelected) setIsSaved(true);
-  //   else setIsSaved(false);
-  // }, [])
-
-  // Initialize Cloud Firestore and get a reference to the service
-  const db = getFirestore(app);
 
   //firebase function to get a single recipe
 
@@ -83,6 +86,8 @@ function RecipeDetails() {
 
   }, [id])
 
+
+
   // gemini summary function
 
   async function getSummary() {
@@ -96,6 +101,8 @@ function RecipeDetails() {
     const summary = result.response.text();
     setsummary(summary);
   }
+
+  //summary button loading setter will run whenever summary state changes
   useEffect(() => {
     if (summary) setButtonLoading(false);
   }, [summary])
@@ -104,13 +111,20 @@ function RecipeDetails() {
   return (
 
     <main className='bg-[#1c2720] p-3 relative'>
+      <div className='flex justify-between'>
+        {/* Back button */}
+        <div className='my-5 md:my-8  md:mx-5 lg:mx-14 '>
+          <Link to={'/recipes'}><button className='text-gray-400 font-medium flex gap-3 items-center text-sm m-3 hover:border hover:border-bg-white/10 py-1 px-2 rounded-lg' ><IoMdArrowRoundBack />Back to Recipes</button>
+          </Link>
+        </div>
+        {isAuthor &&//only show delete and edit button if logged in user is the author
+          <div className='flex gap-3 items-center '>
+            <button className='border border-green-500/80 py-0.5 px-3 rounded text-green-600 font-medium hover:bg-[#13ec6a] hover:text-white'><span>Edit</span><span className='hidden lg:inline'> Recipe</span></button>
+            <button className='border border-green-500/80 py-0.5 px-3 rounded text-green-600 font-medium hover:bg-[#13ec6a] hover:text-white'
+              onClick={() => setShowModal(true)}><span>Delete</span><span className='hidden lg:inline'> Recipe</span> </button>
+          </div>}
 
-      {/* Back button */}
-      <div className='my-5 md:my-8  md:mx-5 lg:mx-14 '>
-        <Link to={'/recipes'}><button className='text-gray-400 font-medium flex gap-3 items-center text-sm m-3 hover:border hover:border-bg-white/10 py-1 px-2 rounded-lg' ><IoMdArrowRoundBack />Back to Recipes</button>
-        </Link>
       </div>
-
 
       {/* Recipe details section */}
       {loading ? <Spinner loading={loading} /> :
@@ -126,14 +140,9 @@ function RecipeDetails() {
                 <div className='rounded-full p-2 bg-black/65 text-white'>
                   {isSaved ? <FaHeart className='text-[#13ec6a] text-2xl' onClick={() => {
                     dispatch(removeSavedRecipe(recipe?.uniqueId))
-
-
                   }
                   } /> : <FaRegHeart onClick={() => {
-
-                    dispatch(setSavedRecipes(recipe));
-
-
+                    isLoggedIn ? dispatch(setSavedRecipes(recipe)) : setShowLoginModal(true)
                   }} className='text-2xl' />}
 
                 </div>
@@ -182,15 +191,15 @@ function RecipeDetails() {
 
             <button className='text-xs text-white bg-blue-600 hover:bg-blue-500 font-medium rounded-full md:hidden items-center gap-2 px-2 py-1.5 flex cursor-pointer relative '
               onClick={getSummary}>
-              <p>Summarize with Gemini</p>
+              {buttonLoading ? <ButtonSpinner loading={buttonLoading} /> : <p>Summarize with Gemini</p>}
               <IoMdArrowRoundForward className='' />
             </button>
             {/* summary div */}
-            <div className='text-white text-xs md:text-sm border border-purple-900 p-2 '>
+            {summary && <div className='text-white text-xs md:text-sm border border-purple-900 p-2 '>
               {summary}
-            </div>
+            </div>}
 
-            <div className='grid grid-cols-3 md:grid-cols-5 gap-4 my-3 py-3'>
+            <div className='grid grid-cols-3 lg:grid-cols-5 gap-4 my-3 py-3'>
               <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white gap-1'>
                 <MdAccessTime />
                 <p >{recipe?.cookTimeMinutes} Mins</p>
@@ -198,7 +207,7 @@ function RecipeDetails() {
               <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.difficulty}</div>
               <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.cuisine}</div>
               <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.dietType}</div>
-              <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white gap-1'>
+              <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white gap-1 col-span-2 md:col-span-1'>
                 <LuChefHat />
                 <p>{recipe?.author}</p>
               </div>
@@ -213,10 +222,11 @@ function RecipeDetails() {
               <div className='py-4'>
                 {
                   (recipe?.instructions || []).map((instruction, index) => {
+                    {/* If instruction isn't load yet loop through empty array instead of looping through undefined which throw error and stop page from loading */ }
                     return <InstructionCard instruction={instruction} index={index} key={index} />
                   })
                 }
-                {/* If instruction isn't loade yet loop through empty array instead of looping through undefined which throw error and stop page from loading */}
+
               </div>
             </div>
           </div>
@@ -226,6 +236,10 @@ function RecipeDetails() {
 
         </section>
       }
+
+      {/* Modals */}
+      {showModal && <DeleteModal onClose={() => setShowModal(false)} recipe={recipe} />}
+      {showLoginModal && <Modal onClose={() => setShowLoginModal(false)} text={"Login required to save recipes"} />}
 
     </main>
   )

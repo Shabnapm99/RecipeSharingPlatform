@@ -15,7 +15,7 @@ function Header() {
 
     const isLoggedIn = useSelector((state) => state.users.isLoggedIn);
     const user = useSelector((state) => state.users.authUser);
-    const [initials, setInitials] = useState('UU');
+    const [initials, setInitials] = useState('U');
     const [showAccountDetails, setShowAccountDetails] = useState(false);
 
     // const userAccount = 
