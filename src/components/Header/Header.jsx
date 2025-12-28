@@ -60,10 +60,10 @@ function Header() {
                                     <h2 className='flex justify-center items-center'>{initials}</h2></button></Link>
                                 {/* Account details */}
                                 {showAccountDetails &&
-                                <div className='bg-black/60 p-4 rounded-lg absolute bottom-0 left-0 translate-y-36 flex flex-col gap-3'>
+                                <div className='bg-black/60 p-4 rounded-lg absolute bottom-5 left-0 translate-y-36 flex flex-col gap-3'>
                                     <div>
                                         <p>{user?.name}</p>
-                                        <p>{user?.email}</p>
+                                        {/* <p>{user?.email}</p> */}
 
                                     </div>
                                     <div className='border border-gray-500'></div>

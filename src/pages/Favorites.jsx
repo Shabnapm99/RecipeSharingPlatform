@@ -6,7 +6,8 @@ import {clearSavedRecipes} from '../features/favoritesSlice';
 
 function Favorites() {
   const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
-  let dispatch = useDispatch();
+  let dispatch = useDispatch(); 
+  // console.log("Recipes currently in Redux:", savedRecipes);
   
   return (
     <div className='bg-[#1c2720] p-5'>

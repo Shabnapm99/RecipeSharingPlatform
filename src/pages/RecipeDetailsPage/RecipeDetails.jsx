@@ -14,14 +14,15 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getDoc, doc, getFirestore, deleteDoc } from 'firebase/firestore';
 import { app } from '../../utils/firebaseConfig'
 import { setSelectedRecipe, clearSelectedRecipe } from '../../features/recipeSlice';
-import { setSavedRecipes, removeSavedRecipe } from '../../features/favoritesSlice'
+import { setSavedRecipes } from '../../features/favoritesSlice'
 import Spinner from '../../components/Card/Spinner';
 import StopWatch from '../../components/Card/stopWatch';
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import ButtonSpinner from '../../components/Card/ButtonSpinner';
 import DeleteModal from '../../components/Card/DeleteModal';
 import Modal from '../../components/Card/Modal';
-import { useReactToPrint } from 'react-to-print'
+import { useReactToPrint } from 'react-to-print';
+import { favorite } from '../../utils/favorite';
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
@@ -56,7 +57,7 @@ function RecipeDetails() {
   //Print logic
   const contentToPrint = useRef(null);
   const reactToPrintFunction = useReactToPrint({
-      contentRef: contentToPrint,
+    contentRef: contentToPrint,
   });
 
   // Check whether the recipe is in savedRecipes list or not. if present make isSaved as true
@@ -111,7 +112,10 @@ function RecipeDetails() {
     if (summary) setButtonLoading(false);
   }, [summary])
 
-  //Print function
+  //To store the favorite recipes to user
+  // useEffect(() => {
+  //   favorite(savedRecipes, user);
+  // }, [savedRecipes])
 
 
 
@@ -147,10 +151,16 @@ function RecipeDetails() {
               <div className='flex items-center gap-2 absolute top-3.5 right-2 print:hidden'>
                 <div className='rounded-full p-2 bg-black/65 text-white'>
                   {isSaved ? <FaHeart className='text-[#13ec6a] text-2xl' onClick={() => {
-                    dispatch(removeSavedRecipe(recipe?.uniqueId))
+                    const updatedList = savedRecipes.filter((item) => item.uniqueId !== recipe?.uniqueId)
+                    dispatch(setSavedRecipes(updatedList));//update redux
+                    favorite(updatedList, user);//function to add the savedList to user
                   }
                   } /> : <FaRegHeart onClick={() => {
-                    isLoggedIn ? dispatch(setSavedRecipes(recipe)) : setShowLoginModal(true)
+                    if (isLoggedIn) {
+                      const updatedList = [...savedRecipes, recipe];//update the savedList
+                      dispatch(setSavedRecipes(updatedList));//update redux
+                      favorite(updatedList, user);//function to add the savedList to user
+                    } else setShowLoginModal(true)
                   }} className='text-2xl' />}
 
                 </div>
