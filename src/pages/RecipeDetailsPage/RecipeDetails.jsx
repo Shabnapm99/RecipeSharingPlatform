@@ -95,7 +95,7 @@ function RecipeDetails() {
 
   async function getSummary() {
     setButtonLoading(true);
-    setShowSummaryDiv(true);
+    
     let ingredients = recipe?.ingredients?.join('.');
     let instructions = recipe?.instructions?.join('.');
 
@@ -120,6 +120,7 @@ function RecipeDetails() {
     const result = await model.generateContent(prompt);
     const summary = result.response.text();
     setsummary(summary);
+    setShowSummaryDiv(true);
   }
 
   //summary button loading setter will run whenever summary state changes
