@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom';
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
-function DeleteModal({ onClose,recipe }) {
+function DeleteModal({ onClose, recipe }) {
+
     const [deleteLoading, setDeleteLoading] = useState(false);
     let navigate = useNavigate();
 
@@ -19,8 +20,7 @@ function DeleteModal({ onClose,recipe }) {
 
             setDeleteLoading(true);
             await (deleteDoc(doc(db, 'recipes', recipe?.uniqueId)));
-            console.log('deleted');
-            navigate('/')
+            navigate('/recipes');
         } catch (error) {
             console.log(error)
         } finally { setDeleteLoading(false) }

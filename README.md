@@ -6,7 +6,7 @@ https://recipe-sharing-platform-kappa-red.vercel.app/
 
 ## 📖 Description
 
-Recipe Sharing Platform is a web application that helps users browse and discover recipes easily using search and filters like cuisine, diet type, and cooking time. Users can view detailed recipes with ingredients, step-by-step instructions, and save their favorite recipes. It is designed for anyone who enjoys cooking and wants a simple, organized way to find and prepare meals.
+The Recipe Sharing Platform is a responsive web app that helps users easily find and explore recipes. Users can search by recipe name or ingredients, apply filters like cuisine and cooking time, and view detailed recipes with step-by-step instructions. Logged-in users can add recipes, save favorites, and manage their own content. The app also includes voice search, AI-powered recipe summaries, and a clean, user-friendly design for all devices.
 
 ## ✨ Features
 
@@ -121,7 +121,7 @@ This application is fully responsive and tested on:
 Shabna P M
 ● GitHub: https://github.com/Shabnapm99/
 ● LinkedIn: https://www.linkedin.com/in/shabnapm/
-● Email: your.email@example.com
+● Email: pmshabnashareefa@gmail.com
 
 📄 License
 This project is open source and available under the MIT License.

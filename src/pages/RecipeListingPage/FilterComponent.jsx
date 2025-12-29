@@ -11,13 +11,10 @@ function FilterComponent({ setFiletered }) {
     const [cookingTime, setCookingTime] = useState(60);
     const recipes = useSelector((state) => state.recipes.recipes);
     const filteredRecipes = recipes;//to make sure this is looping thorugh original full array while filterin
-    
+
     //Filter function
 
-
     useEffect(() => {
-
-        // setFiletered(filteredRecipes.filter((recipe) => recipe?.cuisine?.toLowerCase() === (cuisine.toLowerCase() || '') && recipe?.difficulty?.toLowerCase() === (difficulty.toLowerCase() || '')))
 
         let filtered = filteredRecipes.filter((recipe) => {
             const recipeCuisine = recipe?.cuisine?.toLowerCase();
@@ -68,7 +65,6 @@ function FilterComponent({ setFiletered }) {
                         <option value='american'>American</option>
                         <option value='asian'>Asian</option>
                         <option value='mexican'>Mexican</option>
-                        {/* <option value='mexican'>Mexican</option> */}
                         <option value='mediterranean'>Mediterranean</option>
                         <option value='pakistani'>Pakistani</option>
                         <option value='japanese'>Japanese</option>
@@ -104,20 +100,17 @@ function FilterComponent({ setFiletered }) {
                 </div>
                 <div className='flex flex-col gap-2'>
                     <p className='text-sm '>DIET TYPE</p>
-                    <div className='grid grid-cols-3 gap-2'>
-                        <div className={`rounded-2xl text-sm py-0.5  flex justify-center items-center cursor-pointer ${dietType==='vegetarian'? 'bg-[#13ec6a] border-none':'border border-[#1c2720]'}`}
-                            onClick={(e) =>setDietType('vegetarian')}>Vegetarian</div>
-                        <div className={`rounded-2xl text-sm py-0.5 flex justify-center items-center cursor-pointer ${dietType === 'non-vegetarian'?'bg-[#13ec6a] border-none':'border border-[#1c2720]'}`} 
-                        onClick={(e) => setDietType('non-vegetarian')} >Non-veg</div>
-                        {/* <div className='border border-[#1c2720] rounded-2xl text-sm py-0.5 active:bg-[#13ec6a] flex justify-center items-center' onClick={(e) => setDietType(e.target.value)}>keto</div>
-                        <div className='border border-[#1c2720] rounded-2xl text-sm py-0.5 active:bg-[#13ec6a] flex justify-center items-center' onClick={(e) => setDietType(e.target.value)}>Vegan</div> */}
+                    <div className='grid grid-cols-2 lg:grid-cols-3 gap-2'>
+                        <div className={`rounded-2xl text-sm py-0.5  flex justify-center items-center cursor-pointer ${dietType === 'vegetarian' ? 'bg-[#13ec6a] border-none' : 'border border-[#1c2720]'}`}
+                            onClick={(e) => setDietType('vegetarian')}>Vegetarian</div>
+                        <div className={`rounded-2xl text-sm py-0.5 flex justify-center items-center cursor-pointer ${dietType === 'non-vegetarian' ? 'bg-[#13ec6a] border-none' : 'border border-[#1c2720]'}`}
+                            onClick={(e) => setDietType('non-vegetarian')} >Non-veg</div>
                     </div>
                 </div>
                 <div className='flex flex-col gap-2 text-sm'>
                     <p>Cooking Time (60 max)</p>
                     {/* Progress Bar */}
-                    <div className="flex w-full h-3.5 bg-gray-200 rounded-full overflow-hidden dark:bg-neutral-700" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                        {/* <div className={`flex flex-col justify-center rounded-full overflow-hidden bg-[#13ec6a] text-xs text-white text-center whitespace-nowrap transition duration-500 w-[${cookingTime}%]`}>{cookingTime}</div> */}
+                    <div className="flex w-full h-3.5 bg-gray-200 rounded-full overflow-hidden dark:bg-neutral-700 cursor-progress" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                         <input type="range" min="5" max="60" step="5" value={cookingTime} placeholder={cookingTime}
                             onChange={(e) => setCookingTime(Number(e.target.value))} className="w-full cursor-pointer accent-[#13ec6a]"
                         />
@@ -127,8 +120,6 @@ function FilterComponent({ setFiletered }) {
                 <button className='border border-[#13ec6a] rounded-lg text-[#13ec6a] hover:text-black hover:bg-[#b3f4cd]'
                     onClick={clearFilters}>Clear All Filters</button>
             </div>
-
-
         </div>
     )
 }

@@ -4,15 +4,14 @@ import { Link } from 'react-router-dom';
 import SaveCard from './SaveCard';
 import Ingredients from './Ingredients';
 import Steps from './Steps';
-import Modal from '../../components/Card/Modal';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 
 function AddRecipe() {
-  let user = useSelector((state)=>state.users.authUser);
-  let isEditing = useSelector((state)=>state.recipes.isEditing);
-  let id = useSelector((state)=>state.recipes.uniqueId);
-  let recipes = useSelector((state)=>state.recipes.recipes);
+  let user = useSelector((state) => state.users.authUser);
+  let isEditing = useSelector((state) => state.recipes.isEditing);
+  let id = useSelector((state) => state.recipes.uniqueId);
+  let recipes = useSelector((state) => state.recipes.recipes);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [cookingTime, setCookingTime] = useState(5);
@@ -24,7 +23,7 @@ function AddRecipe() {
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
   const [formData, setFormData] = useState({});
-  const [showErrorPara,setShowErrorPara] = useState(false);
+  const [showErrorPara, setShowErrorPara] = useState(false);
 
   useEffect(() => {
 
@@ -43,16 +42,16 @@ function AddRecipe() {
 
   }, [title, description, cookingTime, difficulty, author, dietType, cuisine, imageUrl, ingredients, instructions])
 
-  useEffect(()=>{
+  useEffect(() => {
 
     setAuthor(user?.name);
-    
-  },[user]);//to set the author name as current user
+
+  }, [user]);//to set the author name as current user
 
   //function to get the recipe details to update
-  useEffect(()=>{
-    if(isEditing){
-      let editingRecipe = recipes.find((recipe)=>recipe?.uniqueId === id)
+  useEffect(() => {
+    if (isEditing) {
+      let editingRecipe = recipes.find((recipe) => recipe?.uniqueId === id)
       console.log(`editing... recipe is ${editingRecipe}`);
       setTitle(editingRecipe?.name || '');
       setDescription(editingRecipe?.description || '');
@@ -65,7 +64,8 @@ function AddRecipe() {
       setInstructions(editingRecipe?.instructions || []);
 
     }
-  },[isEditing,id])
+  }, [isEditing, id]);
+
   return (
     <main className='bg-[#1c2720] py-9 flex flex-col items-center'>
       <section className='w-[80%]'>
@@ -77,13 +77,13 @@ function AddRecipe() {
           </button>
           </Link>
           <div >
-            <h1 className='text-white text-3xl font-bold'>Add New Recipe</h1>
+            <h1 className='text-white text-3xl font-bold'>{isEditing?<p>Edit Recipe</p>:<p>Add New Recipe</p>}</h1>
             <p className='mt-1 text-white/30'>Share your delicious creation with the community</p>
 
           </div>
 
         </div>
-        {showErrorPara&&<p className='text-red-500 text-sm'>*Please provide all details</p>}
+        {showErrorPara && <p className='text-red-500 text-sm'>*Please provide all details</p>}
       </section>
 
       <section className='w-[80%] mx-auto flex flex-col lg:flex-row lg:gap-3'>
@@ -100,11 +100,6 @@ function AddRecipe() {
                 <input type='text' id='title' placeholder='Enter your recipe title' className='border border-[#3b5445] rounded p-2 bg-[#1c2720] text-sm' value={title} required onChange={(e) => setTitle(e.target.value)} />
               </div>
 
-              {/* Author name */}
-              {/* <div className='flex flex-col gap-2'>
-                <label htmlFor='title' className='font-medium text-[#13ec6a]/50'>Author</label>
-                <input type='text' id='title' placeholder='Enter author name' className='border border-[#3b5445] rounded p-2 bg-[#1c2720] text-sm' required value={author} onChange={(e) => setAuthor(e.target.value)} />
-              </div> */}
               {/* Description input */}
               <div className='flex flex-col gap-2'>
                 <label htmlFor='description' className='text-[#13ec6a]/50 font-medium'>Description</label>
@@ -165,7 +160,6 @@ function AddRecipe() {
           {/* Recipe image */}
           <div className='border border-[#3b5445] p-5 rounded-2xl my-4 bg-[#102217]'>
             <div className='flex flex-col text-white'>
-              {/* <div className=''>Basic information</div> */}
               {/* image url */}
               <div className='flex flex-col gap-2'>
                 <label htmlFor='title' className='text-[#13ec6a]/50 font-medium'>Image URL</label>
@@ -175,9 +169,7 @@ function AddRecipe() {
                 <input type='file' className='border border-[#3b5445] rounded w-35 px-2 py-1 bg-[#1c2720]' />
                 <p>or paste URL above</p>
               </div>
-
             </div>
-
           </div>
 
           {/* Ingredients */}
@@ -191,7 +183,6 @@ function AddRecipe() {
           <div className='border border-[#3b5445] p-5 rounded-2xl my-4 bg-[#102217]'>
             <Steps setInstructions={setInstructions} instructions={instructions} />
           </div>
-
         </div>
 
         {/* preview and save */}
@@ -217,9 +208,7 @@ function AddRecipe() {
           <SaveCard recipe={formData} setFormData={setFormData} setShowErrorPara={setShowErrorPara} />
 
         </div>
-
       </section>
-
     </main>
   )
 }

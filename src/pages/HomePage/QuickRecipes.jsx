@@ -1,5 +1,4 @@
-import React, { useState,useEffect } from 'react'
-import { useLoaderData } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import RecipeCard from '../../components/Card/RecipeCard';
 import { useSelector } from 'react-redux';
 import Spinner from '../../components/Card/Spinner'
@@ -8,9 +7,9 @@ function QuickRecipes() {
 
     const recipes = useSelector((state) => state.recipes.recipes);
     let [loading, setLoading] = useState(true);
-    // const recipes = useLoaderData();
     let QuickRecipes = recipes.filter((recipe) => recipe?.cookTimeMinutes < 15);//this will filter the recipes and return recipes which have rating greater than 4.8
     let QuickRecipesToshow = QuickRecipes.slice(0, 4);//to show only 4 items
+
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
@@ -26,13 +25,11 @@ function QuickRecipes() {
                         QuickRecipesToshow.map((recipe) => {
                             return (
                                 <RecipeCard key={recipe?.uniqueId} recipe={recipe} />
-
                             )
                         })
                     }
 
                 </div>}
-
         </div>
     )
 }

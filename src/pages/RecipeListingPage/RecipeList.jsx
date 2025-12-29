@@ -1,62 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import FilterComponent from './FilterComponent'
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { IoSearchSharp } from 'react-icons/io5';
 import { MdKeyboardVoice } from "react-icons/md";
 import RecipeCard from '../../components/Card/RecipeCard';
-// import { useLoaderData } from 'react-router-dom';
-import { app } from '../../utils/firebaseConfig';//import firebase configuration
-import { getFirestore, collection, getDocs, } from 'firebase/firestore'
-import { setRecipes } from '../../features/recipeSlice';
-import { ClipLoader } from 'react-spinners'
-import Spinner from '../../components/Card/Spinner';
-
-// Loader function
-
-// const db = getFirestore(app);//Initialize Cloud Firestore and get a reference to the service
 
 function RecipeList() {
 
-  let dispatch = useDispatch();
-  let [loading, setLoading] = useState(true);
-
-
-
-  // Recipes from firbase firestore
-
-  // const getData = async () => {
-  //   try {
-  //     const querySnapshot = await getDocs(collection(db, "recipes"));
-  //     let recipes = querySnapshot.docs.map((doc) => ({
-  //      uniqueId: doc.id,//the unique ID Firestore generated for this document ie one object.here Creates a new property called uniqueId in our object
-  //       ...doc.data()//It copies all the fields from the document into the object ie includes the uniqueId key value pair with other data, so that we can use this unique id while deleting updating and all
-  //     }));
-
-  //     dispatch(setRecipes(recipes));
-
-  //   } catch (error) {
-  //     console.error(`Error occured : ${error.message}`);
-  //   }
-
-  // }
-
   const recipes = useSelector((state) => state.recipes.recipes);
-  // let recipes = useLoaderData();
   const [fileterdRecipe, setFiletered] = useState(recipes);
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);//runs on mounting
-  }, [])
-
-  useEffect(() => {
-    setFiletered(recipes);
-  }, [recipes])
-
-
   let [searchContent, setSearchContent] = useState('');
   let [recording, setRecording] = useState(false);
 
+  useEffect(() => {
+    setFiletered(recipes);
+  }, [recipes]);
 
   //Speech recognition for voice searching
 
@@ -109,26 +67,20 @@ function RecipeList() {
         {/* Recipe list section */}
 
         <section className='basis-3/4 relative'>
-          {loading ? <Spinner loading={loading} /> :
-            <div>
-              <h4 className='text-gray-500 mb-3 text-[16px]'>Found {fileterdRecipe?.length} Recipes</h4>
-              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-                {
-                  fileterdRecipe.map((recipe, index) => {
-                    return (
-                      <RecipeCard key={recipe?.uniqueId || index} recipe={recipe} />//use uniqueId if available, otherwise fallback to index.
-
-                    )
-                  })
-                }
-
-              </div>
-            </div>}
+          <div>
+            <h4 className='text-gray-500 mb-3 text-[16px]'>Found {fileterdRecipe?.length} Recipes</h4>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+              {
+                fileterdRecipe.map((recipe, index) => {
+                  return (
+                    <RecipeCard key={recipe?.uniqueId || index} recipe={recipe} />//use uniqueId if available, otherwise fallback to index.
+                  )
+                })
+              }
+            </div>
+          </div>
         </section>
-
       </div>
-
-
     </main>
   )
 }

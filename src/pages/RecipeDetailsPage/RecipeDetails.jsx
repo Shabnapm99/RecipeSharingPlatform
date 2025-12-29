@@ -16,7 +16,7 @@ import { app } from '../../utils/firebaseConfig'
 import { setSelectedRecipe, clearSelectedRecipe, setIsEditing } from '../../features/recipeSlice';
 import { setSavedRecipes } from '../../features/favoritesSlice'
 import Spinner from '../../components/Card/Spinner';
-import StopWatch from '../../components/Card/stopWatch';
+import StopWatch from '../../components/Card/StopWatch';
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import ButtonSpinner from '../../components/Card/ButtonSpinner';
 import DeleteModal from '../../components/Card/DeleteModal';
@@ -29,6 +29,18 @@ const db = getFirestore(app);
 
 function RecipeDetails() {
 
+  let dispatch = useDispatch();
+  let user = useSelector((state) => state.users.authUser);
+  let isLoggedIn = useSelector((state) => state.users.isLoggedIn);
+  const recipe = useSelector((state) => state.recipes.selectedRecipe);
+  const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
+  const [loading, setLoading] = useState(true);
+  const [summary, setsummary] = useState("");
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  let navigate = useNavigate();
+
   //get URL params to fetch recipe details
 
   const urlParam = useParams();
@@ -40,19 +52,7 @@ function RecipeDetails() {
   const genAi = new GoogleGenerativeAI(apiKey);
 
 
-  let dispatch = useDispatch();
-  let user = useSelector((state) => state.users.authUser);
-  let isLoggedIn = useSelector((state) => state.users.isLoggedIn);
-  const recipes = useSelector((state) => state.recipes.recipes);
-  const recipe = useSelector((state) => state.recipes.selectedRecipe);
-  const [author, setAuthor] = useState('');
-  const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
-  const [loading, setLoading] = useState(true);
-  const [summary, setsummary] = useState("");
-  const [buttonLoading, setButtonLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  let navigate = useNavigate();
+
 
   //Print logic
   const contentToPrint = useRef(null);
@@ -112,14 +112,6 @@ function RecipeDetails() {
     if (summary) setButtonLoading(false);
   }, [summary])
 
-  //To store the favorite recipes to user
-  // useEffect(() => {
-  //   favorite(savedRecipes, user);
-  // }, [savedRecipes])
-
-
-
-
   return (
 
     <main className='bg-[#1c2720] p-3 relative' ref={contentToPrint}>
@@ -132,13 +124,13 @@ function RecipeDetails() {
         {isAuthor &&//only show delete and edit button if logged in user is the author
           <div className='flex gap-3 items-center '>
             <button className='border border-green-500/80 py-0.5 px-3 rounded text-green-600 font-medium hover:bg-[#13ec6a] hover:text-white'
-              onClick={() =>{
+              onClick={() => {
                 dispatch(setIsEditing({
-                id: recipe?.uniqueId,
-                boolean: true
-              }));
-              navigate('/add');
-              } }>
+                  id: recipe?.uniqueId,
+                  boolean: true
+                }));
+                navigate('/add');
+              }}>
               <span>Edit</span><span className='hidden lg:inline'> Recipe</span></button>
             <button className='border border-green-500/80 py-0.5 px-3 rounded text-green-600 font-medium hover:bg-[#13ec6a] hover:text-white'
               onClick={() => setShowModal(true)}><span>Delete</span><span className='hidden lg:inline'> Recipe</span> </button>
@@ -154,7 +146,7 @@ function RecipeDetails() {
             {/* Recipe section */}
 
             <div className='w-full aspect-square lg:aspect-3/2 rounded-xl relative'>
-              <img src={recipe?.image} className='w-full h-full rounded-xl' />
+              <img src={recipe?.image} className='w-full h-full rounded-xl' alt='recipe image' />
               <div className='inset-0 bg-black/40 absolute top-0 left-0 rounded-xl'></div>
               <div className='flex items-center gap-2 absolute top-3.5 right-2 print:hidden'>
                 <div className='rounded-full p-2 bg-black/65 text-white'>

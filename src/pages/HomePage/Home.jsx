@@ -54,7 +54,6 @@ function Home() {
 
             <section className='py-16 px-4 sm:px-6 lg:px-8 bg-[#28392f]'>
                 <StatsSection />
-
             </section>
 
             {/* Engagement Section */}

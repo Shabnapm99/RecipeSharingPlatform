@@ -14,7 +14,7 @@ const firebaseConfig = {
   messagingSenderId: "93661987990",
   appId: "1:93661987990:web:9c5646c470944c3c272eb7",
   measurementId: "G-NYCT4RHNRY",
-  databaseURL:'https://recipeapp-3d17c-default-rtdb.firebaseio.com/'
+  databaseURL: 'https://recipeapp-3d17c-default-rtdb.firebaseio.com/'
 };
 
 // Initialize Firebase

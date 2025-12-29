@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { ImCross } from "react-icons/im";
 import { FaPrint } from "react-icons/fa6";
 import { useDispatch, useSelector } from 'react-redux';
-import { editRecipe, setRecipes } from '../../features/recipeSlice'
+import { setRecipes } from '../../features/recipeSlice'
 import { getFirestore, doc, setDoc, addDoc, collection, updateDoc } from 'firebase/firestore';
 import { app } from '../../utils/firebaseConfig'
 import { useNavigate } from 'react-router-dom';
-import Spinner from '../../components/Card/Spinner';
 import ButtonSpinner from '../../components/Card/ButtonSpinner';
 
 // Initialize Cloud Firestore and get a reference to the service
@@ -27,9 +26,6 @@ function SaveCard({ recipe, setFormData, setShowErrorPara }) {
         e.preventDefault();
         if (!recipe.name.trim() || !recipe.image.trim() || !recipe.description.trim()) return setShowErrorPara(true);
         console.log(recipe);
-
-        // dispatch(setRecipes(recipe));
-        // Add a new document in collection 'recipes in firestore
 
         const addData = async () => {
 
@@ -70,10 +66,8 @@ function SaveCard({ recipe, setFormData, setShowErrorPara }) {
                     const newRecipe = { uniqueId: docRef.id, ...recipe };
                     dispatch(setRecipes([...recipes, newRecipe]))
                 }
-
-
                 setFormData({});//clear the input fields
-                navigate(`/recipes/${isEditing?id:''}`);//navigate to details page for update recipe,and to listing page for add new recipe
+                navigate(`/recipes/${isEditing ? id : ''}`);//navigate to details page for update recipe,and to listing page for add new recipe
 
             } catch (error) {
                 console.log(`Error || ${error}`)
@@ -81,9 +75,7 @@ function SaveCard({ recipe, setFormData, setShowErrorPara }) {
         }
 
         addData();
-
     }
-
 
     return (
         <div className='border border-[#3b5445] p-5 rounded-2xl my-4 bg-[#102217] text-white/90 flex flex-col gap-3'>
@@ -103,7 +95,6 @@ function SaveCard({ recipe, setFormData, setShowErrorPara }) {
                 <ImCross className='' />
                 <p>Clear</p>
             </button>
-
         </div>
     )
 }

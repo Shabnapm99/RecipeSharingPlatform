@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import RecipeCard from '../../components/Card/RecipeCard';
-import { useLoaderData } from 'react-router-dom';
 import Spinner from '../../components/Card/Spinner';
 
 function PopularRecipe() {
     const recipes = useSelector((state) => state.recipes.recipes);
     let [loading, setLoading] = useState(true);
-    // const recipes = useLoaderData();
     let popularRecipes = recipes.filter((recipe) => recipe.rating > 4.8 && recipe.cookTimeMinutes > 15);//this will filter the recipes and return recipes which have rating greater than 4.8
     let popularRecipesToshow = popularRecipes.slice(0, 4);//to show only 4 items
 
@@ -30,8 +28,6 @@ function PopularRecipe() {
                     }
 
                 </div>}
-
-
         </div>
     )
 }

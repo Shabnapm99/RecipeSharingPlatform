@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Modal from '../components/Card/Modal';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { app } from '../utils/firebaseConfig';
-import { getFirestore, addDoc, collection, setDoc, doc } from 'firebase/firestore'
+import { getFirestore, setDoc, doc } from 'firebase/firestore'
 import Spinner from '../components/Card/Spinner';
 
 const db = getFirestore(app);
@@ -30,7 +30,7 @@ function SignUp() {
       let user = userCredentials.user;
       await updateProfile(user, { displayName: name, });
       // To add the user to users collection
-      await setDoc(doc(db, "users",user.uid), {//create a document with id = user.uid in users collection
+      await setDoc(doc(db, "users", user.uid), {//create a document with id = user.uid in users collection
         id: user.uid,
         userName: name,
         email: user.email,
@@ -38,13 +38,12 @@ function SignUp() {
       });
       setShowModal(true);//show success Modal only after all these steps done
 
-
     } catch (error) {
       setAlertMessage(error.code, error.message);
       setShowErrorPara(true);
       console.log(error.code, error.message)
 
-    }finally{
+    } finally {
       setLoading(false);
     }
 
@@ -75,112 +74,103 @@ function SignUp() {
     } else {
 
       signUpUser();
-      
-
-
     }
     setName('');
     setEmail('');
     setPassword('');
     setConfirmPassword('');
-
   }
-
-
 
   return (
     <div className='bg-[#1c2720] w-screen h-screen flex justify-center items-center relative'>
-      {loading ? <Spinner loading={loading} />:
+      {loading ? <Spinner loading={loading} /> :
 
-      <div className='flex flex-col md:flex-row rounded-lg bg-[#102217] h-screen md:h-[70vh] lg:h-screen w-full lg:w-[80%]'>
+        <div className='flex flex-col md:flex-row rounded-lg bg-[#102217] h-screen md:h-[70vh] lg:h-screen w-full lg:w-[80%]'>
 
-        {/* Brand name and icon on small screen */}
+          {/* Brand name and icon on small screen */}
 
-        <div className='block md:hidden pt-4 px-4'>
-          <div className='flex gap-3 items-center cursor-pointer' onClick={() => navigate('/')}>
-            <img src='/images/BrandIcons.png' alt='BrandIcon' />
-            <span className='text-xl md:text-2xl font-bold text-white'>CookBook</span>
-          </div>
-        </div>
-
-        {/* RightSide:image */}
-
-        <div className='w-1/2 relative hidden md:block'>
-          <img src='/images/signup.png' className='w-full h-full object-cover' />
-          {/* Text div on image */}
-          <div className='absolute top-2 left-2 '>
+          <div className='block md:hidden pt-4 px-4'>
             <div className='flex gap-3 items-center cursor-pointer' onClick={() => navigate('/')}>
               <img src='/images/BrandIcons.png' alt='BrandIcon' />
               <span className='text-xl md:text-2xl font-bold text-white'>CookBook</span>
             </div>
           </div>
-          <div className='absolute top-60 left-12 lg:top-50 lg:left-40 text-center'>
-            <h1 className='text-5xl font-bold'>
-              <span className='block text-white'>Master Your</span>
-              <span className='block text-[#13ec6a]'>Kitchen Game</span>
-            </h1>
 
-          </div>
-        </div>
+          {/* RightSide:image */}
 
-        {/* rightside : register */}
-        <div className=' flex flex-col justify-center px-6 py-12  md:w-1/2 w-full'>
-          {/* Headline */}
-          <div>
-            <h1 className='text-2xl font-bold text-white'>Create an Account</h1>
-            {/* Error message */}
-            {showErrorPara && <p className='text-sm text-red-500 mt-1'>{alertMessage}</p>}
-          </div>
-          {/* Form */}
-          <div className='mt-5'>
-            <form className='' noValidate onSubmit={handleSubmit}>
-              <div className='flex flex-col gap-5'>
-                <div className=''>
-                  <label htmlFor='name' className='text-white block text-sm'>Name</label>
-                  <input className='mt-2 rounded-2xl py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='text' id='name' minLength={3} maxLength={100} required placeholder='enter your name here' value={name}
-                    onChange={(e) => setName(e.target.value)} />
-                </div>
-                <div className=''>
-                  <label htmlFor='email' className='text-white block text-sm'>Email or UserName</label>
-                  <input className='mt-2 rounded-2xl py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='email' id='email' required placeholder='example@gmail.com' value={email}
-                    onChange={(e) => setEmail(e.target.value)} />
-                </div>
-
-                <div className=''>
-                  <label htmlFor='pswd' className='text-white block text-sm'>Password</label>
-                  <input className='mt-2 rounded-2xl py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' type='password' id='pswd' required placeholder='.......' value={password}
-                    onChange={(e) => setPassword(e.target.value)} />
-                </div>
-
-                <div className=''>
-                  <label htmlFor='confirmpswd' className='text-white block text-sm'>Confirm Password</label>
-                  <input className='mt-2 rounded-2xl py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' type='password' id='confirmpswd' required placeholder='........' value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)} />
-                </div>
-
-
-                {/* Submit button */}
-                <button className='rounded-2xl py-2.5 px-5  text-sm font-bold text-[#102217] bg-[#13ec6a] hover:bg-[#13ec6a]/90' type='submit'>Create Account
-                  {loading&&<ButtonSpinner loading={loading}/>}</button>
-
+          <div className='w-1/2 relative hidden md:block'>
+            <img src='/images/signup.png' className='w-full h-full object-cover' alt='promo image'/>
+            {/* Text div on image */}
+            <div className='absolute top-2 left-2 '>
+              <div className='flex gap-3 items-center cursor-pointer' onClick={() => navigate('/')}>
+                <img src='/images/BrandIcons.png' alt='BrandIcon' />
+                <span className='text-xl md:text-2xl font-bold text-white'>CookBook</span>
               </div>
+            </div>
+            <div className='absolute top-60 left-12 lg:top-50 lg:left-40 text-center'>
+              <h1 className='text-5xl font-bold'>
+                <span className='block text-white'>Master Your</span>
+                <span className='block text-[#13ec6a]'>Kitchen Game</span>
+              </h1>
 
-            </form>
-            {/* SuccesFul Modal */}
-            {
-              showModal && <Modal onClose={() => setShowModal(false)} text={`Successfully registered to CookBook ${name}.`} />
-            }
-            <hr className='text-[#28392f] mt-6' />
-            {/* Sign up link */}
-            <p className='mt-5 text-center text-sm text-gray-400'>
-              <span>Already have an account? <Link to={'/login'} className='font-semibold text-[#13ec6a] hover:text-[#13ec6a]/80'>Login</Link></span>
-              <Link to={'/'}><span className='block font-bold'>Home</span></Link>
-            </p>
-
+            </div>
           </div>
-        </div>
 
-      </div>}
+          {/* rightside : register */}
+          <div className=' flex flex-col justify-center px-6 py-12  md:w-1/2 w-full'>
+            {/* Headline */}
+            <div>
+              <h1 className='text-2xl font-bold text-white'>Create an Account</h1>
+              {/* Error message */}
+              {showErrorPara && <p className='text-sm text-red-500 mt-1'>{alertMessage}</p>}
+            </div>
+            {/* Form */}
+            <div className='mt-5'>
+              <form className='' noValidate onSubmit={handleSubmit}>
+                <div className='flex flex-col gap-5'>
+                  <div className=''>
+                    <label htmlFor='name' className='text-white block text-sm'>Name</label>
+                    <input className='mt-2 rounded-2xl py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='text' id='name' minLength={3} maxLength={100} required placeholder='enter your name here' value={name}
+                      onChange={(e) => setName(e.target.value)} />
+                  </div>
+                  <div className=''>
+                    <label htmlFor='email' className='text-white block text-sm'>Email or UserName</label>
+                    <input className='mt-2 rounded-2xl py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='email' id='email' required placeholder='example@gmail.com' value={email}
+                      onChange={(e) => setEmail(e.target.value)} />
+                  </div>
+
+                  <div className=''>
+                    <label htmlFor='pswd' className='text-white block text-sm'>Password</label>
+                    <input className='mt-2 rounded-2xl py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' type='password' id='pswd' required placeholder='.......' value={password}
+                      onChange={(e) => setPassword(e.target.value)} />
+                  </div>
+
+                  <div className=''>
+                    <label htmlFor='confirmpswd' className='text-white block text-sm'>Confirm Password</label>
+                    <input className='mt-2 rounded-2xl py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' type='password' id='confirmpswd' required placeholder='........' value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)} />
+                  </div>
+
+                  {/* Submit button */}
+                  <button className='rounded-2xl py-2.5 px-5  text-sm font-bold text-[#102217] bg-[#13ec6a] hover:bg-[#13ec6a]/90' type='submit'>Create Account
+                    {loading && <ButtonSpinner loading={loading} />}</button>
+
+                </div>
+
+              </form>
+              {/* SuccesFul Modal */}
+              {
+                showModal && <Modal onClose={() => setShowModal(false)} text={`Successfully registered to CookBook ${name}.`} />
+              }
+              <hr className='text-[#28392f] mt-6' />
+              {/* Sign up link */}
+              <p className='mt-5 text-center text-sm text-gray-400'>
+                <span>Already have an account? <Link to={'/login'} className='font-semibold text-[#13ec6a] hover:text-[#13ec6a]/80'>Login</Link></span>
+                <Link to={'/'}><span className='block font-bold'>Home</span></Link>
+              </p>
+            </div>
+          </div>
+        </div>}
     </div>
   )
 }

@@ -20,7 +20,7 @@ function StopWatch() {
     return (
         <div className='w-52 h-16 border rounded-2xl bg-[#0f311c]/50  border-[#13ec6a]/30 flex justify-center gap-5 items-center print:hidden'>
             <div className='flex justify-center items-center gap-2'>
-                <div className='rounded-full p-2 bg-black/60' onClick={()=>reset(0,false)}><RiTimerFill className='text-[#13ec6a]' /></div>
+                <div className='rounded-full p-2 bg-black/60' onClick={() => reset(0, false)}><RiTimerFill className='text-[#13ec6a]' /></div>
                 <div className='flex flex-col font-semibold'>
                     <div className='text-gray-500 text-xs'>TIMER</div>
                     <div className='text-sm text-white'>{format(hours)}:{format(minutes)}:{format(seconds)}</div>
@@ -30,7 +30,7 @@ function StopWatch() {
             <div className=''>
                 <button className='bg-[#13ec6a] px-3 py-1 rounded-2xl font-medium text-sm cursor-pointer'
                     onClick={isRunning ? pause : start}
-                >{isRunning ? <MdOutlinePause className='font-black text-gray-800 text-xl'/> : <VscDebugStart className='font-black text-gray-800 text-xl'/>}</button>
+                >{isRunning ? <MdOutlinePause className='font-black text-gray-800 text-xl' /> : <VscDebugStart className='font-black text-gray-800 text-xl' />}</button>
             </div>
         </div>
     )

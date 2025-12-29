@@ -13,8 +13,8 @@ function Ingredients({ setIngredients, ingredients }) {
 
     }
 
-    function removeIngredient(i){
-        setIngredients(ingredients.filter((item,index)=>index!==i));//remove ingredient in the index
+    function removeIngredient(i) {
+        setIngredients(ingredients.filter((item, index) => index !== i));//remove ingredient in the index
     }
     return (
         <div className='flex flex-col gap-4'>
@@ -23,13 +23,12 @@ function Ingredients({ setIngredients, ingredients }) {
                 <input type='text' className='border border-[#3b5445] rounded p-2 bg-[#1c2720] w-full text-gray-400 placeholder:text-gray-400' placeholder='Type Ingredient ' value={ingredient} onChange={(e) => setIngredient(e.target.value)} />
             </div>
             {
-                ingredients.map((item,index) => {
+                ingredients.map((item, index) => {
                     return (
                         <div className='relative' key={index}>
                             <input type='text' className='border border-[#3b5445] rounded p-2 bg-[#1c2720] w-full text-gray-400 placeholder:text-gray-400' placeholder='Ingredient 1' value={item} readOnly />
-                            <ImCross className='text-sm text-[#13ec6a]/50 absolute top-3.5 right-3.5 hover:text-[#13ec6a]/30 cursor-pointer' onClick={()=>removeIngredient(index)} />
+                            <ImCross className='text-sm text-[#13ec6a]/50 absolute top-3.5 right-3.5 hover:text-[#13ec6a]/30 cursor-pointer' onClick={() => removeIngredient(index)} />
                         </div>
-
                     )
                 })
             }
@@ -39,7 +38,6 @@ function Ingredients({ setIngredients, ingredients }) {
                 <FaPlus />
                 <p>Add Ingredient</p>
             </button>
-
         </div>
     )
 }

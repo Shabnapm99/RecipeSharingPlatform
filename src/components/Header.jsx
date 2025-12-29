@@ -6,8 +6,8 @@ import { IoSearchSharp } from "react-icons/io5";
 import { useNavigate, Link } from 'react-router-dom';
 import { IoHomeOutline } from "react-icons/io5";
 import { useSelector } from 'react-redux';
-import { app } from '../../utils/firebaseConfig';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth'
+import { app } from '../utils/firebaseConfig';
+import { getAuth, signOut } from 'firebase/auth'
 
 const auth = getAuth(app);
 
@@ -17,17 +17,18 @@ function Header() {
     const user = useSelector((state) => state.users.authUser);
     const [initials, setInitials] = useState('U');
     const [showAccountDetails, setShowAccountDetails] = useState(false);
-
-    // const userAccount = 
     const favoriteCount = useSelector((state) => state.favorites.savedRecipes).length;
     let navigate = useNavigate();
 
+    // To show initials of user at header
     useEffect(() => {
-        if (isLoggedIn&&user?.name){
-        const fName = user.name.split(' ')[0];
-        const lName = user.name.split(' ')[1] || '';
-        setInitials((lName.charAt(0).toUpperCase()) + (fName?.charAt(0).toUpperCase()));}
-    }, [user,isLoggedIn])
+        if (isLoggedIn && user?.name) {
+            const fName = user.name.split(' ')[0];
+            const lName = user.name.split(' ')[1] || '';
+            setInitials((lName.charAt(0).toUpperCase()) + (fName?.charAt(0).toUpperCase()));
+        }
+    }, [user, isLoggedIn])
+
     return (
         <header className='bg-[#102217] text-white sticky top-0 left-0 z-50'>
             <div>
@@ -59,7 +60,7 @@ function Header() {
                                     {/* <FaRegUser /> */}
                                     <h2 className='flex justify-center items-center'>{initials}</h2>
                                 </button>
-                            
+
                                 {/* Account details */}
                                 {showAccountDetails &&
                                     <div className='bg-black/60 px-2 py-4 md:p-4 rounded-lg absolute top-full right-0   flex flex-col gap-3'>
@@ -74,12 +75,10 @@ function Header() {
                                                     .then(() => navigate('/login'))
                                             }}>Logout</button>
                                         </div>
-
-                                    </div>}
+                                    </div>
+                                }
                             </div>
                     }
-
-
                 </nav>
                 {/* Navigation in small screens */}
                 <div className='flex md:hidden text-sm items-center justify-between px-6 py-2 text-gray-400 border-t'>
@@ -88,9 +87,7 @@ function Header() {
                     <div className='flex flex-col justify-center items-center'><MdNotificationsNone />Notification</div>
 
                 </div>
-
             </div>
-
         </header>
     )
 }

@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom';
-import { setAuthUser, setIsLoggedIn } from '../features/userSlice'
-import { useDispatch } from 'react-redux'
 import { app } from '../utils/firebaseConfig';
 import ButtonSpinner from '../components/Card/ButtonSpinner';
 
@@ -13,26 +11,10 @@ function Login() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  let navigate = useNavigate();
-  let dispatch = useDispatch();
   const [showErrorPara, setShowErrorPara] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [loading, setLoading] = useState(false);
-
-  // const loginUser = ()=>{
-  //   signInWithEmailAndPassword(auth,email,password).then((userCredential)=>{
-  //     const user = userCredential.user;
-  //     // dispatch(setIsLoggedIn(auth.currentUser));
-  //     // dispatch(setAuthUser(user));
-  //     console.log('successfully logged in');
-  //     navigate('/');
-  //   }).catch((error)=>{
-  //     const errorCode = error.code;
-  //     const errorMessage = error.message;
-  //     setAlertMessage(errorMessage,errorCode);
-  //     setShowErrorPara(true);
-  //   })
-  // }
+  let navigate = useNavigate();
 
   const loginUser = async () => {
     try {
@@ -57,7 +39,6 @@ function Login() {
     loginUser();
 
   }
-
 
   return (
     <div className='bg-[#1c2720] w-screen h-screen flex justify-center items-center'>
@@ -111,18 +92,14 @@ function Login() {
               <span className='block'>New here? <Link to={'/signup'} className='font-semibold text-[#13ec6a] hover:text-[#13ec6a]/80'>Create an account</Link></span>
               <Link to={'/'}><span className='block font-bold'>Home</span></Link>
             </p>
-
-
           </div>
         </div>
 
         {/* RightSide:image */}
 
         <div className='w-1/2 hidden md:block'>
-          <img src='/images/Login.png' className='w-full h-full object-cover' />
-
+          <img src='/images/Login.png' className='w-full h-full object-cover' alt='promo image' />
         </div>
-
       </div>
     </div>
   )
