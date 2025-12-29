@@ -23,6 +23,7 @@ import Modal from '../../components/Card/Modal';
 import { useReactToPrint } from 'react-to-print';
 import { favorite } from '../../utils/favorite';
 import StopWatch from '../../components/Card/stopWatch';
+import { ImCross } from 'react-icons/im'
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
@@ -40,6 +41,7 @@ function RecipeDetails() {
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   let navigate = useNavigate();
+  const [showSummaryDiv,setShowSummaryDiv] = useState(false);
 
   //get URL params to fetch recipe details
 
@@ -93,6 +95,7 @@ function RecipeDetails() {
 
   async function getSummary() {
     setButtonLoading(true);
+    setShowSummaryDiv(true);
     let ingredients = recipe?.ingredients?.join('.');
     let instructions = recipe?.instructions?.join('.');
 
@@ -102,9 +105,9 @@ function RecipeDetails() {
   Context: I am in a hurry and need to decide if I should cook this dish.
   
   Task: Summarize the following recipe into three ultra-concise sections:
-  1. **Quick Stats**: Total time and difficulty.
-  2. **Core Ingredients**: List only the main 5-6 items (ignore basics like salt/oil).
-  3. **The "Too Long; Didn't Read" (TL;DR) Steps**: Summarize the instructions into exactly 3-4 bullet points.
+  1. Quick Stats: Total time and difficulty.
+  2. Core Ingredients: List only the main 5-6 items (ignore basics like salt/oil).
+  3. The "Too Long; Didn't Read" (TL;DR) Steps: Summarize the instructions into exactly 3-4 bullet points.
 
   Dish: ${recipe?.name}
   Ingredients: ${ingredients}
@@ -112,7 +115,7 @@ function RecipeDetails() {
   Cooking time:${recipe?.cookTimeMinutes}
   Difficulty:${recipe?.difficulty}
 
-  Format: Keep it scannable with bold headers and short sentences. Simple language only.
+  Format: Keep it scannable short sentences. Simple language only.
 `;
     const result = await model.generateContent(prompt);
     const summary = result.response.text();
@@ -225,8 +228,9 @@ function RecipeDetails() {
               <IoMdArrowRoundForward className='' />
             </button>
             {/* summary div */}
-            {summary && <div className='text-white text-xs md:text-sm border border-purple-900 p-2 mt-2'>
-              {summary}
+            {showSummaryDiv && <div className='text-white text-xs md:text-sm border border-purple-900 p-2 mt-2 flex flex-col gap-2 items-end'>
+              <ImCross onClick={()=>setShowSummaryDiv(false)} className='hover:text-purple-900'/>
+              <p>{summary}</p>
             </div>}
 
             <div className='grid grid-cols-3 lg:grid-cols-5 gap-4 my-3 py-3'>
