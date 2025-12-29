@@ -51,9 +51,6 @@ function RecipeDetails() {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   const genAi = new GoogleGenerativeAI(apiKey);
 
-
-
-
   //Print logic
   const contentToPrint = useRef(null);
   const reactToPrintFunction = useReactToPrint({
@@ -73,7 +70,6 @@ function RecipeDetails() {
 
         const docRef = doc(db, 'recipes', `${id}`); //create a refernce of document we want to get
         const getSnap = await getDoc(docRef);
-        console.log(getSnap.data());
 
         dispatch(setSelectedRecipe({
           uniqueId: getSnap.id,
@@ -213,7 +209,7 @@ function RecipeDetails() {
               <IoMdArrowRoundForward className='' />
             </button>
             {/* summary div */}
-            {summary && <div className='text-white text-xs md:text-sm border border-purple-900 p-2 '>
+            {summary && <div className='text-white text-xs md:text-sm border border-purple-900 p-2 mt-2'>
               {summary}
             </div>}
 

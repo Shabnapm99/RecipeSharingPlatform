@@ -7,7 +7,6 @@ const db = getFirestore(app);
 
 export async function favorite(savedRecipes, currentUser) {
 
-   console.log('I am called');
    if (!currentUser?.id) return;
    try {
       let user = doc(db, 'users', currentUser?.id);
