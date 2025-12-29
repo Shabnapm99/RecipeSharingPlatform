@@ -97,7 +97,23 @@ function RecipeDetails() {
     let instructions = recipe?.instructions?.join('.');
 
     const model = genAi.getGenerativeModel({ model: 'gemini-2.5-flash' });
-    const prompt = `Give me a summary of the following recipe in a clear and concise format.Dish:${recipe?.name},ingredients:${ingredients} and instructions:${instructions}.Keep the language simple and easy to understand.`;
+    const prompt =
+      `
+  Context: I am in a hurry and need to decide if I should cook this dish.
+  
+  Task: Summarize the following recipe into three ultra-concise sections:
+  1. **Quick Stats**: Total time and difficulty.
+  2. **Core Ingredients**: List only the main 5-6 items (ignore basics like salt/oil).
+  3. **The "Too Long; Didn't Read" (TL;DR) Steps**: Summarize the instructions into exactly 3-4 bullet points.
+
+  Dish: ${recipe?.name}
+  Ingredients: ${ingredients}
+  Instructions: ${instructions}
+  Cooking time:${recipe?.cookTimeMinutes}
+  Difficulty:${recipe?.difficulty}
+
+  Format: Keep it scannable with bold headers and short sentences. Simple language only.
+`;
     const result = await model.generateContent(prompt);
     const summary = result.response.text();
     setsummary(summary);
