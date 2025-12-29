@@ -23,12 +23,6 @@ const recipeSlice = createSlice({
             state.isEditing = action.payload.boolean;
             state.uniqueId = action.payload.id;
         },
-        editRecipe:(state,action)=>{
-         
-          state.recipes = action.payload;
-            
-          },
-        
       
     }
 })
