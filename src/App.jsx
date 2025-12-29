@@ -16,6 +16,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAuthUser, setIsLoggedIn } from './features/userSlice'
 import { fetchUserfavorites } from './utils/favorite';
 import { setSavedRecipes } from './features/favoritesSlice';
+import ProtectedRoute from './routes/ProtectedRoute';
+import GuestRout from './routes/GuestRout';
 
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
@@ -30,38 +32,48 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />,
-        // loader: recipeLoader
       },
       {
         path: '/recipes',
         element: <RecipeList />,
-        // loader: recipeLoader
       },
       {
         path: '/recipes/:id',
         element: <RecipeDetails />
       },
       {
-        path: '/favorites',
-        element: <Favorites />
-      },
-      {
-        path: '/add',
-        element: <AddRecipe />
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: '/favorites',
+            element: <Favorites />
+          },
+          {
+            path: '/add',
+            element: <AddRecipe />
+          }
+
+        ]
       }
     ],
     errorElement: <NotFound />
   },
   {
-    path: '/login',
-    element: <Login />,
-    errorElement: <NotFound />
-  },
-  {
-    path: '/signup',
-    element: <SignUp />,
-    errorElement: <NotFound />
-  },
+    element: <GuestRout />,
+    errorElement: <NotFound />,
+    children: [
+      {
+        path: '/login',
+        element: <Login />,
+
+      },
+      {
+        path: '/signup',
+        element: <SignUp />,
+
+      },]
+  }
+
 ]);
 
 function App() {
