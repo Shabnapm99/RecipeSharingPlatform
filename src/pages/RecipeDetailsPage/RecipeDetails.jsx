@@ -11,18 +11,18 @@ import InstructionCard from '../../components/Card/InstructionCard';
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { FiShare2, FiPrinter } from "react-icons/fi";
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { getDoc, doc, getFirestore, deleteDoc } from 'firebase/firestore';
+import { getDoc, doc, getFirestore } from 'firebase/firestore';
 import { app } from '../../utils/firebaseConfig'
 import { setSelectedRecipe, clearSelectedRecipe, setIsEditing } from '../../features/recipeSlice';
 import { setSavedRecipes } from '../../features/favoritesSlice'
 import Spinner from '../../components/Card/Spinner';
-import StopWatch from '../../components/Card/StopWatch';
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import ButtonSpinner from '../../components/Card/ButtonSpinner';
 import DeleteModal from '../../components/Card/DeleteModal';
 import Modal from '../../components/Card/Modal';
 import { useReactToPrint } from 'react-to-print';
 import { favorite } from '../../utils/favorite';
+import StopWatch from '../../components/Card/stopWatch';
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
