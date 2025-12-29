@@ -13,7 +13,7 @@ import { FiShare2, FiPrinter } from "react-icons/fi";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getDoc, doc, getFirestore, deleteDoc } from 'firebase/firestore';
 import { app } from '../../utils/firebaseConfig'
-import { setSelectedRecipe, clearSelectedRecipe } from '../../features/recipeSlice';
+import { setSelectedRecipe, clearSelectedRecipe, setIsEditing } from '../../features/recipeSlice';
 import { setSavedRecipes } from '../../features/favoritesSlice'
 import Spinner from '../../components/Card/Spinner';
 import StopWatch from '../../components/Card/stopWatch';
@@ -131,7 +131,15 @@ function RecipeDetails() {
         </div>
         {isAuthor &&//only show delete and edit button if logged in user is the author
           <div className='flex gap-3 items-center '>
-            <button className='border border-green-500/80 py-0.5 px-3 rounded text-green-600 font-medium hover:bg-[#13ec6a] hover:text-white'><span>Edit</span><span className='hidden lg:inline'> Recipe</span></button>
+            <button className='border border-green-500/80 py-0.5 px-3 rounded text-green-600 font-medium hover:bg-[#13ec6a] hover:text-white'
+              onClick={() =>{
+                dispatch(setIsEditing({
+                id: recipe?.uniqueId,
+                boolean: true
+              }));
+              navigate('/add');
+              } }>
+              <span>Edit</span><span className='hidden lg:inline'> Recipe</span></button>
             <button className='border border-green-500/80 py-0.5 px-3 rounded text-green-600 font-medium hover:bg-[#13ec6a] hover:text-white'
               onClick={() => setShowModal(true)}><span>Delete</span><span className='hidden lg:inline'> Recipe</span> </button>
           </div>}

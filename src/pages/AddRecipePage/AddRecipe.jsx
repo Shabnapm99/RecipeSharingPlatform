@@ -10,6 +10,9 @@ import { useSelector } from 'react-redux';
 
 function AddRecipe() {
   let user = useSelector((state)=>state.users.authUser);
+  let isEditing = useSelector((state)=>state.recipes.isEditing);
+  let id = useSelector((state)=>state.recipes.uniqueId);
+  let recipes = useSelector((state)=>state.recipes.recipes);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [cookingTime, setCookingTime] = useState(5);
@@ -45,6 +48,24 @@ function AddRecipe() {
     setAuthor(user?.name);
     
   },[user]);//to set the author name as current user
+
+  //function to get the recipe details to update
+  useEffect(()=>{
+    if(isEditing){
+      let editingRecipe = recipes.find((recipe)=>recipe?.uniqueId === id)
+      console.log(`editing... recipe is ${editingRecipe}`);
+      setTitle(editingRecipe?.name || '');
+      setDescription(editingRecipe?.description || '');
+      setDifficulty(editingRecipe?.difficulty || 'Easy')
+      setCookingTime(Number(editingRecipe?.cookTimeMinutes) || 5)
+      setImageUrl(editingRecipe?.image || '')
+      setDietType(editingRecipe?.dietType || 'Vegetarian')
+      setCuisine(editingRecipe?.cuisine || 'Italian')
+      setIngredients(editingRecipe?.ingredients || []);
+      setInstructions(editingRecipe?.instructions || []);
+
+    }
+  },[isEditing,id])
   return (
     <main className='bg-[#1c2720] py-9 flex flex-col items-center'>
       <section className='w-[80%]'>

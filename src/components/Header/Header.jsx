@@ -62,7 +62,7 @@ function Header() {
                             
                                 {/* Account details */}
                                 {showAccountDetails &&
-                                    <div className='bg-black/60 px-2 py-4 md:p-4 rounded-lg absolute bottom-0 left-0 translate-y-36 -translate-x-4 md:-translate-x-2 flex flex-col gap-3'>
+                                    <div className='bg-black/60 px-2 py-4 md:p-4 rounded-lg absolute top-full right-0   flex flex-col gap-3'>
                                         <div>
                                             <p>{user?.name}</p>
                                             <p>{user?.email}</p>

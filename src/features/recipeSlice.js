@@ -4,7 +4,9 @@ const recipeSlice = createSlice({
     name:'recipe',
     initialState:{
         recipes:[{}],
-        selectedRecipe:{}
+        selectedRecipe:{},
+        isEditing:false,
+        uniqueId : null
     },
     reducers:{
 
@@ -16,11 +18,21 @@ const recipeSlice = createSlice({
       },
       clearSelectedRecipe:(state)=>{
         state.selectedRecipe = null
-      }
-
+      },
+      setIsEditing:(state,action)=>{
+            state.isEditing = action.payload.boolean;
+            state.uniqueId = action.payload.id;
+        },
+        editRecipe:(state,action)=>{
+         
+          state.recipes = action.payload;
+            
+          },
+        
+      
     }
 })
 
-export const {setRecipes,setSelectedRecipe,clearSelectedRecipe} = recipeSlice.actions; //export action creators
+export const {setRecipes,setSelectedRecipe,clearSelectedRecipe,setIsEditing,editRecipe} = recipeSlice.actions; //export action creators
 
 export default recipeSlice.reducer;

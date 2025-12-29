@@ -40,8 +40,8 @@ function Login() {
       await signInWithEmailAndPassword(auth, email, password);
       setEmail('');
       setPassword('');//reset the fields only after signinwithemailandpassword completed
-      console.log("Login successful, navigating...");
-      navigate('/', { replace: true });
+      console.log("Login successful, navigating to home");
+      navigate('/', { replace: true });//to forcefully replacing the page to home
 
     } catch (error) {
       setAlertMessage(error.message);
