@@ -128,7 +128,7 @@ This project is open source and available under the MIT License.
 
 🙏 Acknowledgments
 
-● Thanks to Ajmal Shahan(Mentor), Stack OverFlow, peers, 
+● Thanks to Ajmal Shahan(Mentor) for guidance and support throughout the project, Stack Overflow,     Peers for helping and learning support and Brototype Malayalam & Piyush Garg(Youtube Tutorials).
 ● API providers: Webspeech API, Gemini API
 ● Icons from React Icons
 ---

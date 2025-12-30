@@ -22,12 +22,14 @@ function RecipeList() {
     const speechReco = window.SpeechRecognition || window.webkitSpeechRecognition;
     const reco = new speechReco();
     reco.lang = 'en-US';
+    reco.onstart = ()=>setRecording(true);
     reco.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       setSearchContent(transcript);
       setFiletered(recipes.filter(recipe => recipe.cuisine.toLowerCase().includes(transcript.toLowerCase()) || recipe.name.toLowerCase().includes(transcript.toLowerCase()) || recipe.ingredients.some((ingredient) =>
         ingredient.toLowerCase().includes(transcript.toLowerCase()))));//some() loops through array and returns true if any of the element includes the value
     }
+    reco.onend = ()=>setRecording(false);
     reco.start();
   }
 
@@ -50,7 +52,7 @@ function RecipeList() {
           <input placeholder='Searchfor recipes, ingredients or cusines...' className='bg-[#3c4f43] text-white text-sm rounded-2xl py-2 px-10 w-full border border-[#13ec13]' value={searchContent}
             onChange={searchRecipe} />
           <div className='absolute top-2 left-2 translate-y-0.5 text-white text-lg' ><IoSearchSharp /></div>
-          <div className={`absolute top-2 right-2 text-white text-lg cursor-pointer rounded-full bg-[#1c2720] p-1.5 -translate-y-1`} onClick={convertVoice}>
+          <div className={`absolute top-2 right-2 text-white text-lg cursor-pointer rounded-full bg-[#1c2720] p-1.5 -translate-y-1 active:text-emerald-500 transition-all duration-300 ease-in-out ${recording?'ring-1 ring-offset-2 ring-[#13ec13] animate-pulse':'outline-none'}`} onClick={convertVoice}>
             <MdKeyboardVoice />
           </div>
         </div>
