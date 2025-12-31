@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { IoSearchSharp } from 'react-icons/io5';
 import { MdKeyboardVoice } from "react-icons/md";
 import RecipeCard from '../../components/Card/RecipeCard';
+import { ImCross } from 'react-icons/im'
 
 function RecipeList() {
 
@@ -11,10 +12,16 @@ function RecipeList() {
   const [fileterdRecipe, setFiletered] = useState(recipes);
   let [searchContent, setSearchContent] = useState('');
   let [recording, setRecording] = useState(false);
+  let [showClearButton, setShowClearButton] = useState(false);
 
   useEffect(() => {
     setFiletered(recipes);
-  }, [recipes]);
+    let value = searchContent.toLowerCase().trim() || '';
+    if (value.length > 0) setShowClearButton(true);
+    else (setShowClearButton(false));
+    setFiletered(recipes.filter((recipe) => recipe?.cuisine?.toLowerCase().includes(value) || recipe?.name?.toLowerCase().includes(value) || recipe?.ingredients?.some((ingredient) =>
+      ingredient?.toLowerCase().includes(value))));//some() loops through array and returns true if any of the element includes the value
+  }, [recipes, searchContent]);
 
   //Speech recognition for voice searching
 
@@ -22,26 +29,15 @@ function RecipeList() {
     const speechReco = window.SpeechRecognition || window.webkitSpeechRecognition;
     const reco = new speechReco();
     reco.lang = 'en-US';
-    reco.onstart = ()=>setRecording(true);
+    reco.onstart = () => setRecording(true);
     reco.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       setSearchContent(transcript);
-      setFiletered(recipes.filter(recipe => recipe.cuisine.toLowerCase().includes(transcript.toLowerCase()) || recipe.name.toLowerCase().includes(transcript.toLowerCase()) || recipe.ingredients.some((ingredient) =>
-        ingredient.toLowerCase().includes(transcript.toLowerCase()))));//some() loops through array and returns true if any of the element includes the value
     }
-    reco.onend = ()=>setRecording(false);
+    reco.onend = () => setRecording(false);
     reco.start();
   }
 
-  //Search functionality
-
-  function searchRecipe(event) {
-    let value = event.target.value.toLowerCase().trim();
-    setSearchContent(value);
-    setFiletered(recipes.filter((recipe) =>
-      recipe.cuisine.toLowerCase().includes(value) || recipe.name.toLowerCase().includes(value) || recipe.ingredients.some((ingredient) =>
-        ingredient.toLowerCase().includes(value))));
-  }
 
   return (
     <main className='bg-[#1c2720] p-3'>
@@ -50,9 +46,10 @@ function RecipeList() {
         <h2 className='text-xl font-bold text-white mb-4'>Search Recipes</h2>
         <div className='relative w-full md:w-[50%]'>
           <input placeholder='Searchfor recipes, ingredients or cusines...' className='bg-[#3c4f43] text-white text-sm rounded-2xl py-2 px-10 w-full border border-[#13ec13]' value={searchContent}
-            onChange={searchRecipe} />
+            onChange={(e) => setSearchContent(e.target.value)} />
+          {showClearButton && <ImCross className='absolute top-2 right-11 translate-y-1 text-white text-xs' onClick={() => setSearchContent('')} />}
           <div className='absolute top-2 left-2 translate-y-0.5 text-white text-lg' ><IoSearchSharp /></div>
-          <div className={`absolute top-2 right-2 text-white text-lg cursor-pointer rounded-full bg-[#1c2720] p-1.5 -translate-y-1 active:text-emerald-500 transition-all duration-300 ease-in-out ${recording?'ring-1 ring-offset-2 ring-[#13ec13] animate-pulse':'outline-none'}`} onClick={convertVoice}>
+          <div className={`absolute top-2 right-2 text-white text-lg cursor-pointer rounded-full bg-[#1c2720] p-1.5 -translate-y-1 active:text-emerald-500 transition-all duration-300 ease-in-out ${recording ? 'ring-1 ring-offset-2 ring-[#13ec13] animate-pulse' : 'outline-none'}`} onClick={convertVoice}>
             <MdKeyboardVoice />
           </div>
         </div>
