@@ -45,7 +45,7 @@ function RecipeList() {
       <section className='w-full'>
         <h2 className='text-xl font-bold text-white mb-4'>Search Recipes</h2>
         <div className='relative w-full md:w-[50%]'>
-          <input placeholder='Searchfor recipes, ingredients or cusines...' className='bg-[#3c4f43] text-white text-sm rounded-2xl py-2 px-10 w-full border border-[#13ec13]' value={searchContent}
+          <input placeholder='Searchfor recipes, ingredients or cusines...' className='bg-[#3c4f43] text-white text-sm rounded-2xl py-2 px-10 w-full border-b-2 border-[#13ec13] focus:outline-none focus:bg-[#1c2720]' value={searchContent}
             onChange={(e) => setSearchContent(e.target.value)} />
           {showClearButton && <ImCross className='absolute top-2 right-11 translate-y-1 text-white text-xs' onClick={() => setSearchContent('')} />}
           <div className='absolute top-2 left-2 translate-y-0.5 text-white text-lg' ><IoSearchSharp /></div>
