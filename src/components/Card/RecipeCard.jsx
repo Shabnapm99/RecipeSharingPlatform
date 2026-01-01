@@ -9,7 +9,7 @@ function RecipeCard({ recipe }) {
     let navigate = useNavigate();
 
     return (
-        <div className='bg-[#3c4f43] flex flex-col gap-1 rounded-xl cursor-pointer hover:-translate-y-1 group' onClick={() => navigate(`/recipes/${recipe?.uniqueId}`)}>
+        <div className='bg-[#3c4f43] flex flex-col gap-1 rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-1 group hover:shadow-lg hover:shadow-green-400/40' onClick={() => navigate(`/recipes/${recipe?.uniqueId}`)}>
             {/* Image container */}
             <div className='w-[full] relative'>
                 <img src={recipe?.image} className='max-w-full max-h-full rounded-t-xl relative' alt='recipe image'/>
