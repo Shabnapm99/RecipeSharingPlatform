@@ -31,7 +31,6 @@ function Root() {
 
     } catch (error) {
       console.error(`Error occured : ${error.message}`);
-      setShowError(true);
     } finally { setLoading(false) }
 
   }
