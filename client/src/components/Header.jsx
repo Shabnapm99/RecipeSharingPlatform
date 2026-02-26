@@ -8,6 +8,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { useSelector } from 'react-redux';
 import { app } from '../utils/firebaseConfig';
 import { getAuth, signOut } from 'firebase/auth'
+import ProfileModal from './Card/ProfileModal';
 
 const auth = getAuth(app);
 
@@ -15,9 +16,11 @@ function Header() {
 
     const isLoggedIn = useSelector((state) => state.users.isLoggedIn);
     const user = useSelector((state) => state.users.authUser);
+    const favoriteCount = useSelector((state) => state.favorites.savedRecipes).length;
     const [initials, setInitials] = useState('U');
     const [showAccountDetails, setShowAccountDetails] = useState(false);
-    const favoriteCount = useSelector((state) => state.favorites.savedRecipes).length;
+    const [showProfileModal, setShowProfileModal] = useState(false);
+
     let navigate = useNavigate();
 
     // To show initials of user at header
@@ -56,13 +59,17 @@ function Header() {
                                         <button className='text-3xl cursor-pointer'><FaRegHeart /></button>
                                         {favoriteCount > 0 && <div className='bg-[#13ec6a] text-white text-xs w-3.5 h-3.5 rounded-full flex justify-center font-bold items-center absolute top-0 right-0 -translate-y-1 translate-x-2'>{favoriteCount}</div>}
                                     </div></Link>
-                                <button className='text-2xl md:text-3xl bg-[#3c4f43] w-12 h-12 rounded-full text-[#13ec6a] cursor-pointer flex justify-center items-center font-semibold' onClick={() => setShowAccountDetails(!showAccountDetails)}>
+                                <button className='text-2xl md:text-3xl bg-[#3c4f43] w-12 h-12 rounded-full text-[#13ec6a] cursor-pointer flex justify-center items-center font-semibold'
+                                    onClick={
+                                        // () => setShowAccountDetails(!showAccountDetails)
+                                        () => setShowProfileModal(true)
+                                    }>
                                     {/* <FaRegUser /> */}
                                     <h2 className='flex justify-center items-center'>{initials}</h2>
                                 </button>
 
                                 {/* Account details */}
-                                {showAccountDetails &&
+                                {/* {showAccountDetails &&
                                     <div className='bg-black/60 px-2 py-4 md:p-4 rounded-lg absolute top-full right-0   flex flex-col gap-3'>
                                         <div>
                                             <p>{user?.name}</p>
@@ -76,7 +83,7 @@ function Header() {
                                             }}>Logout</button>
                                         </div>
                                     </div>
-                                }
+                                } */}
                             </div>
                     }
                 </nav>
@@ -88,6 +95,12 @@ function Header() {
 
                 </div>
             </div>
+
+            {/* Show profile modal */}
+            {
+                showProfileModal && <ProfileModal onClose={() => setShowProfileModal(false)} />
+            }
+
         </header>
     )
 }

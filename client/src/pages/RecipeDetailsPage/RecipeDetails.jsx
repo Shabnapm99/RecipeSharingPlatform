@@ -22,7 +22,7 @@ import DeleteModal from '../../components/Card/DeleteModal';
 import Modal from '../../components/Card/Modal';
 import { useReactToPrint } from 'react-to-print';
 import { favorite } from '../../utils/favorite';
-import StopWatch from '../../components/Card/stopWatch';
+import StopWatch from '../../components/Card/StopWatch';
 import { ImCross } from 'react-icons/im'
 
 // Initialize Cloud Firestore and get a reference to the service
