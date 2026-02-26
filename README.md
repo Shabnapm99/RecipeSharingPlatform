@@ -2,7 +2,7 @@
 
 ## 🔗 Live Demo
 
-https://recipe-sharing-platform-kappa-red.vercel.app/
+https://recipe-sharing-platform-gold.vercel.app/
 
 ## 📖 Description
 
