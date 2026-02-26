@@ -79,7 +79,7 @@ function Login() {
                 </div>
 
                 {/* Submit button */}
-                <button className='rounded-2xl py-2.5 px-5  text-sm font-bold text-[#102217] bg-[#13ec6a] hover:bg-[#13ec6a]/90 relative' type='submit'>Login
+                <button className='rounded-2xl py-2.5 px-5  text-sm font-bold text-[#102217] bg-[#13ec6a] hover:bg-[#13ec6a]/90 relative overflow-hidden' type='submit'>Login
                   {loading && <ButtonSpinner loading={loading} />}</button>
 
               </div>

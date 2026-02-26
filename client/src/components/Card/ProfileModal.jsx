@@ -4,10 +4,16 @@ import { FaHeart } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
 import { MdAccountCircle } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
+import { getAuth, signOut } from 'firebase/auth';
+import { app } from '../../utils/firebaseConfig';
+
+
+const auth = getAuth(app);
 
 function ProfileModal({ onClose }) {
 
     let navigate = useNavigate();
+    
 
     return (
         <div className='fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex justify-center items-center animate-fadeIn'>
@@ -65,7 +71,11 @@ function ProfileModal({ onClose }) {
                     {/* Logout Button */}
                     <div className='flex gap-2 items-center bg-[#13ec6a] text-black rounded-lg px-4 py-2 cursor-pointer 
                                     hover:bg-green-400 hover:shadow-lg hover:scale-105 
-                                    active:scale-95 transition-all duration-300'>
+                                    active:scale-95 transition-all duration-300'
+                        onClick={() => {
+                            signOut(auth).then(() => console.log("Signed out of user"))
+                                .then(() => navigate('/login'))
+                        }}>
                         <FiLogOut />
                         <p className='text-sm font-bold'>Logout</p>
                     </div>

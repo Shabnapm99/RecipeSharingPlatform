@@ -1,24 +1,53 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { ImCross } from "react-icons/im";
 import { useNavigate } from 'react-router-dom';
 
 function Modal({ onClose, text }) {
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     return (
-        <>
-            {/* Modal */
-                <div className='fixed inset-0 bg-black/80 flex justify-center items-center z-100'>
+        <div className='fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-50 animate-fadeIn'>
 
-                    <div className='w-[75%] md:w-[40%] h-[20%] lg:h-[30%] bg-white/90 rounded flex flex-col gap-4 justify-center items-center relative' >
-                        <button className='absolute top-3 right-3 p-2 hover:border rounded border-gray-500 text-[#13ec6a]/90 hover:text-red-700' onClick={onClose}><ImCross /></button>
-                        <p className='pt-3 text-sm md:text-base'>{text}</p>
-                        <button className='bg-[#13ec13]/90 rounded px-2 py-1 text-white' onClick={() => navigate('/login')}>Login now</button>
-                    </div>
-                </div>
-            }
-        </>
+            <div className='relative w-[90%] sm:w-[70%] md:w-[40%] 
+                            bg-[#1c2720] rounded-3xl 
+                            px-6 py-8 
+                            shadow-2xl 
+                            flex flex-col items-center gap-6 
+                            animate-scaleIn'>
+
+                {/* Close Button */}
+                <button
+                    onClick={onClose}
+                    className='absolute top-4 right-5 text-gray-400 
+                               hover:text-green-400 
+                               transition duration-200'
+                >
+                    <ImCross />
+                </button>
+
+                {/* Message */}
+                <p className='text-gray-300 text-center text-sm md:text-base'>
+                    {text}
+                </p>
+
+                {/* Login Button */}
+                <button
+                    onClick={() => navigate('/login')}
+                    className='bg-[#13ec6a] text-black 
+                               font-semibold 
+                               px-5 py-2 
+                               rounded-lg 
+                               hover:bg-green-400 
+                               hover:scale-105 
+                               active:scale-95 
+                               transition-all duration-300'
+                >
+                    Login Now
+                </button>
+
+            </div>
+        </div>
     )
 }
 
