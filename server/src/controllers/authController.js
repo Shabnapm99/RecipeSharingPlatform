@@ -1,10 +1,49 @@
 import UserModel from "../models/UserModel.js";
 import bcrypt from 'bcrypt';
 import { validateRegistration } from "../utils/validateRegistration.js";
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
 
+
+dotenv.config();
 //User login 
+export const login = async (req, res) => {
+    try {
 
-export const login = () => {
+        let { email, password } = req.body;
+        email = email?.toLowerCase().trim();
+        //check for the user in the DB
+
+        let user = await UserModel.findOne({ email: email }).select('-__v');
+        //if there is no user registered on this email id
+        if (!user) {
+            return res.status(400).json("Email or password is incorrect")
+        }
+        //compare the password with the hashed password 
+        let isMatch = await bcrypt.compare(password, user.password_hash);
+        if (isMatch) {
+            const token = jwt.sign({ _id: user._id }, process.env.JWT_TOKEN, { expiresIn: "1d" });
+            return res.status(200).json({
+                message: "LoggedIn successfully",
+                token,
+                user: {
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    occupation: user.occupation
+                }//to prevent secured info like hashedpassed from sending back, send needed fields only
+            })
+        } else {
+            return res.status(400).json({ message: "The provided email or password is not matching" })
+        }
+
+
+    } catch (error) {
+        console.log("Something went wrong:", error.message);
+        res.status(500).json({
+            message: "Internal server Error"
+        })
+    }
 
 }
 
