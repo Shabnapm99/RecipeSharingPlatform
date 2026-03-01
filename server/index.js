@@ -4,6 +4,7 @@ import authRoute from './src/routes/authRoutes.js'
 import recipesRoute from './src/routes/recipeRoutes.js'
 import { dbConnect } from './src/config/db.js';
 import cookieParser from 'cookie-parser';
+import cors from 'cors'
 
 //configure dotenv
 dotenv.config();
@@ -13,13 +14,17 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true//to access the cookies
+}))
 
-app.get('/',(req,res)=>{
+app.get('/', (req, res) => {
     res.status(200).json("Home page of recipe sharing platform");
 });
 
-app.use('/api',authRoute);
-app.use('api/recipes',recipesRoute);
+app.use('/api', authRoute);
+app.use('api/recipes', recipesRoute);
 
 dbConnect();//connecting to db
 

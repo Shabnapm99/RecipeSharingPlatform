@@ -22,7 +22,7 @@ export const login = async (req, res) => {
         //compare the password with the hashed password 
         let isMatch = await bcrypt.compare(password, user.password_hash);
         if (isMatch) {
-            const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN, { expiresIn: "1d" });
+            const token = jwt.sign({ _id: user._id }, process.env.JWT_TOKEN, { expiresIn: "1d" });
 
             res.cookie('token', token, {
                 httpOnly: true,
@@ -94,4 +94,12 @@ export const register = async (req, res) => {
             message: "Internal server Error"
         })
     }
+}
+
+//get profile
+
+export const profile = async (req, res) => {
+
+    const user = req.user;// set by validateToken
+    res.status(200).json({user});
 }

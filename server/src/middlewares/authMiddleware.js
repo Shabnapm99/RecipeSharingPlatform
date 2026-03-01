@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
-import UserModel from '../models/UserModel';
+import UserModel from '../models/UserModel.js';
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ export const validateToken = async (req, res, next) => {
         if (!decoded) {
             return res.status(401).json({ message: "User not authenticated" });
         }
-        let userId = decoded.id;
+        let userId = decoded._id;
         const user = await UserModel.findOne({ _id: userId });
         if (!user) {
             return res.status(401).json({ message: "User not found" });
