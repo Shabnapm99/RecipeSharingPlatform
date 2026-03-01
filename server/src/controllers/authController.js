@@ -22,7 +22,13 @@ export const login = async (req, res) => {
         //compare the password with the hashed password 
         let isMatch = await bcrypt.compare(password, user.password_hash);
         if (isMatch) {
-            const token = jwt.sign({ _id: user._id }, process.env.JWT_TOKEN, { expiresIn: "1d" });
+            const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN, { expiresIn: "1d" });
+
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+            });//create a cookie named token with value token and other credentials
+
             return res.status(200).json({
                 message: "LoggedIn successfully",
                 token,

@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import authRoute from './src/routes/authRoutes.js'
 import recipesRoute from './src/routes/recipeRoutes.js'
 import { dbConnect } from './src/config/db.js';
+import cookieParser from 'cookie-parser';
 
 //configure dotenv
 dotenv.config();
@@ -11,6 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.get('/',(req,res)=>{
     res.status(200).json("Home page of recipe sharing platform");
