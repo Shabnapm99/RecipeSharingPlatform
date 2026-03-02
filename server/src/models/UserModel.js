@@ -31,6 +31,12 @@ const userSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Recipe'
         }
+    ],
+    addedRecipes: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Recipe'
+        }
     ]
 
 }, { timestamps: true })

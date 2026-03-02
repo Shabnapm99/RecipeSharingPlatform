@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', authRoute);
-app.use('api/recipes', recipesRoute);
+app.use('/api/recipes', recipesRoute);
 
 dbConnect();//connecting to db
 
