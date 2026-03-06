@@ -10,7 +10,7 @@ export const validateToken = async (req, res, next) => {
         if (!token) {
             return res.status(401).json({ message: "Token not available" });
         }
-        let decoded = jwt.verify(token, process.env.JWT_TOKEN);
+        let decoded = jwt.verify(token, process.env.JWT_TOKEN);//if we pass the token and and secret key we set while creating token to the verify method,it will return the unique id we sent while creating token
         if (!decoded) {
             return res.status(401).json({ message: "User not authenticated" });
         }

@@ -11,13 +11,16 @@ export const login = async (req, res) => {
     try {
 
         let { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ error: "All fields are required" })
+        }
         email = email?.toLowerCase().trim();
         //check for the user in the DB
 
         let user = await UserModel.findOne({ email: email }).select('-__v');
         //if there is no user registered on this email id
         if (!user) {
-            return res.status(400).json("Email or password is incorrect")
+            return res.status(400).json({ error: "Email or password is incorrect" })
         }
         //compare the password with the hashed password 
         let isMatch = await bcrypt.compare(password, user.password_hash);
@@ -43,10 +46,9 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: "The provided email or password is not matching" })
         }
 
-
     } catch (error) {
         console.log("Something went wrong:", error.message);
-        res.status(500).json({
+        res.status(error.status || 500).json({
             message: "Internal server Error"
         })
     }
@@ -90,7 +92,7 @@ export const register = async (req, res) => {
         });
     } catch (error) {
         console.log("Something went wrong:", error.message);
-        res.status(500).json({
+        res.status(error.status || 500).json({
             message: "Internal server Error"
         })
     }
@@ -99,7 +101,19 @@ export const register = async (req, res) => {
 //get profile
 
 export const profile = async (req, res) => {
+    try {
+        const user = req.user;// set by validateToken
+        if (!user) {
+            return res.status(404).json({ message: "User not found" })
+        }
+        return res.status(200).json({ user });
 
-    const user = req.user;// set by validateToken
-    res.status(200).json({user});
+    } catch (error) {
+        console.log("Something went wrong:", error.message);
+        res.status(error.status || 500).json({
+            message: "Internal server Error"
+        })
+    }
+
+
 }
