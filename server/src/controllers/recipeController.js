@@ -56,6 +56,11 @@ export const createRecipe = async (req, res) => {
         if (!req.file) {
             return res.status(400).json({ message: "Image not added" })
         }
+        //check for existing recipe : ensure the user have not already added the recipe
+        let existingRecipe = await RecipeModel.findOne({ title: title, createdBy: req.user._id })
+        if (existingRecipe) {
+            return res.status(400).json({ message: "Recipe already exist" })
+        }
 
         const cloudinaryResponse = await uploadToCloudinary(req.file.path);//send file path as parameter
         console.log(cloudinaryResponse)

@@ -117,3 +117,19 @@ export const profile = async (req, res) => {
 
 
 }
+
+export const logout = async (req, res) => {
+    try {
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+        });
+        res.status(200).json({ message: 'Logged out successfully' })
+
+    } catch (error) {
+        console.log("Something went wrong:", error.message);
+        res.status(error.status || 500).json({
+            message: "Internal server Error"
+        })
+    }
+}
