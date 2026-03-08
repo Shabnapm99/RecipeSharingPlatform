@@ -9,10 +9,11 @@ function RecipeCard({ recipe }) {
     let navigate = useNavigate();
 
     return (
-        <div className='bg-[#3c4f43] flex flex-col gap-1 rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-1 group hover:shadow-lg hover:shadow-green-400/40' onClick={() => navigate(`/recipes/${recipe?.uniqueId}`)}>
+        <div className='bg-[#3c4f43] flex flex-col gap-1 rounded-xl cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-1 group hover:shadow-lg hover:shadow-green-400/40'
+            onClick={() => navigate(`/recipes/${recipe?._id}`)}>
             {/* Image container */}
             <div className='w-[full] relative'>
-                <img src={recipe?.image} className='max-w-full max-h-full rounded-t-xl relative' alt='recipe image'/>
+                <img src={recipe?.image} className='max-w-full max-h-full rounded-t-xl relative' alt='recipe image' />
                 <div className='absolute top-0 left-0 bg-black/35 z-40 w-full h-full rounded-t-xl'></div>
                 <div className='absolute top-3 right-3 rounded-2xl bg-black/65 text-xs px-2 py-0.5 text-white'><span>{recipe?.cuisine}</span></div>
                 <div className='absolute bottom-3 left-3 rounded-2xl bg-black/65 text-xs px-2 py-0.5 text-white flex items-center gap-1'>

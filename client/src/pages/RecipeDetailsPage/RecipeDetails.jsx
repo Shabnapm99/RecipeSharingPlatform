@@ -24,6 +24,7 @@ import { useReactToPrint } from 'react-to-print';
 import { favorite } from '../../utils/favorite';
 import StopWatch from '../../components/Card/StopWatch';
 import { ImCross } from 'react-icons/im'
+import { axiosInstance } from '../../axios/axiosInstance';
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
@@ -41,7 +42,7 @@ function RecipeDetails() {
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   let navigate = useNavigate();
-  const [showSummaryDiv,setShowSummaryDiv] = useState(false);
+  const [showSummaryDiv, setShowSummaryDiv] = useState(false);
 
   //get URL params to fetch recipe details
 
@@ -60,8 +61,8 @@ function RecipeDetails() {
   });
 
   // Check whether the recipe is in savedRecipes list or not. if present make isSaved as true
-  const isSaved = savedRecipes.some((savedRecipe) => savedRecipe.uniqueId === recipe?.uniqueId);//this will return true if the recipe is in savedRecipeList
-  const isAuthor = isLoggedIn && recipe?.userId === user?.id;//true only if any user is loggedIn and the user is the author
+  const isSaved = savedRecipes.some((savedRecipe) => savedRecipe._id === recipe?._id);//this will return true if the recipe is in savedRecipeList
+  const isAuthor = isLoggedIn && recipe?.createdBy?._id === user?._id;//true only if any user is loggedIn and the user is the author
 
   //firebase function to get a single recipe
 
@@ -70,13 +71,18 @@ function RecipeDetails() {
     const getRecipe = async () => {
       try {
 
-        const docRef = doc(db, 'recipes', `${id}`); //create a refernce of document we want to get
-        const getSnap = await getDoc(docRef);
+        // const docRef = doc(db, 'recipes', `${id}`); //create a refernce of document we want to get
+        // const getSnap = await getDoc(docRef);
 
-        dispatch(setSelectedRecipe({
-          uniqueId: getSnap.id,
-          ...getSnap.data()
-        }))
+        // dispatch(setSelectedRecipe({
+        //   uniqueId: getSnap.id,
+        //   ...getSnap.data()
+        // }))
+
+        let response = await axiosInstance.get(`/recipes/${id}`);
+        if (response.status === 200) {
+          dispatch(setSelectedRecipe(response.data.recipe))
+        }
       } catch (error) {
         console.error(`Error occured : ${error.message}`);
       } finally { setLoading(false) }
@@ -95,7 +101,7 @@ function RecipeDetails() {
 
   async function getSummary() {
     setButtonLoading(true);
-    
+
     let ingredients = recipe?.ingredients?.join('.');
     let instructions = recipe?.instructions?.join('.');
 
@@ -109,10 +115,10 @@ function RecipeDetails() {
   2. Core Ingredients: List only the main 5-6 items (ignore basics like salt/oil).
   3. The "Too Long; Didn't Read" (TL;DR) Steps: Summarize the instructions into exactly 3-4 bullet points.
 
-  Dish: ${recipe?.name}
+  Dish: ${recipe?.title}
   Ingredients: ${ingredients}
   Instructions: ${instructions}
-  Cooking time:${recipe?.cookTimeMinutes}
+  Cooking time:${recipe?.cookingTime}
   Difficulty:${recipe?.difficulty}
 
   Format: Keep it scannable short sentences. Simple language only.
@@ -142,7 +148,7 @@ function RecipeDetails() {
             <button className='border border-green-500/80 py-0.5 px-3 rounded text-green-600 font-medium hover:bg-[#13ec6a] hover:text-white'
               onClick={() => {
                 dispatch(setIsEditing({
-                  id: recipe?.uniqueId,
+                  id: recipe?._id,
                   boolean: true
                 }));
                 navigate('/add');
@@ -167,7 +173,7 @@ function RecipeDetails() {
               <div className='flex items-center gap-2 absolute top-3.5 right-2 print:hidden'>
                 <div className='rounded-full p-2 bg-black/65 text-white'>
                   {isSaved ? <FaHeart className='text-[#13ec6a] text-2xl' onClick={() => {
-                    const updatedList = savedRecipes.filter((item) => item.uniqueId !== recipe?.uniqueId)
+                    const updatedList = savedRecipes.filter((item) => item._id !== recipe?._id)
                     dispatch(setSavedRecipes(updatedList));//update redux
                     favorite(updatedList, user);//function to add the savedList to user
                   }
@@ -193,7 +199,7 @@ function RecipeDetails() {
 
             </div>
             <div className='flex flex-col lg:flex-row justify-between lg:items-center'>
-              <h1 className="text-3xl md:text-4xl font-bold text-white/90 my-4">{recipe?.name}</h1>
+              <h1 className="text-3xl md:text-4xl font-bold text-white/90 my-4">{recipe?.title}</h1>
               <div className='flex items-center gap-1 bg-yellow-500/10 border border-yellow-500/20 h-6 px-1 rounded-2xl w-fit'>
                 <FaStar className='text-yellow-500 text-sm' />
                 <p className='text-xs font-medium text-yellow-500'>{recipe?.rating} ({recipe?.reviewCount})</p>
@@ -230,21 +236,21 @@ function RecipeDetails() {
             </button>
             {/* summary div */}
             {showSummaryDiv && <div className='text-white text-xs md:text-sm border border-purple-900 p-2 mt-2 flex flex-col gap-2 items-end'>
-              <ImCross onClick={()=>setShowSummaryDiv(false)} className='hover:text-purple-900'/>
+              <ImCross onClick={() => setShowSummaryDiv(false)} className='hover:text-purple-900' />
               <p>{summary}</p>
             </div>}
 
             <div className='grid grid-cols-3 lg:grid-cols-5 gap-4 my-3 py-3'>
               <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white gap-1'>
                 <MdAccessTime />
-                <p >{recipe?.cookTimeMinutes} Mins</p>
+                <p >{recipe?.cookingTime} Mins</p>
               </div>
               <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.difficulty}</div>
               <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.cuisine}</div>
               <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white'>{recipe?.dietType}</div>
               <div className='border border-[#13ec6a]/30 bg-[#1c2a23] rounded-lg text-sm py-0.5 flex justify-center items-center text-white gap-1 col-span-2 md:col-span-1'>
                 <LuChefHat />
-                <p>{recipe?.author}</p>
+                <p>{recipe?.createdBy?.name}</p>
               </div>
             </div>
 
