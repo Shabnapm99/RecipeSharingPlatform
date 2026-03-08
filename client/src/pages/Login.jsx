@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom';
-import { app } from '../utils/firebaseConfig';
 import ButtonSpinner from '../components/Card/ButtonSpinner';
+import { axiosInstance } from '../axios/axiosInstance';
+import { setIsLoggedIn, setAuthUser } from '../features/userSlice.js';
+import { useDispatch } from 'react-redux';
 
-const auth = getAuth(app);
 
 function Login() {
 
@@ -15,17 +15,25 @@ function Login() {
   const [alertMessage, setAlertMessage] = useState('');
   const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
+  let dispatch = useDispatch();
 
   const loginUser = async () => {
     try {
       setLoading(true);
-      await signInWithEmailAndPassword(auth, email, password);
-      setEmail('');
-      setPassword('');//reset the fields only after signinwithemailandpassword completed
-      navigate('/', { replace: true });//to forcefully replacing the page to home
+      let response = await axiosInstance.post('/login', { email, password });
+      if (response.status === 200) {
+        console.log("Logged in successfully");
+        console.log(response);
+        dispatch(setIsLoggedIn(true));
+        dispatch(setAuthUser(response?.data?.user));
+        setEmail('');
+        setPassword('');//reset the fields only after signinwithemailandpassword completed
+        navigate('/', { replace: true });//to forcefully replacing the page to home
+      }
 
     } catch (error) {
-      setAlertMessage(error.message);
+      setAlertMessage(error.response?.data?.message);
+      console.log(error);
       setShowErrorPara(true);
     } finally {
       setLoading(false);
@@ -46,7 +54,7 @@ function Login() {
 
         {/* Leftside : Login */}
         <div className=' flex flex-col justify-center px-6 py-12 w-full md:w-1/2'>
-          <div className='flex items-center gap-3 mb-2'>
+          <div className='flex items-center gap-3 mb-2 cursor-pointer' onClick={() => navigate('/')}>
             {/* Logo and brand */}
             <div className=' flex justify-center items-center h-10 w-10 rounded-full bg-white/10'>
               <img src='/images/BrandIcons.png' alt='Brandicon' className='w-[75%] h-[75%] object-fit' />
@@ -75,7 +83,7 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <div className='text-end'>
-                  <a className='text-sm font-medium text-[#13ec6a]' href='#'>Forgot password?</a>
+                  <a className='text-xs font-medium text-[#13ec6a]' href='#'>Forgot password?</a>
                 </div>
 
                 {/* Submit button */}
@@ -89,7 +97,7 @@ function Login() {
             {/* Sign up link */}
             <p className='mt-8 text-center text-sm text-gray-400'>
               <span className='block'>New here? <Link to={'/signup'} className='font-semibold text-[#13ec6a] hover:text-[#13ec6a]/80'>Create an account</Link></span>
-              <Link to={'/'}><span className='block font-bold'>Home</span></Link>
+              {/* <Link to={'/'}><span className='block font-bold'>Home</span></Link> */}
             </p>
           </div>
         </div>

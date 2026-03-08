@@ -17,7 +17,7 @@ function RecipeCard({ recipe }) {
                 <div className='absolute top-3 right-3 rounded-2xl bg-black/65 text-xs px-2 py-0.5 text-white'><span>{recipe?.cuisine}</span></div>
                 <div className='absolute bottom-3 left-3 rounded-2xl bg-black/65 text-xs px-2 py-0.5 text-white flex items-center gap-1'>
                     <MdAccessTime />
-                    <p >{recipe?.cookTimeMinutes} Mins</p>
+                    <p >{recipe?.cookingTime} Mins</p>
                 </div>
             </div>
             {/* Other details */}
@@ -31,10 +31,10 @@ function RecipeCard({ recipe }) {
                     </div>
                     <div className='text-[#13ec13]'>{recipe?.difficulty}</div>
                 </div>
-                <h3 className='text-white font-semibold group-hover:text-[#13ec13] mb-4'>{recipe?.name}</h3>
+                <h3 className='text-white font-semibold group-hover:text-[#13ec13] mb-4'>{recipe?.title}</h3>
                 <div className='text-white/80 text-sm pt-4 ps-1 border-t border-gray-500 flex gap-3 items-center'>
                     <LuChefHat />
-                    <p className=' '>{recipe?.author}</p>
+                    <p className=' '>{recipe?.createdBy.name}</p>
                 </div>
             </div>
         </div>

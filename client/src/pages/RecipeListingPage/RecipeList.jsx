@@ -9,7 +9,7 @@ import { ImCross } from 'react-icons/im'
 function RecipeList() {
 
   const recipes = useSelector((state) => state.recipes.recipes);
-  const [fileterdRecipe, setFiletered] = useState(recipes);
+  const [fileterdRecipe, setFiletered] = useState([]);
   let [searchContent, setSearchContent] = useState('');
   let [recording, setRecording] = useState(false);
   let [showClearButton, setShowClearButton] = useState(false);
@@ -19,7 +19,7 @@ function RecipeList() {
     let value = searchContent.toLowerCase().trim() || '';
     if (value.length > 0) setShowClearButton(true);
     else (setShowClearButton(false));
-    setFiletered(recipes.filter((recipe) => recipe?.cuisine?.toLowerCase().includes(value) || recipe?.name?.toLowerCase().includes(value) || recipe?.ingredients?.some((ingredient) =>
+    setFiletered(recipes.filter((recipe) => recipe?.cuisine?.toLowerCase().includes(value) || recipe?.title?.toLowerCase().includes(value) || recipe?.ingredients?.some((ingredient) =>
       ingredient?.toLowerCase().includes(value))));//some() loops through array and returns true if any of the element includes the value
   }, [recipes, searchContent]);
 
@@ -70,9 +70,9 @@ function RecipeList() {
             <h4 className='text-gray-500 mb-3 text-[16px]'>Found {fileterdRecipe?.length} Recipes</h4>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
               {
-                fileterdRecipe.map((recipe, index) => {
+                fileterdRecipe?.map((recipe, index) => {
                   return (
-                    <RecipeCard key={recipe?.uniqueId || index} recipe={recipe} />//use uniqueId if available, otherwise fallback to index.
+                    <RecipeCard key={recipe?._id || index} recipe={recipe} />//use uniqueId if available, otherwise fallback to index.
                   )
                 })
               }

@@ -1,45 +1,41 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Modal from '../components/Card/Modal';
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { app } from '../utils/firebaseConfig';
-import { getFirestore, setDoc, doc } from 'firebase/firestore'
 import Spinner from '../components/Card/Spinner';
+import { axiosInstance } from '../axios/axiosInstance';
 
-const db = getFirestore(app);
-
-// Initialize Firebase Authentication and get a reference to the service
-const auth = getAuth(app);
 
 function SignUp() {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [occupation, setOccupation] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [showErrorPara, setShowErrorPara] = useState(false);
   const [loading, setLoading] = useState(false);
+  let navigate = useNavigate();
 
-  // Fire base auth: create authentication and add the user into user document in firestore
+
   const signUpUser = async () => {
     try {
       setLoading(true);
-      let userCredentials = await createUserWithEmailAndPassword(auth, email, password);
-      let user = userCredentials.user;
-      await updateProfile(user, { displayName: name, });
-      // To add the user to users collection
-      await setDoc(doc(db, "users", user.uid), {//create a document with id = user.uid in users collection
-        id: user.uid,
-        userName: name,
-        email: user.email,
-        createdAt: new Date(),
-      });
-      setShowModal(true);//show success Modal only after all these steps done
+      let response = await axiosInstance.post('/register', { name, email, password, occupation })
+      if (response.status === 201) {
+        console.log("User created succesfully");
+        setShowModal(true);//show success Modal
+        setName('');
+        setPassword('');
+        setEmail('');
+        setOccupation('');
+        setShowErrorPara(false);
+
+      }
+
 
     } catch (error) {
-      setAlertMessage(error.code, error.message);
+      setAlertMessage(error.response.data.message);
       setShowErrorPara(true);
       console.log(error.code, error.message)
 
@@ -49,43 +45,42 @@ function SignUp() {
 
   }
 
-
   // submit button handler
 
   function handleSubmit(event) {
     event.preventDefault();//prevent from reloading
-    setShowErrorPara(!showErrorPara);
+    setShowErrorPara(false);
     let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     let passWordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[A-Za-z].{7,}$/;
     if (name.trim() === '' || name.trim().length < 3 || name.trim().length > 50) {
+      setShowErrorPara(true);
       setAlertMessage('please provide a valid name');
       return;
     } else if (email.trim() === '' || emailRegex.test(email) === false) {
+      setShowErrorPara(true);
       setAlertMessage('please provide a valid email');
+      return;
+    } else if (occupation.trim() === '' || occupation.trim().length < 3 || occupation.trim().length > 50) {
+      setShowErrorPara(true);
+      setAlertMessage('please provide a valid occupation');
       return;
     }
     else if (password.trim() === '' || passWordRegex.test(password) === false) {
+      setShowErrorPara(true);
       setAlertMessage('please provide a valid password');
       return;
-    } else if (password !== confirmPassword) {
-      setAlertMessage('passwords Do not match');
-      return;
-
-    } else {
+    }
+    else {
 
       signUpUser();
     }
-    setName('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
   }
 
   return (
     <div className='bg-[#1c2720] w-screen h-screen flex justify-center items-center relative'>
       {loading ? <Spinner loading={loading} /> :
 
-        <div className='flex flex-col md:flex-row rounded-lg bg-[#102217] h-screen md:h-[70vh] lg:h-screen w-full lg:w-[80%]'>
+        <div className='flex flex-col md:flex-row items-stretch rounded-lg bg-[#102217] h-full w-full lg:w-[80%] overflow-hidden'>
 
           {/* Brand name and icon on small screen */}
 
@@ -96,28 +91,33 @@ function SignUp() {
             </div>
           </div>
 
-          {/* RightSide:image */}
+          {/* Left Side (Image) */}
+          <div className='hidden md:block md:w-1/2 relative overflow-hidden'>
+            {/* The 'absolute inset-0' forces the image to ignore all internal padding/gaps */}
+            <img
+              src='/images/signup.png'
+              className='absolute inset-0 w-full h-full object-cover'
+              alt='promo image'
+            />
 
-          <div className='w-1/2 relative hidden md:block'>
-            <img src='/images/signup.png' className='w-full h-full object-cover' alt='promo image'/>
-            {/* Text div on image */}
-            <div className='absolute top-2 left-2 '>
+            {/* Overlay Content */}
+            <div className='absolute top-6 left-6'>
               <div className='flex gap-3 items-center cursor-pointer' onClick={() => navigate('/')}>
                 <img src='/images/BrandIcons.png' alt='BrandIcon' />
                 <span className='text-xl md:text-2xl font-bold text-white'>CookBook</span>
               </div>
             </div>
-            <div className='absolute top-60 left-12 lg:top-50 lg:left-40 text-center'>
-              <h1 className='text-5xl font-bold'>
+
+            <div className='absolute inset-0 flex items-center justify-center p-12'>
+              <h1 className='text-5xl font-bold text-center leading-tight'>
                 <span className='block text-white'>Master Your</span>
                 <span className='block text-[#13ec6a]'>Kitchen Game</span>
               </h1>
-
             </div>
           </div>
 
           {/* rightside : register */}
-          <div className=' flex flex-col justify-center px-6 py-12  md:w-1/2 w-full'>
+          <div className='flex flex-col justify-center pl-4 pr-6 py-4 flex-1'>
             {/* Headline */}
             <div>
               <h1 className='text-2xl font-bold text-white'>Create an Account</h1>
@@ -135,21 +135,27 @@ function SignUp() {
                   </div>
                   <div className=''>
                     <label htmlFor='email' className='text-white block text-sm'>Email or UserName</label>
-                    <input className='mt-2 rounded-2xl py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='email' id='email' required placeholder='example@gmail.com' value={email}
+                    <input className='mt-2 rounded-2xl  py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='email' id='email' required placeholder='example@gmail.com' value={email}
                       onChange={(e) => setEmail(e.target.value)} />
                   </div>
 
                   <div className=''>
-                    <label htmlFor='pswd' className='text-white block text-sm'>Password</label>
-                    <input className='mt-2 rounded-2xl py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' type='password' id='pswd' required placeholder='.......' value={password}
-                      onChange={(e) => setPassword(e.target.value)} />
+                    <label htmlFor='occupation' className='text-white block text-sm'>Occupation</label>
+                    <input className='mt-2 rounded-2xl  py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='text' id='occupation' required placeholder='Chef, Home maker' value={occupation} minLength={3} maxLength={100}
+                      onChange={(e) => setOccupation(e.target.value)} />
                   </div>
 
                   <div className=''>
-                    <label htmlFor='confirmpswd' className='text-white block text-sm'>Confirm Password</label>
-                    <input className='mt-2 rounded-2xl py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' type='password' id='confirmpswd' required placeholder='........' value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)} />
+                    <label htmlFor='pswd' className='text-white block text-sm'>Password</label>
+                    <input className='mt-2 rounded-2xl  py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' type='password' id='pswd' required placeholder='.......' value={password}
+                      onChange={(e) => setPassword(e.target.value)} />
                   </div>
+
+                  {/* <div className=''>
+                    <label htmlFor='confirmpswd' className='text-white block text-sm'>Confirm Password</label>
+                    <input className='mt-2 rounded-2xl  py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' type='password' id='confirmpswd' required placeholder='........' value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)} />
+                  </div> */}
 
                   {/* Submit button */}
                   <button className='rounded-2xl py-2.5 px-5  text-sm font-bold text-[#102217] bg-[#13ec6a] hover:bg-[#13ec6a]/90' type='submit'>Create Account
@@ -166,7 +172,7 @@ function SignUp() {
               {/* Sign up link */}
               <p className='mt-5 text-center text-sm text-gray-400'>
                 <span>Already have an account? <Link to={'/login'} className='font-semibold text-[#13ec6a] hover:text-[#13ec6a]/80'>Login</Link></span>
-                <Link to={'/'}><span className='block font-bold'>Home</span></Link>
+                {/* <Link to={'/'}><span className='block font-bold'>Home</span></Link> */}
               </p>
             </div>
           </div>

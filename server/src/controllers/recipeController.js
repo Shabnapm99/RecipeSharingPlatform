@@ -117,13 +117,19 @@ export const deleteRecipe = async (req, res) => {
 
 export const updateRecipe = async (req, res) => {
     try {
-        let updatedRecipe = await RecipeModel.findOneAndUpdate({ _id: req.params.id, createdBy: req.user._id }, req.body, { new: true, runValidators: true });//only the author can update a recipe
+
+        let updateData = { ...req.body };
+
+        if (req.file) {
+            imageURL = await uploadToCloudinary(req.file.path);
+            updateData.image = imageURL;
+        }
+        let updatedRecipe = await RecipeModel.findOneAndUpdate({ _id: req.params.id, createdBy: req.user._id }, updateData, { returnDocument: 'after', runValidators: true });//only the author can update a recipe
         if (!updatedRecipe) {
             return res.status(404).json({
-                message: "Recipe not found or not authorized"
-            });
+                messaage: "Recipe not found or not authorized"
+            })
         }
-
         res.status(200).json({
             message: "Recipe updated successfully",
             recipe: updatedRecipe

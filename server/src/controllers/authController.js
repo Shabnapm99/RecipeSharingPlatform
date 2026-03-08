@@ -20,12 +20,12 @@ export const login = async (req, res) => {
         let user = await UserModel.findOne({ email: email }).select('-__v');
         //if there is no user registered on this email id
         if (!user) {
-            return res.status(400).json({ error: "Email or password is incorrect" })
+            return res.status(400).json({ message: "Incorrect email or password" })
         }
         //compare the password with the hashed password 
         let isMatch = await bcrypt.compare(password, user.password_hash);
         if (isMatch) {
-            const token = jwt.sign({ _id: user._id }, process.env.JWT_TOKEN, { expiresIn: "1d" });
+            const token = jwt.sign({ _id: user._id }, process.env.JWT_TOKEN, { expiresIn: process.env.JWT_EXPIRESIN });
 
             res.cookie('token', token, {
                 httpOnly: true,
@@ -34,7 +34,6 @@ export const login = async (req, res) => {
 
             return res.status(200).json({
                 message: "LoggedIn successfully",
-                token,
                 user: {
                     _id: user._id,
                     name: user.name,
@@ -70,7 +69,7 @@ export const register = async (req, res) => {
         }//If we didn't return here ,Even if validation fails:It sends response, BUT code continues running,It still checks DB,It still hashes password,It still tries to create user
 
         //check whether the user already exist
-        const isExisting = await UserModel.findOne({ email: email });
+        const isExisting = await UserModel.exists({ email: email });//since we only have to check whether the user exist. no need to fecth it. exists increase the speed
         if (isExisting) {
             return res.status(400).json({ message: "User Already exist!!Continue to login" });
         }
@@ -86,7 +85,7 @@ export const register = async (req, res) => {
             password_hash: hashedPassword,
             occupation
         });
-
+        //user dbyil create aayo illayo enn condition vech check cheyyananm. aayillenkil enth response varanam enn
         return res.status(201).json({
             message: "User created successfully"
         });
@@ -114,10 +113,9 @@ export const profile = async (req, res) => {
             message: "Internal server Error"
         })
     }
-
-
 }
 
+//logout 
 export const logout = async (req, res) => {
     try {
         res.clearCookie('token', {

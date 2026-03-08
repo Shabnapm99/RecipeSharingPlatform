@@ -18,6 +18,7 @@ import { fetchUserfavorites } from './utils/favorite';
 import { setSavedRecipes } from './features/favoritesSlice';
 import ProtectedRoute from './routes/ProtectedRoute';
 import GuestRout from './routes/GuestRout';
+import { axiosInstance } from './axios/axiosInstance';
 
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
@@ -85,20 +86,38 @@ function App() {
 
   //to observe the signIn changes and store the details
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        dispatch(setAuthUser({
-          name: user.displayName,
-          id: user.uid,
-          email: user.email
-        }));//since user conatin many other methods classes etc. so store only the datas we needed
-        dispatch(setIsLoggedIn(true));
-      }
-      else {
+    // onAuthStateChanged(auth, (user) => {
+    //   if (user) {
+    //     dispatch(setAuthUser({
+    //       name: user.displayName,
+    //       id: user.uid,
+    //       email: user.email
+    //     }));//since user conatin many other methods classes etc. so store only the datas we needed
+    //     dispatch(setIsLoggedIn(true));
+    //   }
+    //   else {
+    //     dispatch(setAuthUser(null));
+    //     dispatch(setIsLoggedIn(false))
+    //   }
+    // });
+
+    const getAuthUser = async () => {
+      try {
+        let response = await axiosInstance.get('/profile');
+        if (response.status === 200) {
+          dispatch(setAuthUser(response.data.user));
+          dispatch(setIsLoggedIn(true));
+        }
+
+      } catch (error) {
+        console.log(error.message);
         dispatch(setAuthUser(null));
         dispatch(setIsLoggedIn(false))
+
       }
-    });
+
+    }
+    getAuthUser();
   }, [])
 
   //When a user logged in fetch the users favorite recipe list
