@@ -40,37 +40,45 @@ export const getARecipe = async (req, res) => {
 
 export const createRecipe = async (req, res) => {
     try {
+
         const { title,
             description,
             ingredients,
             instructions,
-            // image,
+            image,
             cookingTime,
             cuisine,
             difficulty,
             dietType } = req.body;
 
+
         //validate for all required fields
-        if (!title || !description || !ingredients || !instructions || !cookingTime) {
+        if (!title || !description || !ingredients?.length || !instructions?.length || !cookingTime) {//check ingredients missing,ingredients empty array
             return res.status(400).json({ message: "Missing required fields" });
         }
-        if (!req.file) {
-            return res.status(400).json({ message: "Image not added" })
+        //image validation : either upload an image or paste image url
+        if (!req.file && !image) {
+            return res.status(400).json({ message: "Please upload an image or provide an image URL" })
         }
         //check for existing recipe : ensure the user have not already added the recipe
         let existingRecipe = await RecipeModel.findOne({ title: title, createdBy: req.user._id })
         if (existingRecipe) {
             return res.status(400).json({ message: "Recipe already exist" })
         }
+        let imageURL;
+        if (req.file) {
+            imageURL = await uploadToCloudinary(req.file.path);//send file path as parameter
+            console.log(imageURL)
+        } else {
+            imageURL = image
+        }
 
-        const cloudinaryResponse = await uploadToCloudinary(req.file.path);//send file path as parameter
-        console.log(cloudinaryResponse)
         const recipe = {
             title,
             description,
             ingredients,
             instructions,
-            image: cloudinaryResponse,
+            image: imageURL,
             cookingTime,
             cuisine,
             difficulty,
@@ -122,7 +130,7 @@ export const updateRecipe = async (req, res) => {
         let updateData = { ...req.body };
 
         if (req.file) {
-            imageURL = await uploadToCloudinary(req.file.path);
+            let imageURL = await uploadToCloudinary(req.file.path);
             updateData.image = imageURL;
         }
         let updatedRecipe = await RecipeModel.findOneAndUpdate({ _id: req.params.id, createdBy: req.user._id }, updateData, { returnDocument: 'after', runValidators: true });//only the author can update a recipe

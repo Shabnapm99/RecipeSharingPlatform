@@ -1,5 +1,6 @@
 import { axiosInstance } from "../axios/axiosInstance";
 
+//add to favorite
 export async function addToFavorite(recipeId) {
     try {
         let response = await axiosInstance.post(`/favorites/addtofavorite/${recipeId}`);
@@ -10,6 +11,7 @@ export async function addToFavorite(recipeId) {
     }
 }
 
+//remove from favorite
 export async function removeFromFavorite(recipeId) {
     try {
         let response = await axiosInstance.delete(`/favorites/removefavorite/${recipeId}`);
