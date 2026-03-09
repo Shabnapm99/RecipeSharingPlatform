@@ -26,12 +26,12 @@ const userSchema = new Schema({
         trim: true
     },
     //To store favorite recipes (reference to recipe model to store only the recipe IDs)
-    favoriteRecipes: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Recipe'
-        }
-    ],
+    // favoriteRecipes: [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         ref: 'Recipe'
+    //     }
+    // ],
     addedRecipes: [
         {
             type: Schema.Types.ObjectId,

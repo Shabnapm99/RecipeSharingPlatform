@@ -83,6 +83,8 @@ function App() {
   let user = useSelector((state) => state.users.authUser);
   let loggedIn = useSelector((state) => state.users.isLoggedIn);
   const recipes = useSelector((state) => state.recipes.recipes);
+  let favorites =  useSelector((state)=>state.favorites.savedRecipes)
+
 
   //to observe the signIn changes and store the details
   useEffect(() => {
@@ -123,21 +125,39 @@ function App() {
   //When a user logged in fetch the users favorite recipe list
 
   useEffect(() => {
-    if (user?.id && recipes.length > 0) {
-      const setFav = async () => {
-        if (user?.id) {
-          let userSavedId = await fetchUserfavorites(user?.id);
+    // if (user?.id && recipes.length > 0) {
+    //   const setFav = async () => {
+    //     if (user?.id) {
+    //       let userSavedId = await fetchUserfavorites(user?.id);
 
-          let userSavedRecipes = userSavedId?.map((id) => {
-            const match = recipes?.find((recipe) => recipe?.uniqueId === id);
-            return match;
-          }).filter((item) => item) // If item exists, keep it.filtering undefined items;
-          dispatch(setSavedRecipes(userSavedRecipes))
+    //       let userSavedRecipes = userSavedId?.map((id) => {
+    //         const match = recipes?.find((recipe) => recipe?.uniqueId === id);
+    //         return match;
+    //       }).filter((item) => item) // If item exists, keep it.filtering undefined items;
+    //       dispatch(setSavedRecipes(userSavedRecipes))
+    //     }
+    //   }
+    //   setFav();
+    // }
+
+
+    if (loggedIn) {
+      let getSavedRecipes = async () => {
+        try {
+          let response = await axiosInstance.get('/favorites/getfavorites');
+          if (response.status === 200) {
+            dispatch(setSavedRecipes(response.data.favoriteRecipes.recipes));
+          }
+
+        } catch (error) {
+          console.log(error.message)
         }
       }
-      setFav();
+      getSavedRecipes()
+     
     }
-  }, [user?.id, recipes])
+
+  }, [loggedIn])
 
   return (
     <div id='rootContainer'>

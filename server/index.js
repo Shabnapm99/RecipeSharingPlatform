@@ -5,6 +5,8 @@ import recipesRoute from './src/routes/recipeRoutes.js'
 import { dbConnect } from './src/config/db.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors'
+import favoriteRoutes from './src/routes/favoritesRoutes.js'
+
 
 //configure dotenv
 dotenv.config();
@@ -25,6 +27,7 @@ app.get('/', (req, res) => {
 
 app.use('/api', authRoute);
 app.use('/api/recipes', recipesRoute);
+app.use('/api/favorites',favoriteRoutes)
 
 dbConnect();//connecting to db
 

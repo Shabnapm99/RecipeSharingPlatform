@@ -17,7 +17,7 @@ export const login = async (req, res) => {
         email = email?.toLowerCase().trim();
         //check for the user in the DB
 
-        let user = await UserModel.findOne({ email: email }).select('-__v');
+        let user = await UserModel.findOne({ email: email }).select('-__v').populate('addedRecipes');
         //if there is no user registered on this email id
         if (!user) {
             return res.status(400).json({ message: "Incorrect email or password" })
@@ -38,7 +38,9 @@ export const login = async (req, res) => {
                     _id: user._id,
                     name: user.name,
                     email: user.email,
-                    occupation: user.occupation
+                    occupation: user.occupation,
+                    favoriteRecipes: user.favoriteRecipes,
+                    addedRecipes: user.favoriteRecipes
                 }//to prevent secured info like hashedpassed from sending back, send needed fields only
             })
         } else {

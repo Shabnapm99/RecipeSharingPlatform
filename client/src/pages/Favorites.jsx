@@ -30,7 +30,7 @@ function Favorites() {
           {
             savedRecipes.map((recipe, index) => {
               return (
-                <RecipeCard key={recipe.uniqueId || index} recipe={recipe} />
+                <RecipeCard key={recipe?._id || index} recipe={recipe} />
               )
             })
           }

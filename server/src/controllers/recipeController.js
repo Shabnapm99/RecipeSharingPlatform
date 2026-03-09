@@ -44,6 +44,7 @@ export const createRecipe = async (req, res) => {
             description,
             ingredients,
             instructions,
+            // image,
             cookingTime,
             cuisine,
             difficulty,

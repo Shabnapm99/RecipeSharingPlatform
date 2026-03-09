@@ -11,8 +11,6 @@ import InstructionCard from '../../components/Card/InstructionCard';
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { FiShare2, FiPrinter } from "react-icons/fi";
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { getDoc, doc, getFirestore } from 'firebase/firestore';
-import { app } from '../../utils/firebaseConfig'
 import { setSelectedRecipe, clearSelectedRecipe, setIsEditing } from '../../features/recipeSlice';
 import { setSavedRecipes } from '../../features/favoritesSlice'
 import Spinner from '../../components/Card/Spinner';
@@ -25,9 +23,8 @@ import { favorite } from '../../utils/favorite';
 import StopWatch from '../../components/Card/StopWatch';
 import { ImCross } from 'react-icons/im'
 import { axiosInstance } from '../../axios/axiosInstance';
+import { addToFavorite ,removeFromFavorite} from '../../utils/favoriteRecipes';
 
-// Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore(app);
 
 function RecipeDetails() {
 
@@ -64,20 +61,11 @@ function RecipeDetails() {
   const isSaved = savedRecipes.some((savedRecipe) => savedRecipe._id === recipe?._id);//this will return true if the recipe is in savedRecipeList
   const isAuthor = isLoggedIn && recipe?.createdBy?._id === user?._id;//true only if any user is loggedIn and the user is the author
 
-  //firebase function to get a single recipe
 
   useEffect(() => {
 
     const getRecipe = async () => {
       try {
-
-        // const docRef = doc(db, 'recipes', `${id}`); //create a refernce of document we want to get
-        // const getSnap = await getDoc(docRef);
-
-        // dispatch(setSelectedRecipe({
-        //   uniqueId: getSnap.id,
-        //   ...getSnap.data()
-        // }))
 
         let response = await axiosInstance.get(`/recipes/${id}`);
         if (response.status === 200) {
@@ -175,13 +163,15 @@ function RecipeDetails() {
                   {isSaved ? <FaHeart className='text-[#13ec6a] text-2xl' onClick={() => {
                     const updatedList = savedRecipes.filter((item) => item._id !== recipe?._id)
                     dispatch(setSavedRecipes(updatedList));//update redux
-                    favorite(updatedList, user);//function to add the savedList to user
+                    removeFromFavorite(recipe._id);
+                    // favorite(updatedList, user);//function to add the savedList to user
                   }
                   } /> : <FaRegHeart onClick={() => {
                     if (isLoggedIn) {
                       const updatedList = [...savedRecipes, recipe];//update the savedList
                       dispatch(setSavedRecipes(updatedList));//update redux
-                      favorite(updatedList, user);//function to add the savedList to user
+                      addToFavorite(recipe._id);
+                      // favorite(updatedList, user);//function to add the savedList to user
                     } else setShowLoginModal(true)
                   }} className='text-2xl' />}
 

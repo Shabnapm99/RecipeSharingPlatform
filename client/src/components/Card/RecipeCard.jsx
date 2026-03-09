@@ -35,7 +35,7 @@ function RecipeCard({ recipe }) {
                 <h3 className='text-white font-semibold group-hover:text-[#13ec13] mb-4'>{recipe?.title}</h3>
                 <div className='text-white/80 text-sm pt-4 ps-1 border-t border-gray-500 flex gap-3 items-center'>
                     <LuChefHat />
-                    <p className=' '>{recipe?.createdBy.name}</p>
+                    <p className=' '>{recipe?.createdBy?.name}</p>
                 </div>
             </div>
         </div>
