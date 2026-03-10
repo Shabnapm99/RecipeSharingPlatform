@@ -7,11 +7,16 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { axiosInstance } from '../../axios/axiosInstance';
 import { setAuthUser, setIsLoggedIn } from '../../features/userSlice';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 
 function ProfileModal({ onClose }) {
 
     let authUser = useSelector((state) => state.users.authUser);
+    const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
+    const [userAddedRecipes,setUserAddedRecipes] = useState([]);
+
     let navigate = useNavigate();
     let dispatch = useDispatch();
 
@@ -26,6 +31,21 @@ function ProfileModal({ onClose }) {
 
         }
     }
+
+    useEffect(() => {
+        const getUserAddedRecipes = async () => {
+            try {
+                let response = await axiosInstance.get('/recipes/my-recipes');
+                console.log(response)
+                setUserAddedRecipes(response.data.recipes);
+
+            } catch (error) {
+                console.log(error)
+            }
+
+        };
+        getUserAddedRecipes();
+    }, [])
 
     return (
         <div className='fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex justify-center items-center animate-fadeIn'>
@@ -66,7 +86,7 @@ function ProfileModal({ onClose }) {
                                 <FaHeart className='text-[#13ec6a]' />
                                 <p className='text-gray-400 text-sm'>Favorites</p>
                             </div>
-                            <p className='font-semibold text-white mt-1'>12 recipes</p>
+                            <p className='font-semibold text-white mt-1'>{savedRecipes.length} Recipes</p>
                         </div>
 
                         <div className='border border-[#13ec6a]/30 bg-green-950 rounded-xl p-4 cursor-pointer hover:scale-105 hover:bg-green-900 transition-all duration-300'>
@@ -75,7 +95,7 @@ function ProfileModal({ onClose }) {
                                 <p className='text-gray-400 text-sm'>Added</p>
 
                             </div>
-                            <p className='font-semibold text-white mt-1'>1 recipes</p>
+                            <p className='font-semibold text-white mt-1'>{userAddedRecipes?.length || 0} recipes</p>
                         </div>
 
                     </div>
