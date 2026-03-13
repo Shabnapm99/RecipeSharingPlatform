@@ -11,3 +11,16 @@ import { axiosInstance } from "../axios/axiosInstance";
 //     })
 //     return addedRecipes
 // }
+
+export const addrecipe = (data) => {
+    return axiosInstance.post('/recipes', data)
+}
+
+export const deleteRecipe = (id, data) => {
+    console.log("delted")
+    return axiosInstance.delete(`/recipes/${id}`, data);
+}
+
+export const updateRecipe = (id,data) => {
+    return axiosInstance.put(`/recipes/${id}`,data);
+}

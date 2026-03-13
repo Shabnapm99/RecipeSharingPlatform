@@ -47,15 +47,18 @@ const recipeSchema = new Schema({
     },
     difficulty: {
         type: String,
-        enum: ["EASY", "MEDIUM", "HARD"],
-        default: "EASY",
+        enum: ["easy", "medium", "hard"],
+        default: "easy",
         required: true,
+        lowercase: true
     },
     dietType: {
         type: String,
-        enum: ["VEGETARIAN", "NON-VEGETARIAN"],
-        default: "VEGETARIAN",
-        required: true
+        enum: ["vegetarian", "non-vegetarian"],
+        default: "vegetarian",
+        required: true,
+        lowercase: true
+
     },
     rating: {
         type: Number,

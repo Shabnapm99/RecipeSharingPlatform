@@ -2,15 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { ImCross } from "react-icons/im";
 import { FaPrint } from "react-icons/fa6";
 import { useDispatch, useSelector } from 'react-redux';
-import { setRecipes } from '../../features/recipeSlice'
-import { getFirestore, doc, setDoc, addDoc, collection, updateDoc } from 'firebase/firestore';
-import { app } from '../../utils/firebaseConfig'
+import { setIsEditing, setRecipes } from '../../features/recipeSlice'
 import { useNavigate } from 'react-router-dom';
 import ButtonSpinner from '../../components/Card/ButtonSpinner';
+import { updateRecipe, addrecipe } from '../../services/recipeServices';
 
-// Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore(app);
-const date = new Date();
 
 function SaveCard({ recipe, setFormData, setShowErrorPara }) {
 
@@ -24,54 +20,60 @@ function SaveCard({ recipe, setFormData, setShowErrorPara }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (!recipe.name.trim() || !recipe.image.trim() || !recipe.description.trim()) return setShowErrorPara(true);
+        console.log("i am called")
+        if (!recipe?.title?.trim() || !recipe?.image?.trim() || !recipe?.description?.trim()) return setShowErrorPara(true);
         console.log(recipe);
 
         const addData = async () => {
 
-            let recipeDate = {
+            let recipeData = {
 
-                name: recipe.name,
+                title: recipe.title,
                 image: recipe.image,
-                author: recipe.author,
                 description: recipe.description,
                 cuisine: recipe.cuisine,
                 dietType: recipe.dietType,
                 difficulty: recipe.difficulty,
-                cookTimeMinutes: recipe.cookTimeMinutes,
+                cookingTime: recipe.cookingTime,
                 ingredients: recipe.ingredients,
-                instructions: recipe.instructions,
-                userId: user.id,//to know which user is adding the recipe
-                createdAt: date.toDateString(),
+                instructions: recipe.instructions
 
             }
             try {
                 setLoading(true);
                 if (isEditing) {
                     //update recipe
-                    const docRef = doc(db, 'recipes', id);//id is from redux
-                    await updateDoc(docRef, recipeDate);
+                    // const docRef = doc(db, 'recipes', id);//id is from redux
+                    // await updateDoc(docRef, recipeDate);
 
-                    const updatedRecipes = recipes.map((recipe) => recipe.uniqueId === id ? recipeDate : recipe);
-                    dispatch(setRecipes(updatedRecipes))
+                    let response = await updateRecipe(id, recipeData);
+
+                    const updatedRecipe = response.data.recipe;
+                    dispatch(setRecipes(recipes.map((recipe) => recipe._id === id ? updatedRecipe : recipe)))
+
+
+
                 } else {
                     //add recipe
 
-                    const docRef = await addDoc(collection(db, 'recipes'), {
-                        ...recipeDate,
-                        rating: 4.9,//default values for rating and rating count
-                        reviewCount: 20
-                    })
 
-                    const newRecipe = { uniqueId: docRef.id, ...recipe };
+                    let response = await addrecipe({ ...recipeData, rating: 4.9, reviewCount: 20 })
+                    const newRecipe = response.data.recipe;
                     dispatch(setRecipes([...recipes, newRecipe]))
+
                 }
                 setFormData({});//clear the input fields
-                navigate(`/recipes/${isEditing ? id : ''}`);//navigate to details page for update recipe,and to listing page for add new recipe
+                navigate(isEditing ? `/recipes/${id}` : '/recipes');//navigate to details page for update recipe,and to listing page for add new recipe
 
             } catch (error) {
                 console.log(`Error || ${error}`)
-            } finally { setLoading(false) }
+            } finally {
+                setLoading(false);
+                dispatch(setIsEditing({
+                    isEditing: false,
+                    uniqueId: null
+                }))
+            }
         }
 
         addData();

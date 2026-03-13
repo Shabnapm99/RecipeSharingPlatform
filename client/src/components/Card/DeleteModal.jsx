@@ -1,21 +1,22 @@
 import React, { useState } from 'react'
 import { ImCross } from 'react-icons/im'
 import ButtonSpinner from './ButtonSpinner';
-import { deleteDoc, doc, getFirestore } from 'firebase/firestore';
-import { app } from '../../utils/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
-
-const db = getFirestore(app);
+import { deleteRecipe } from '../../services/recipeServices.js'
+import { removeRecipe } from '../../features/recipeSlice.js';
+import { useDispatch } from 'react-redux';
 
 function DeleteModal({ onClose, recipe }) {
 
     const [deleteLoading, setDeleteLoading] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const deleteRecipe = async () => {
+    const deleteARecipe = async () => {
         try {
             setDeleteLoading(true);
-            await deleteDoc(doc(db, 'recipes', recipe?.uniqueId));
+            await deleteRecipe(recipe._id);
+            dispatch(removeRecipe(recipe._id));// remove from redux store to update UI immediately after delteing
             navigate('/recipes');
         } catch (error) {
             console.log(error);
@@ -66,7 +67,7 @@ function DeleteModal({ onClose, recipe }) {
 
                     {/* Delete */}
                     <button
-                        onClick={deleteRecipe}
+                        onClick={deleteARecipe}
                         disabled={deleteLoading}
                         className='px-5 py-2 rounded-lg 
                                    bg-red-600 
@@ -77,8 +78,8 @@ function DeleteModal({ onClose, recipe }) {
                                    transition-all duration-300 
                                    flex items-center justify-center min-w-22.5'
                     >
-                        {deleteLoading 
-                            ? <ButtonSpinner loading={deleteLoading} /> 
+                        {deleteLoading
+                            ? <ButtonSpinner loading={deleteLoading} />
                             : "Delete"}
                     </button>
 

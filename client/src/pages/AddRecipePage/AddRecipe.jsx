@@ -16,7 +16,7 @@ function AddRecipe() {
   const [description, setDescription] = useState('');
   const [cookingTime, setCookingTime] = useState(5);
   const [difficulty, setDifficulty] = useState('Easy');
-  const [author, setAuthor] = useState('');
+  // const [author, setAuthor] = useState('');
   const [dietType, setDietType] = useState('Vegetarian');
   const [cuisine, setCuisine] = useState('Italian');
   const [imageUrl, setImageUrl] = useState('');
@@ -28,35 +28,34 @@ function AddRecipe() {
   useEffect(() => {
 
     setFormData({
-      name: title,
-      author: author,
+      title: title,
       description: description,
       cuisine: cuisine,
       dietType: dietType,
       difficulty: difficulty,
       image: imageUrl,
-      cookTimeMinutes: cookingTime,
+      cookingTime: cookingTime,
       instructions: instructions,
       ingredients: ingredients
     })
 
-  }, [title, description, cookingTime, difficulty, author, dietType, cuisine, imageUrl, ingredients, instructions])
+  }, [title, description, cookingTime, difficulty, dietType, cuisine, imageUrl, ingredients, instructions])
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    setAuthor(user?.name);
+  //   setAuthor(user?.name);
 
-  }, [user]);//to set the author name as current user
+  // }, [user]);//to set the author name as current user
 
   //function to get the recipe details to update
   useEffect(() => {
     if (isEditing) {
-      let editingRecipe = recipes.find((recipe) => recipe?.uniqueId === id)
-      console.log(`editing... recipe is ${editingRecipe}`);
-      setTitle(editingRecipe?.name || '');
+      let editingRecipe = recipes.find((recipe) => recipe?._id === id)
+      console.log("editing... recipe is ",editingRecipe);
+      setTitle(editingRecipe?.title || '');
       setDescription(editingRecipe?.description || '');
       setDifficulty(editingRecipe?.difficulty || 'Easy')
-      setCookingTime(Number(editingRecipe?.cookTimeMinutes) || 5)
+      setCookingTime(Number(editingRecipe?.cookingTime) || 5)
       setImageUrl(editingRecipe?.image || '')
       setDietType(editingRecipe?.dietType || 'Vegetarian')
       setCuisine(editingRecipe?.cuisine || 'Italian')
@@ -115,19 +114,19 @@ function AddRecipe() {
                 <div className='flex flex-col gap-1'>
                   <label className='text-[#13ec6a]/50 font-medium'>Difficulty</label>
                   <select className='bg-[#1c2720] block p-1.5 rounded border border-[#3b5445] text-sm' required value={difficulty} onChange={(e) => setDifficulty(e.target.value)} >
-                    <option value={'Easy'}  >Easy</option>
-                    <option value={'Hard'}>Hard</option>
-                    <option value={'Medium'}>Medium</option>
+                    <option value={'easy'}  >Easy</option>
+                    <option value={'hard'}>Hard</option>
+                    <option value={'medium'}>Medium</option>
                   </select>
                 </div>
 
                 <div className='flex flex-col gap-1'>
                   <label className='text-[#13ec6a]/50 font-medium'>Diet type</label>
                   <select className='bg-[#1c2720] block p-1.5 rounded border border-[#3b5445] text-sm' required value={dietType} onChange={(e) => setDietType(e.target.value)}>
-                    <option value={'Vegetarian'}>Vegetarian</option>
-                    <option value={"Vegan"}>Vegan</option>
-                    <option value={"Keto"}>Keto</option>
-                    <option value={'Non-vegetarian'}>Non-veg</option>
+                    <option value={'vegetarian'}>Vegetarian</option>
+                    <option value={"vegan"}>Vegan</option>
+                    <option value={"keto"}>Keto</option>
+                    <option value={'non-vegetarian'}>Non-veg</option>
                   </select>
                 </div>
 
@@ -136,6 +135,7 @@ function AddRecipe() {
                   <select className='bg-[#1c2720] block p-1.5 rounded border border-[#3b5445] text-sm' required value={cuisine} onChange={(e) => setCuisine(e.target.value)}>
                     <option value={'Italian'}>Italian</option>
                     <option value={'American'}>American</option>
+                    <option value={'American'}>Chinese</option>
                     <option value={'Asian'}>Asian</option>
                     <option value={'Mexican'}>Mexican</option>
                     <option value={'Mediterranean'}>Mediterranean</option>

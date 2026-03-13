@@ -23,10 +23,13 @@ const recipeSlice = createSlice({
       state.isEditing = action.payload.boolean;
       state.uniqueId = action.payload.id;
     },
-
+    removeRecipe: (state, action) => {
+      let recipeId = action.payload
+      state.recipes = state.recipes.filter((recipe) => recipe._id != recipeId)
+    }
   }
 })
 
-export const { setRecipes, setSelectedRecipe, clearSelectedRecipe, setIsEditing } = recipeSlice.actions; //export action creators
+export const { setRecipes, setSelectedRecipe, clearSelectedRecipe, setIsEditing, removeRecipe } = recipeSlice.actions; //export action creators
 
 export default recipeSlice.reducer;

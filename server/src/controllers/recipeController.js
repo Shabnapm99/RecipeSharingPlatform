@@ -88,9 +88,11 @@ export const createRecipe = async (req, res) => {
 
         const newRecipe = await RecipeModel.create(recipe);
 
+        const populatedRecipe = await RecipeModel.findById(newRecipe._id).populate('createdBy', 'name').select('-__v')
+        //we should populate createdby id if we want to show the author name immediately afetr adding data
         res.status(201).json({
             message: "Recipe created successfully",
-            recipe: newRecipe
+            recipe: populatedRecipe
         })
 
     } catch (error) {

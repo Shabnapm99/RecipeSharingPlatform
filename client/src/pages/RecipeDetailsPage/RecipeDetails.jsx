@@ -25,7 +25,6 @@ import { ImCross } from 'react-icons/im'
 import { axiosInstance } from '../../axios/axiosInstance';
 import { addToFavorite ,removeFromFavorite} from '../../utils/favoriteRecipes';
 
-
 function RecipeDetails() {
 
   let dispatch = useDispatch();
