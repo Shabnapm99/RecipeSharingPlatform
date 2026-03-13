@@ -13,7 +13,11 @@ import { axiosInstance } from "../axios/axiosInstance";
 // }
 
 export const addrecipe = (data) => {
-    return axiosInstance.post('/recipes', data)
+    return axiosInstance.post('/recipes', data, {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    })
 }
 
 export const deleteRecipe = (id, data) => {
@@ -21,6 +25,6 @@ export const deleteRecipe = (id, data) => {
     return axiosInstance.delete(`/recipes/${id}`, data);
 }
 
-export const updateRecipe = (id,data) => {
-    return axiosInstance.put(`/recipes/${id}`,data);
+export const updateRecipe = (id, data) => {
+    return axiosInstance.put(`/recipes/${id}`, data);
 }

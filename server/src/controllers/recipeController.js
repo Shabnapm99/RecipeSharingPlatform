@@ -50,6 +50,8 @@ export const createRecipe = async (req, res) => {
             cuisine,
             difficulty,
             dietType } = req.body;
+            console.log(req.body)
+            console.log(req.file)
 
 
         //validate for all required fields
@@ -76,8 +78,8 @@ export const createRecipe = async (req, res) => {
         const recipe = {
             title,
             description,
-            ingredients,
-            instructions,
+            ingredients: JSON.parse(ingredients),
+            instructions: JSON.parse(instructions),
             image: imageURL,
             cookingTime,
             cuisine,

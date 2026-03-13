@@ -22,7 +22,7 @@ function PopularRecipe() {
                     {
                         popularRecipesToshow.map((recipe) => {
                             return (
-                                <RecipeCard key={recipe?.uniqueId} recipe={recipe} />
+                                <RecipeCard key={recipe?._id} recipe={recipe} />
                             )
                         })
                     }

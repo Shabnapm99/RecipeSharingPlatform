@@ -24,6 +24,7 @@ function AddRecipe() {
   const [instructions, setInstructions] = useState([]);
   const [formData, setFormData] = useState({});
   const [showErrorPara, setShowErrorPara] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
 
@@ -51,7 +52,7 @@ function AddRecipe() {
   useEffect(() => {
     if (isEditing) {
       let editingRecipe = recipes.find((recipe) => recipe?._id === id)
-      console.log("editing... recipe is ",editingRecipe);
+      console.log("editing... recipe is ", editingRecipe);
       setTitle(editingRecipe?.title || '');
       setDescription(editingRecipe?.description || '');
       setDifficulty(editingRecipe?.difficulty || 'Easy')
@@ -76,7 +77,7 @@ function AddRecipe() {
           </button>
           </Link>
           <div >
-            <h1 className='text-white text-3xl font-bold'>{isEditing?<p>Edit Recipe</p>:<p>Add New Recipe</p>}</h1>
+            <h1 className='text-white text-3xl font-bold'>{isEditing ? <p>Edit Recipe</p> : <p>Add New Recipe</p>}</h1>
             <p className='mt-1 text-white/30'>Share your delicious creation with the community</p>
 
           </div>
@@ -163,10 +164,11 @@ function AddRecipe() {
               {/* image url */}
               <div className='flex flex-col gap-2'>
                 <label htmlFor='title' className='text-[#13ec6a]/50 font-medium'>Image URL</label>
-                <input type='text' id='title' placeholder='Enter url' className='border border-[#3b5445] rounded p-2 bg-[#1c2720]' required value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+                <input type='text' id='title' placeholder='Enter url' className='border border-[#3b5445] rounded p-2 bg-[#1c2720]' value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
               </div>
               <div className='flex gap-2 my-2'>
-                <input type='file' className='border border-[#3b5445] rounded w-35 px-2 py-1 bg-[#1c2720]' />
+                <input type='file' className='border border-[#3b5445] rounded w-35 px-2 py-1 bg-[#1c2720]'
+                onChange={(e)=>setImageFile(e.target.files[0])} />
                 <p>or paste URL above</p>
               </div>
             </div>
@@ -200,12 +202,12 @@ function AddRecipe() {
             </div>
             <div className='flex gap-4'>
               <p>{cookingTime || "5"} Mins</p>
-              <p>{difficulty || "Easy"}</p>
+              <p>{difficulty || "easy"}</p>
             </div>
 
           </div>
 
-          <SaveCard recipe={formData} setFormData={setFormData} setShowErrorPara={setShowErrorPara} />
+          <SaveCard recipe={formData} imageFile={imageFile} setFormData={setFormData} setShowErrorPara={setShowErrorPara} />
 
         </div>
       </section>

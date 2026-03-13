@@ -7,7 +7,7 @@ function QuickRecipes() {
 
     const recipes = useSelector((state) => state.recipes.recipes);
     let [loading, setLoading] = useState(true);
-    let QuickRecipes = recipes.filter((recipe) => recipe?.cookTimeMinutes < 15);//this will filter the recipes and return recipes which have rating greater than 4.8
+    let QuickRecipes = recipes.filter((recipe) => recipe?.cookingTime < 15);//this will filter the recipes and return recipes which have rating greater than 4.8
     let QuickRecipesToshow = QuickRecipes.slice(0, 4);//to show only 4 items
 
     useEffect(() => {
@@ -24,7 +24,7 @@ function QuickRecipes() {
                     {
                         QuickRecipesToshow.map((recipe) => {
                             return (
-                                <RecipeCard key={recipe?.uniqueId} recipe={recipe} />
+                                <RecipeCard key={recipe?._id} recipe={recipe} />
                             )
                         })
                     }

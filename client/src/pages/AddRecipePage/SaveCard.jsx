@@ -8,7 +8,7 @@ import ButtonSpinner from '../../components/Card/ButtonSpinner';
 import { updateRecipe, addrecipe } from '../../services/recipeServices';
 
 
-function SaveCard({ recipe, setFormData, setShowErrorPara }) {
+function SaveCard({ recipe, imageFile, setFormData, setShowErrorPara }) {
 
     let dispatch = useDispatch();
     let navigate = useNavigate();
@@ -20,25 +20,45 @@ function SaveCard({ recipe, setFormData, setShowErrorPara }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log("i am called")
-        if (!recipe?.title?.trim() || !recipe?.image?.trim() || !recipe?.description?.trim()) return setShowErrorPara(true);
+        if (!recipe?.title?.trim() || !recipe?.description?.trim()) return setShowErrorPara(true);
         console.log(recipe);
 
         const addData = async () => {
 
-            let recipeData = {
+            let formData = new FormData();
 
-                title: recipe.title,
-                image: recipe.image,
-                description: recipe.description,
-                cuisine: recipe.cuisine,
-                dietType: recipe.dietType,
-                difficulty: recipe.difficulty,
-                cookingTime: recipe.cookingTime,
-                ingredients: recipe.ingredients,
-                instructions: recipe.instructions
+            formData.append("title", recipe.title);
+            formData.append("description", recipe.description);
+            formData.append("cuisine", recipe.cuisine);
+            formData.append("dietType", recipe.dietType);
+            formData.append("difficulty", recipe.difficulty);
+            formData.append("cookingTime", recipe.cookingTime);
 
+            formData.append("ingredients", JSON.stringify(recipe.ingredients));
+            formData.append("instructions", JSON.stringify(recipe.instructions));
+
+            formData.append("rating", 4.9);
+            formData.append("reviewCount", 20);
+
+            if (imageFile) {
+                formData.append("image", imageFile); // multer will read this
+            } else {
+                formData.append("image", recipe.image); // pasted URL
             }
+
+            // let recipeData = {
+
+            //     title: recipe.title,
+            //     image: recipe.image,
+            //     description: recipe.description,
+            //     cuisine: recipe.cuisine,
+            //     dietType: recipe.dietType,
+            //     difficulty: recipe.difficulty,
+            //     cookingTime: recipe.cookingTime,
+            //     ingredients: recipe.ingredients,
+            //     instructions: recipe.instructions
+
+            // }
             try {
                 setLoading(true);
                 if (isEditing) {
@@ -46,7 +66,7 @@ function SaveCard({ recipe, setFormData, setShowErrorPara }) {
                     // const docRef = doc(db, 'recipes', id);//id is from redux
                     // await updateDoc(docRef, recipeDate);
 
-                    let response = await updateRecipe(id, recipeData);
+                    let response = await updateRecipe(id, formData);
 
                     const updatedRecipe = response.data.recipe;
                     dispatch(setRecipes(recipes.map((recipe) => recipe._id === id ? updatedRecipe : recipe)))
@@ -57,7 +77,7 @@ function SaveCard({ recipe, setFormData, setShowErrorPara }) {
                     //add recipe
 
 
-                    let response = await addrecipe({ ...recipeData, rating: 4.9, reviewCount: 20 })
+                    let response = await addrecipe(formData)
                     const newRecipe = response.data.recipe;
                     dispatch(setRecipes([...recipes, newRecipe]))
 
