@@ -11,7 +11,9 @@ export const getRecipes = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong:", error.message);
         res.status(500).json({
-            message: "Internal server Error"
+            message: "Internal server Error",
+            error: error.message
+
         })
     }
 
@@ -31,7 +33,9 @@ export const getARecipe = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong:", error.message);
         res.status(500).json({
-            message: "Internal server Error"
+            message: "Internal server Error",
+            error: error.message
+
         })
     }
 }
@@ -50,20 +54,27 @@ export const createRecipe = async (req, res) => {
             cuisine,
             difficulty,
             dietType } = req.body;
-            console.log(req.body)
-            console.log(req.file)
 
+        //to convert the string to array before saving since FormData sends as string
+        let parsedIngredients = JSON.parse(ingredients);
+        let parsedInstructions = JSON.parse(instructions);
 
         //validate for all required fields
-        if (!title || !description || !ingredients?.length || !instructions?.length || !cookingTime) {//check ingredients missing,ingredients empty array
+        if (!title || !description || !parsedIngredients?.length || !parsedInstructions?.length || !cookingTime) {//check ingredients missing,ingredients empty array
             return res.status(400).json({ message: "Missing required fields" });
         }
         //image validation : either upload an image or paste image url
         if (!req.file && !image) {
             return res.status(400).json({ message: "Please upload an image or provide an image URL" })
         }
+
+        //User authentication 
+        if (!req.user) {
+            return res.status(401).json({ message: "Unauthorized" })
+        }
+
         //check for existing recipe : ensure the user have not already added the recipe
-        let existingRecipe = await RecipeModel.findOne({ title: title, createdBy: req.user._id })
+        let existingRecipe = await RecipeModel.findOne({ title, createdBy: req.user._id })
         if (existingRecipe) {
             return res.status(400).json({ message: "Recipe already exist" })
         }
@@ -78,8 +89,8 @@ export const createRecipe = async (req, res) => {
         const recipe = {
             title,
             description,
-            ingredients: JSON.parse(ingredients),
-            instructions: JSON.parse(instructions),
+            ingredients: parsedIngredients,
+            instructions: parsedInstructions,
             image: imageURL,
             cookingTime,
             cuisine,
@@ -92,6 +103,9 @@ export const createRecipe = async (req, res) => {
 
         const populatedRecipe = await RecipeModel.findById(newRecipe._id).populate('createdBy', 'name').select('-__v')
         //we should populate createdby id if we want to show the author name immediately afetr adding data
+        if (!populatedRecipe) {
+            return res.status(400).json({ message: "Recipe not created" })
+        }
         res.status(201).json({
             message: "Recipe created successfully",
             recipe: populatedRecipe
@@ -100,7 +114,8 @@ export const createRecipe = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong:", error.message);
         res.status(500).json({
-            message: "Internal server Error"
+            message: "Internal server Error",
+            error: error.message
         })
     }
 
@@ -123,11 +138,14 @@ export const deleteRecipe = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong:", error.message);
         res.status(500).json({
-            message: "Internal server Error"
+            message: "Internal server Error",
+            error: error.message
+
         })
     }
 }
 
+//update a recipe
 export const updateRecipe = async (req, res) => {
     try {
         let updateData = { ...req.body };
@@ -149,7 +167,9 @@ export const updateRecipe = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong:", error.message);
         res.status(500).json({
-            message: "Internal server Error"
+            message: "Internal server Error",
+            error: error.message
+
         })
     }
 
@@ -166,7 +186,9 @@ export const getUserAddedRecipe = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong:", error.message);
         res.status(500).json({
-            message: "Internal server Error"
+            message: "Internal server Error",
+            error: error.message
+
         })
     }
 }

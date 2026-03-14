@@ -23,6 +23,7 @@ The Recipe Sharing Platform is a responsive web app that helps users easily find
 - **Summarize Recipe:** Summarize recipes using the Gemini API.
 - **Print Recipe:** Print-friendly recipe layout.
 - **Firebase Integration:** Firebase used for authentication and data storage.
+- **Mongodb integration:** Migrated to Mongodb for user registration, login authentication and data storage
 - **Responsive Design:** Optimized for mobile, tablet, and desktop devices.
 - **AI Integration:** Web Speech API for voice search and Gemini API for summarization.
 
@@ -39,6 +40,7 @@ Through this project, I learned how to:
 - Integrate third-party APIs such as the Web Speech API for voice search and the Gemini API for AI-powered recipe summarization.
 - Implement advanced features like multi-level filtering, search functionality, timers, and print-friendly views.
 - Handle CRUD operations effectively with proper data validation and access restrictions.
+- Include file(image) upload using multer and cloudinary.
 - Improve overall application performance, usability, and user experience.
 
 This project aimed to simulate a real-world application by combining modern front-end technologies, cloud services, and AI features into a single, scalable solution.
@@ -49,11 +51,11 @@ This project aimed to simulate a real-world application by combining modern fron
 - **Frontend:** React.js
 - **Styling:** CSS3 / Tailwind CSS
 - **APIs:** dummyjson, {JSON} Placeholder
-- **Libraries:** React-Router-Dom, React-Redux, react-spinners, react-timer-hook, react-to-print
+- **Libraries:** React-Router-Dom, React-Redux, react-spinners, react-timer-hook, react-to-print, multer, cloudinary, react-toastify
 - **AI Tools:** WebSpeech API, Gemini API
 - **Deployment:** Vercel
 - **Version Control:** Git & GitHub
-- **Backend:** Firebase
+- **Backend:** MongoDB
 
 ## 🤖 AI Integration (Optional)
 

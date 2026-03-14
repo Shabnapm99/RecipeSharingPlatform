@@ -50,7 +50,9 @@ export const login = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong:", error.message);
         res.status(error.status || 500).json({
-            message: "Internal server Error"
+            message: "Internal server Error",
+            error: error.message
+
         })
     }
 
@@ -81,20 +83,25 @@ export const register = async (req, res) => {
         let salt = await bcrypt.genSalt(10);
         let hashedPassword = await bcrypt.hash(password, salt);
 
-        await UserModel.create({
+        let newUser = await UserModel.create({
             name,
             email,
             password_hash: hashedPassword,
             occupation
         });
-        //user dbyil create aayo illayo enn condition vech check cheyyananm. aayillenkil enth response varanam enn
+        
+        if (!newUser) {
+            return res.status(400).json({ message: "User is not created" })//to check whether user is created properly in db or not
+        }
         return res.status(201).json({
             message: "User created successfully"
         });
     } catch (error) {
         console.log("Something went wrong:", error.message);
         res.status(error.status || 500).json({
-            message: "Internal server Error"
+            message: "Internal server Error",
+            error: error.message
+
         })
     }
 }
@@ -112,7 +119,9 @@ export const profile = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong:", error.message);
         res.status(error.status || 500).json({
-            message: "Internal server Error"
+            message: "Internal server Error",
+            error: error.message
+
         })
     }
 }
@@ -129,7 +138,9 @@ export const logout = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong:", error.message);
         res.status(error.status || 500).json({
-            message: "Internal server Error"
+            message: "Internal server Error",
+            error: error.message
+
         })
     }
 }

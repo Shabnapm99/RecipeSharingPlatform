@@ -32,7 +32,9 @@ export const addToFavorites = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong:", error.message);
         res.status(error.status || 500).json({
-            message: "Internal server Error"
+            message: "Internal server Error",
+            error: error.message
+
         })
 
     }
@@ -56,7 +58,9 @@ export const getFavorites = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong:", error.message);
         res.status(error.status || 500).json({
-            message: "Internal server Error"
+            message: "Internal server Error",
+            error: error.message
+
         })
 
     }
@@ -84,7 +88,9 @@ export const removeFavorite = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong:", error.message);
         res.status(error.status || 500).json({
-            message: "Internal server Error"
+            message: "Internal server Error",
+            error: error.message
+
         })
 
     }

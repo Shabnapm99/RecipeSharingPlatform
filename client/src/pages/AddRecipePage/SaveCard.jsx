@@ -20,7 +20,7 @@ function SaveCard({ recipe, imageFile, setFormData, setShowErrorPara }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (!recipe?.title?.trim() || !recipe?.description?.trim()) return setShowErrorPara(true);
+        if (!recipe?.title?.trim() || !recipe?.description?.trim() || (!imageFile && !recipe?.image)) return setShowErrorPara(true);
         console.log(recipe);
 
         const addData = async () => {
@@ -63,19 +63,14 @@ function SaveCard({ recipe, imageFile, setFormData, setShowErrorPara }) {
                 setLoading(true);
                 if (isEditing) {
                     //update recipe
-                    // const docRef = doc(db, 'recipes', id);//id is from redux
-                    // await updateDoc(docRef, recipeDate);
 
                     let response = await updateRecipe(id, formData);
 
                     const updatedRecipe = response.data.recipe;
                     dispatch(setRecipes(recipes.map((recipe) => recipe._id === id ? updatedRecipe : recipe)))
 
-
-
                 } else {
                     //add recipe
-
 
                     let response = await addrecipe(formData)
                     const newRecipe = response.data.recipe;
@@ -120,6 +115,5 @@ function SaveCard({ recipe, imageFile, setFormData, setShowErrorPara }) {
         </div>
     )
 }
-
 
 export default SaveCard
