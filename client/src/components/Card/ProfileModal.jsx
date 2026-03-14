@@ -9,6 +9,7 @@ import { axiosInstance } from '../../axios/axiosInstance';
 import { setAuthUser, setIsLoggedIn } from '../../features/userSlice';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 
 function ProfileModal({ onClose }) {
@@ -27,6 +28,7 @@ function ProfileModal({ onClose }) {
             dispatch(setIsLoggedIn(false));
             dispatch(setAuthUser(null));
             // onClose();
+            toast.success("Logged out successfully");
             navigate('/login')
 
         }

@@ -17,16 +17,18 @@ const recipeSchema = new Schema({
     ingredients: [
         {
             type: String,
-            required: true
+            required: true,
+            trim: true
         }
     ],
     instructions: [{
         type: String,
-        required: true
+        required: true,
+        trim: true
     }],
     image: {
         type: String,
-
+        required: true
     },
     createdBy: {
         type: Schema.Types.ObjectId,
@@ -41,7 +43,7 @@ const recipeSchema = new Schema({
     },
     cuisine: {
         type: String,
-        enum: ["Indian", "Italian", "Chinese", "Mexican", "American", "Mediterranean"],
+        // enum: ["Indian", "Italian", "Chinese", "Mexican", "American", "Mediterranean", "Pakistani"],
         required: true,
         default: "Indian"
     },
@@ -63,7 +65,8 @@ const recipeSchema = new Schema({
     rating: {
         type: Number,
         default: 0,
-        min: 0, max: 5
+        min: 0,
+        max: 5
     },
     reviewCount: {
         type: Number,

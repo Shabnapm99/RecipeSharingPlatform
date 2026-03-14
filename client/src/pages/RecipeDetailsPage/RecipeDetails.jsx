@@ -24,6 +24,7 @@ import StopWatch from '../../components/Card/StopWatch';
 import { ImCross } from 'react-icons/im'
 import { axiosInstance } from '../../axios/axiosInstance';
 import { addToFavorite ,removeFromFavorite} from '../../utils/favoriteRecipes';
+import { toast } from 'react-toastify';
 
 function RecipeDetails() {
 
@@ -163,6 +164,7 @@ function RecipeDetails() {
                     const updatedList = savedRecipes.filter((item) => item._id !== recipe?._id)
                     dispatch(setSavedRecipes(updatedList));//update redux
                     removeFromFavorite(recipe._id);
+                    toast.warn("Recipe removed from saved list");
                     // favorite(updatedList, user);//function to add the savedList to user
                   }
                   } /> : <FaRegHeart onClick={() => {
@@ -170,6 +172,7 @@ function RecipeDetails() {
                       const updatedList = [...savedRecipes, recipe];//update the savedList
                       dispatch(setSavedRecipes(updatedList));//update redux
                       addToFavorite(recipe._id);
+                      toast.success("Recipe saved")
                       // favorite(updatedList, user);//function to add the savedList to user
                     } else setShowLoginModal(true)
                   }} className='text-2xl' />}

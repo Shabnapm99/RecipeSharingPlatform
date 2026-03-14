@@ -5,6 +5,8 @@ import ButtonSpinner from '../components/Card/ButtonSpinner';
 import { axiosInstance } from '../axios/axiosInstance';
 import { setIsLoggedIn, setAuthUser } from '../features/userSlice.js';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 
 function Login() {
@@ -14,6 +16,7 @@ function Login() {
   const [showErrorPara, setShowErrorPara] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   let navigate = useNavigate();
   let dispatch = useDispatch();
 
@@ -29,12 +32,14 @@ function Login() {
         setEmail('');
         setPassword('');//reset the fields only after signinwithemailandpassword completed
         navigate('/', { replace: true });//to forcefully replacing the page to home
+        toast.success("LoggedIn successfully");
       }
 
     } catch (error) {
-      setAlertMessage(error.response?.data?.message);
+      // setAlertMessage(error.response?.data?.message);
       console.log(error);
-      setShowErrorPara(true);
+      toast.error(error.response?.data?.message);
+      // setShowErrorPara(true);
     } finally {
       setLoading(false);
     }
@@ -44,7 +49,6 @@ function Login() {
     e.preventDefault();
     setShowErrorPara(false)
     loginUser();
-
   }
 
   return (
@@ -66,11 +70,11 @@ function Login() {
           <div>
             <h1 className='text-3xl font-bold text-white'>Welcome Back</h1>
             <p className='text-base text-gray-400 mt-2'>Login to access your saved recipes and share you new recipe.</p>
-            {showErrorPara && <p className='text-sm text-red-500 mt-1'>{alertMessage}</p>}
+            {/* {showErrorPara && <p className='text-sm text-red-500 mt-1'>{alertMessage}</p>} */}
           </div>
           {/* Form */}
           <div className='mt-8'>
-            <form className='' onSubmit={handleSubmit}>
+            <form className='' onSubmit={handleSubmit} noValidate>
               <div className='flex flex-col gap-5'>
                 <div className=''>
                   <label htmlFor='email' className='text-white block text-sm'>Email or UserName</label>
@@ -79,8 +83,13 @@ function Login() {
                 </div>
                 <div className=''>
                   <label htmlFor='pswd' className='text-white block text-sm'>Password</label>
-                  <input className='mt-2 rounded-2xl py-2.5 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' type='password' id='pswd' required placeholder='.......' value={password}
-                    onChange={(e) => setPassword(e.target.value)} />
+                  <div className="relative">
+                    <input className='mt-2 rounded-2xl py-2.5 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' 
+                    type={showPassword?"text":"password"} id='pswd' required placeholder='.......' value={password}
+                      onChange={(e) => setPassword(e.target.value)} />
+                    {showPassword ? <FaRegEye className='text-white absolute top-5 right-2' onClick={()=>setShowPassword(false)}/> : <FaRegEyeSlash className='text-white absolute top-5 right-2' onClick={()=>setShowPassword(true)}/>}
+
+                  </div>
                 </div>
                 <div className='text-end'>
                   <a className='text-xs font-medium text-[#13ec6a]' href='#'>Forgot password?</a>

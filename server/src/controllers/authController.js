@@ -12,7 +12,7 @@ export const login = async (req, res) => {
 
         let { email, password } = req.body;
         if (!email || !password) {
-            return res.status(400).json({ error: "All fields are required" })
+            return res.status(400).json({ message: "All fields are required" })
         }
         email = email?.toLowerCase().trim();
         //check for the user in the DB
@@ -89,7 +89,7 @@ export const register = async (req, res) => {
             password_hash: hashedPassword,
             occupation
         });
-        
+
         if (!newUser) {
             return res.status(400).json({ message: "User is not created" })//to check whether user is created properly in db or not
         }

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { deleteRecipe } from '../../services/recipeServices.js'
 import { removeRecipe } from '../../features/recipeSlice.js';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 function DeleteModal({ onClose, recipe }) {
 
@@ -17,9 +18,12 @@ function DeleteModal({ onClose, recipe }) {
             setDeleteLoading(true);
             await deleteRecipe(recipe._id);
             dispatch(removeRecipe(recipe._id));// remove from redux store to update UI immediately after delteing
+            toast.success("Recipe deleted")
             navigate('/recipes');
+            
         } catch (error) {
             console.log(error);
+            toast.error(error.response?.data?.message);
         } finally {
             setDeleteLoading(false);
         }

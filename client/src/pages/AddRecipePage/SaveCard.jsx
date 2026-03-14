@@ -6,6 +6,7 @@ import { setIsEditing, setRecipes } from '../../features/recipeSlice'
 import { useNavigate } from 'react-router-dom';
 import ButtonSpinner from '../../components/Card/ButtonSpinner';
 import { updateRecipe, addrecipe } from '../../services/recipeServices';
+import { toast } from 'react-toastify';
 
 
 function SaveCard({ recipe, imageFile, setFormData, setShowErrorPara }) {
@@ -67,14 +68,17 @@ function SaveCard({ recipe, imageFile, setFormData, setShowErrorPara }) {
                     let response = await updateRecipe(id, formData);
 
                     const updatedRecipe = response.data.recipe;
-                    dispatch(setRecipes(recipes.map((recipe) => recipe._id === id ? updatedRecipe : recipe)))
+                    dispatch(setRecipes(recipes.map((recipe) => recipe._id === id ? updatedRecipe : recipe)));
+                    toast.success("Recipe updated");
 
                 } else {
                     //add recipe
 
                     let response = await addrecipe(formData)
                     const newRecipe = response.data.recipe;
-                    dispatch(setRecipes([...recipes, newRecipe]))
+                    dispatch(setRecipes([...recipes, newRecipe]));
+                    toast.success("New recipe added");
+
 
                 }
                 setFormData({});//clear the input fields
@@ -82,6 +86,8 @@ function SaveCard({ recipe, imageFile, setFormData, setShowErrorPara }) {
 
             } catch (error) {
                 console.log(`Error || ${error}`)
+                toast.error(error.response?.data?.error);
+
             } finally {
                 setLoading(false);
                 dispatch(setIsEditing({

@@ -4,11 +4,13 @@ import './index.css'
 import App from './App.jsx'
 import { Provider } from 'react-redux'
 import { store } from './store/store.js'
+import { ToastContainer } from 'react-toastify';
 
 createRoot(document.getElementById('root')).render(
     // Provide the Redux Store to React
     <Provider store={store}>
         <App />
+        <ToastContainer />
     </Provider>
 
 )

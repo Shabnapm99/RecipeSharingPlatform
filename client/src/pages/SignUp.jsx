@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import Modal from '../components/Card/Modal';
 import Spinner from '../components/Card/Spinner';
 import { axiosInstance } from '../axios/axiosInstance';
+import { toast } from 'react-toastify';
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 
 function SignUp() {
@@ -15,6 +17,8 @@ function SignUp() {
   const [alertMessage, setAlertMessage] = useState('');
   const [showErrorPara, setShowErrorPara] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   let navigate = useNavigate();
 
 
@@ -35,8 +39,9 @@ function SignUp() {
 
 
     } catch (error) {
-      setAlertMessage(error.response.data.message);
-      setShowErrorPara(true);
+      // setAlertMessage(error.response.data.message);
+      // setShowErrorPara(true);
+      toast.error(error.response.data.message)
       console.log(error.code, error.message)
 
     } finally {
@@ -147,15 +152,16 @@ function SignUp() {
 
                   <div className=''>
                     <label htmlFor='pswd' className='text-white block text-sm'>Password</label>
-                    <input className='mt-2 rounded-2xl  py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' type='password' id='pswd' required placeholder='.......' value={password}
-                      onChange={(e) => setPassword(e.target.value)} />
-                  </div>
+                    <div className="relative">
+                      <input className='mt-2 rounded-2xl  py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl'
+                        type={showPassword ? 'text' : 'password'} id='pswd' required placeholder='.......' value={password}
+                        onChange={(e) => setPassword(e.target.value)} />
+                      {showPassword ? <FaRegEye className='text-white absolute top-5 right-2' onClick={() => setShowPassword(false)} /> : <FaRegEyeSlash className='text-white absolute top-5 right-2' onClick={() => setShowPassword(true)} />}
 
-                  {/* <div className=''>
-                    <label htmlFor='confirmpswd' className='text-white block text-sm'>Confirm Password</label>
-                    <input className='mt-2 rounded-2xl  py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' type='password' id='confirmpswd' required placeholder='........' value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)} />
-                  </div> */}
+
+                    </div>
+
+                  </div>
 
                   {/* Submit button */}
                   <button className='rounded-2xl py-2.5 px-5  text-sm font-bold text-[#102217] bg-[#13ec6a] hover:bg-[#13ec6a]/90' type='submit'>Create Account

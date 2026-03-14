@@ -54,13 +54,14 @@ export const createRecipe = async (req, res) => {
             cuisine,
             difficulty,
             dietType } = req.body;
+        console.log(ingredients)
 
         //to convert the string to array before saving since FormData sends as string
-        let parsedIngredients = JSON.parse(ingredients);
-        let parsedInstructions = JSON.parse(instructions);
+        // let parsedIngredients = JSON.parse(ingredients);
+        // let parsedInstructions = JSON.parse(instructions);
 
         //validate for all required fields
-        if (!title || !description || !parsedIngredients?.length || !parsedInstructions?.length || !cookingTime) {//check ingredients missing,ingredients empty array
+        if (!title || !description || !ingredients?.length || !instructions?.length || !cookingTime) {//check ingredients missing,ingredients empty array
             return res.status(400).json({ message: "Missing required fields" });
         }
         //image validation : either upload an image or paste image url
@@ -89,8 +90,8 @@ export const createRecipe = async (req, res) => {
         const recipe = {
             title,
             description,
-            ingredients: parsedIngredients,
-            instructions: parsedInstructions,
+            ingredients: JSON.parse(ingredients),
+            instructions: JSON.parse(instructions),
             image: imageURL,
             cookingTime,
             cuisine,
@@ -100,7 +101,7 @@ export const createRecipe = async (req, res) => {
         }
 
         const newRecipe = await RecipeModel.create(recipe);
-
+        console.log(newRecipe.ingredients)
         const populatedRecipe = await RecipeModel.findById(newRecipe._id).populate('createdBy', 'name').select('-__v')
         //we should populate createdby id if we want to show the author name immediately afetr adding data
         if (!populatedRecipe) {
