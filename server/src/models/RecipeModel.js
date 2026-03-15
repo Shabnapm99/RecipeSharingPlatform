@@ -64,15 +64,24 @@ const recipeSchema = new Schema({
     },
     rating: {
         type: Number,
-        default: 0,
-        min: 0,
-        max: 5
+        default: 0
     },
     reviewCount: {
         type: Number,
         default: 0,
 
-    }
+    },
+    reviews: [
+        {
+            name: String,
+            rating: Number,
+            comment: String,
+            createdAt: {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ]
 
 }, { timestamps: true })
 

@@ -149,6 +149,7 @@ export const deleteRecipe = async (req, res) => {
 //update a recipe
 export const updateRecipe = async (req, res) => {
     try {
+
         let updateData = { ...req.body };
 
         if (req.file) {
@@ -158,7 +159,7 @@ export const updateRecipe = async (req, res) => {
         let updatedRecipe = await RecipeModel.findOneAndUpdate({ _id: req.params.id, createdBy: req.user._id }, updateData, { returnDocument: 'after', runValidators: true });//only the author can update a recipe
         if (!updatedRecipe) {
             return res.status(404).json({
-                messaage: "Recipe not found or not authorized"
+                message: "Recipe not found or not authorized"
             })
         }
         res.status(200).json({

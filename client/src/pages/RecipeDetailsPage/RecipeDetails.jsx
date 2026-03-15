@@ -25,6 +25,7 @@ import { ImCross } from 'react-icons/im'
 import { axiosInstance } from '../../axios/axiosInstance';
 import { addToFavorite, removeFromFavorite } from '../../utils/favoriteRecipes';
 import { toast } from 'react-toastify';
+import { addReview } from '../../services/recipeServices';
 
 function RecipeDetails() {
 
@@ -35,11 +36,16 @@ function RecipeDetails() {
   const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
   const [loading, setLoading] = useState(true);
   const [summary, setsummary] = useState("");
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
+  // const [review, setReview] = useState({ rating: 5, comment: "", user: "" });
   const [buttonLoading, setButtonLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   let navigate = useNavigate();
   const [showSummaryDiv, setShowSummaryDiv] = useState(false);
+  const [showReviewBox, setShowReviewBox] = useState(false);
+  const [postButtonLoading, setPostButtonLoading] = useState(false);
 
   //get URL params to fetch recipe details
 
@@ -103,6 +109,27 @@ function RecipeDetails() {
     }
   }
 
+
+  //post a review 
+
+  async function postReview() {
+    setPostButtonLoading(true);
+    const newReview = { rating, comment };
+
+    try {
+      let response = await addReview(id, newReview);
+      setComment('');
+      setRating(5);
+      dispatch(setSelectedRecipe(response.data.recipe));
+      toast.success("Review added")
+
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message || "Something went wrong");
+    } finally {
+      setPostButtonLoading(false);
+    }
+  }
   // gemini summary function
 
   async function getSummary() {
@@ -212,7 +239,7 @@ function RecipeDetails() {
               <h1 className="text-3xl md:text-4xl font-bold text-white/90 my-4">{recipe?.title}</h1>
               <div className='flex items-center gap-1 bg-yellow-500/10 border border-yellow-500/20 h-6 px-1 rounded-2xl w-fit'>
                 <FaStar className='text-yellow-500 text-sm' />
-                <p className='text-xs font-medium text-yellow-500'>{recipe?.rating} ({recipe?.reviewCount})</p>
+                <p className='text-xs font-medium text-yellow-500'>{recipe?.rating} ({recipe?.reviews.length})</p>
               </div>
 
             </div>
@@ -280,6 +307,71 @@ function RecipeDetails() {
 
               </div>
             </div>
+
+            {isLoggedIn &&
+              <div>
+
+                <h2 className='text-[#13ec6a] text-xl font-medium p-3 cursor-pointer'>Rate this recipe</h2>
+                {/* review writing section */}
+                <div className='border my-2 border-[#494b4a] bg-[#1c2a23] rounded-lg p-4 text-white flex flex-col gap-3'>
+                  <div className='flex flex-col gap-2'>
+                    <label className='text-sm' htmlFor='rating'>Rating</label>
+                    <select id='rating' value={rating} onChange={(e) => setRating(Number(e.target.value))} className='bg-[#1c2720] block p-1.5 rounded border border-[#3b5445] text-sm'>
+                      <option value={5}>5</option>
+                      <option value={4}>4</option>
+                      <option value={3}>3</option>
+                      <option value={2}>2</option>
+                      <option value={1}>1</option>
+                    </select>
+                  </div>
+                  <div className='flex flex-col gap-2'>
+                    <label className='text-sm' htmlFor='comment'>Comment</label>
+                    <textarea className='bg-[#1c2720] block p-1.5 rounded border border-[#3b5445] text-sm' id='comment' type='text' value={comment} onChange={(e) => setComment(e.target.value)} placeholder='Add your comment here' />
+                  </div>
+                  <button className='border rounded-lg text-sm py-1 border-[#3b5445]  bg-[#13ec6a]/60 cursor-pointer relative flex items-center justify-center gap-4 w-1/4' type='submit'
+                    onClick={postReview}>
+                    <p>Post Review</p>
+
+                    {postButtonLoading && <ButtonSpinner loading={postButtonLoading} />}
+                  </button>
+
+                </div>
+                {/* Review */}
+
+                {recipe?.reviews.length > 0 && (
+                  <div className="my-6 p-6 bg-[#1c2a23] rounded-xl border border-[#13ec6a]/30 shadow-md text-white">
+                    <h2 className="text-base font-semibold mb-4 border-b border-[#13ec6a]/50 pb-2">
+                      Reviews ({recipe.reviews.length})
+                    </h2>
+                    <div className="space-y-4">
+                      {recipe?.reviews?.map((review) => (
+                        <div
+                          key={review._id}
+                          className="bg-[#16201a] p-4 rounded-lg border border-[#13ec6a]/20 shadow-sm flex flex-col gap-5">
+                          <div className="flex items-center mb-2 md:mb-0 justify-between">
+                            <div className="flex items-center mr-4">
+                              {Array.from({ length: 5 }, (_, i) => (
+                                <FaStar
+                                  key={i}
+                                  className={`text-sm ${i < review.rating ? 'text-yellow-500' : 'text-gray-600'
+                                    }`}
+                                />
+                              ))}
+
+
+                            </div>
+                            <div className="text-gray-300">{review.name}</div>
+                          </div>
+                          <p className="font-medium">{review.comment}</p>
+
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+              </div>}
+
           </div>
 
           {/* Ingredients list*/}

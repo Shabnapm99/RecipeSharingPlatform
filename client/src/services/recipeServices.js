@@ -28,3 +28,7 @@ export const deleteRecipe = (id, data) => {
 export const updateRecipe = (id, data) => {
     return axiosInstance.put(`/recipes/${id}`, data);
 }
+
+export const addReview = (id, review) => {
+    return axiosInstance.post(`/recipes/${id}/reviews`, review);
+};

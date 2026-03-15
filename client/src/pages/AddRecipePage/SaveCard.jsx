@@ -38,8 +38,8 @@ function SaveCard({ recipe, imageFile, setFormData, setShowErrorPara }) {
             formData.append("ingredients", JSON.stringify(recipe.ingredients));
             formData.append("instructions", JSON.stringify(recipe.instructions));
 
-            formData.append("rating", 4.9);
-            formData.append("reviewCount", 20);
+            // formData.append("rating", 4.9);
+            // formData.append("reviewCount", 20);
 
             if (imageFile) {
                 formData.append("image", imageFile); // multer will read this
