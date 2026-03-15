@@ -5,6 +5,7 @@ const recipeSchema = new Schema({
         type: String,
         required: true,
         trim: true,
+        index:true
 
     },
     description: {
@@ -33,13 +34,15 @@ const recipeSchema = new Schema({
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: true,
+        index:true
     },
     cookingTime: {
         type: Number,
         default: 5,
         min: 5,
-        max: 60
+        max: 60,
+        index:true
     },
     cuisine: {
         type: String,
@@ -64,13 +67,10 @@ const recipeSchema = new Schema({
     },
     rating: {
         type: Number,
-        default: 0
-    },
-    reviewCount: {
-        type: Number,
         default: 0,
-
+        index:true
     },
+
     reviews: [
         {
             name: String,

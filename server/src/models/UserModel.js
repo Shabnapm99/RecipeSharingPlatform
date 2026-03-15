@@ -12,6 +12,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+        index:true,
         trim: true,
         lowercase: true //It automatically converts the value to lowercase before saving to the database.
     },

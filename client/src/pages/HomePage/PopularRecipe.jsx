@@ -27,7 +27,8 @@ function PopularRecipe() {
                         })
                     }
 
-                </div>}
+                </div>
+                }
         </div>
     )
 }

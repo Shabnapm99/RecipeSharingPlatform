@@ -12,7 +12,7 @@ The Recipe Sharing Platform is a responsive web app that helps users easily find
 
 - **Recipe Cards:** Display recipes with images and ratings.
 - **Advanced Filtering:** Filter recipes by cuisine, diet type, cooking time, and difficulty.
-- **Search:** Search recipes by name, ingredients, or cuisine. Includes voice search using the Web    Speech API.
+- **Search:** Search recipes by name, ingredients, or cuisine. Includes voice search using the Web Speech API.
 - **Recipe Details:** View detailed recipe pages with ingredients and step-by-step instructions.
 - **Cooking Timer:** Timer to assist during cooking.
 - **Ingredient Checklist:** Interactive checklist for ingredients.
@@ -22,6 +22,8 @@ The Recipe Sharing Platform is a responsive web app that helps users easily find
 - **Authentication:** Firebase Authentication for secure user login and signup.
 - **Summarize Recipe:** Summarize recipes using the Gemini API.
 - **Print Recipe:** Print-friendly recipe layout.
+- **Share Recipe:** Share recipes via whatsapp, email,...
+- **Review & Rating:** Logged In users can give review and rating
 - **Firebase Integration:** Firebase used for authentication and data storage.
 - **Mongodb integration:** Migrated to Mongodb for user registration, login authentication and data storage
 - **Responsive Design:** Optimized for mobile, tablet, and desktop devices.

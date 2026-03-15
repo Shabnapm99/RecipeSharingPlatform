@@ -5,7 +5,7 @@ import uploadToCloudinary from "../utils/imageUpload.js";
 export const getRecipes = async (req, res) => {
     try {
 
-        let recipes = await RecipeModel.find({}).select('-__v').populate("createdBy", "name")
+        let recipes = await RecipeModel.find({}).select('-__v').populate("createdBy", "name").sort({ createdAt: -1 }); //To get newest first.use createdAt: 1 for oldest first
         res.status(200).json({ recipes })
 
     } catch (error) {

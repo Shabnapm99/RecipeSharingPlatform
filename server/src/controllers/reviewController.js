@@ -1,10 +1,5 @@
-//get reviews
-
 import RecipeModel from "../models/RecipeModel.js"
 
-export const getReview = (req, res) => {
-
-}
 
 // post reviews
 

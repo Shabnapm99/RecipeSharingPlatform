@@ -27,7 +27,7 @@ function RecipeCard({ recipe }) {
                     <div className='flex items-center gap-2 text-gray-400 '>
                         <div className='flex items-center gap-1'>
                             <FaStar className='text-yellow-500' />
-                            <p className=''>{recipe?.rating} ({recipe?.reviewCount})</p>
+                            <p className=''>{recipe?.rating} ({recipe?.reviews?.length})</p>
                         </div>
                     </div>
                     <div className='text-[#13ec13]'>{recipe?.difficulty}</div>
