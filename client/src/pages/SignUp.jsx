@@ -106,7 +106,7 @@ function SignUp() {
             />
 
             {/* Overlay Content */}
-            <div className='absolute top-6 left-6'>
+            <div className='absolute top-6 left-6 z-10'>
               <div className='flex gap-3 items-center cursor-pointer' onClick={() => navigate('/')}>
                 <img src='/images/BrandIcons.png' alt='BrandIcon' />
                 <span className='text-xl md:text-2xl font-bold text-white'>CookBook</span>

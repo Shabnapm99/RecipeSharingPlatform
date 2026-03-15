@@ -38,7 +38,7 @@ Through this project, I learned how to:
 - Implement secure authentication and authorization using Firebase.
 - Manage user-specific data, including favorites and author-based access control.
 - Integrate third-party APIs such as the Web Speech API for voice search and the Gemini API for AI-powered recipe summarization.
-- Implement advanced features like multi-level filtering, search functionality, timers, and print-friendly views.
+- Implement advanced features like multi-level filtering, search functionality, timers, and print-friendly views and share recipe.
 - Handle CRUD operations effectively with proper data validation and access restrictions.
 - Include file(image) upload using multer and cloudinary.
 - Improve overall application performance, usability, and user experience.
@@ -51,7 +51,7 @@ This project aimed to simulate a real-world application by combining modern fron
 - **Frontend:** React.js
 - **Styling:** CSS3 / Tailwind CSS
 - **APIs:** dummyjson, {JSON} Placeholder
-- **Libraries:** React-Router-Dom, React-Redux, react-spinners, react-timer-hook, react-to-print, multer, cloudinary, react-toastify
+- **Libraries:** React-Router-Dom, React-Redux, react-spinners, react-timer-hook, react-to-print, multer, cloudinary, react-toastify,  Web Share API(navigator.share())
 - **AI Tools:** WebSpeech API, Gemini API
 - **Deployment:** Vercel
 - **Version Control:** Git & GitHub

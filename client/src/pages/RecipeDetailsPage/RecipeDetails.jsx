@@ -23,7 +23,7 @@ import { favorite } from '../../utils/favorite';
 import StopWatch from '../../components/Card/StopWatch';
 import { ImCross } from 'react-icons/im'
 import { axiosInstance } from '../../axios/axiosInstance';
-import { addToFavorite ,removeFromFavorite} from '../../utils/favoriteRecipes';
+import { addToFavorite, removeFromFavorite } from '../../utils/favoriteRecipes';
 import { toast } from 'react-toastify';
 
 function RecipeDetails() {
@@ -84,6 +84,24 @@ function RecipeDetails() {
     };//if we didn't clearup the selectedrecipe next time we are accessing another item, the previous item will show before ethe required one loads 
 
   }, [id])
+
+  //share recipe
+
+  async function shareRecipe() {
+    console.log("share");
+    const shareData = {
+      title: recipe.title,
+      text: "Check out this recipe!",
+      url: window.location.href
+    };
+    try {
+      await navigator.share(shareData)
+
+    } catch (error) {
+      console.log("sharing failed", error);
+      toast.error(error.message)
+    }
+  }
 
   // gemini summary function
 
@@ -179,7 +197,7 @@ function RecipeDetails() {
 
                 </div>
                 <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
-                  <FiShare2 className='text-2xl' />
+                  <FiShare2 className='text-2xl' onClick={shareRecipe} />
 
                 </div>
                 <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
