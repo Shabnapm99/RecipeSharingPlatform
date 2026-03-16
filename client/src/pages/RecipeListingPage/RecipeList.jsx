@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import FilterComponent from './FilterComponent'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IoSearchSharp } from 'react-icons/io5';
 import { MdKeyboardVoice } from "react-icons/md";
 import RecipeCard from '../../components/Card/RecipeCard';
 import { ImCross } from 'react-icons/im'
+import { setRecipes } from '../../features/recipeSlice';
+import { getRecipes } from '../../services/recipeServices';
 
 function RecipeList() {
 
@@ -13,7 +15,28 @@ function RecipeList() {
   let [searchContent, setSearchContent] = useState('');
   let [recording, setRecording] = useState(false);
   let [showClearButton, setShowClearButton] = useState(false);
+  let dispatch = useDispatch();
 
+  useEffect(() => {
+    const getData = async () => {
+      // setLoading(true);
+      try {
+
+        //from mongodb
+
+        let response = await getRecipes();
+        if (response.status === 200) {
+          dispatch(setRecipes(response.data.recipes));
+        }
+
+      } catch (error) {
+        console.error(`Error occured : ${error.message}`);
+      } 
+      // finally { setLoading(false) }
+
+    }
+    getData();
+  }, [])
   useEffect(() => {
     setFiletered(recipes);
     let value = searchContent.toLowerCase().trim() || '';

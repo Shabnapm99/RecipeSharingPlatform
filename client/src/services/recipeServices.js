@@ -1,16 +1,8 @@
 import { axiosInstance } from "../axios/axiosInstance";
 
-// export const getRecipes = () => {
-//     return axiosInstance.get('/recipes')
-// } 
-
-// export const getAddedRecipes = async (userId) => {
-//     let response = await axiosInstance.get('/recipes');
-//     let addedRecipes = response.data.recipes.filter((recipe) => {
-//         return recipe.createdBy._id === userId
-//     })
-//     return addedRecipes
-// }
+export const getRecipes = () => {
+    return axiosInstance.get('/recipes')
+}
 
 export const addrecipe = (data) => {
     return axiosInstance.post('/recipes', data, {
@@ -32,3 +24,11 @@ export const updateRecipe = (id, data) => {
 export const addReview = (id, review) => {
     return axiosInstance.post(`/recipes/${id}/reviews`, review);
 };
+
+export const popularRecipes = () => {
+    return axiosInstance.get('/recipes/popular')
+}
+
+export const getQuickRecipes = () => {
+    return axiosInstance.get('/recipes/quick')
+}

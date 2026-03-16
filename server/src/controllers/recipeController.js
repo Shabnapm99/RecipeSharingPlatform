@@ -40,6 +40,44 @@ export const getARecipe = async (req, res) => {
     }
 }
 
+
+//get popular recipes
+export const popularRecipes = async (req, res) => {
+    try {
+        let popularRecipes = await RecipeModel.find({ rating: { $gte: 4.5 }, cookingTime: { $gt: 15 } }).select('-__v').populate('createdBy', 'name').sort({ createdAt: -1 }).limit(4)
+        if (popularRecipes.length === 0) {
+            return res.status(404).json({ message: "No recipes with rating 5" })
+        }
+        res.status(200).json({ recipes: popularRecipes })
+    } catch (error) {
+        console.log("Something went wrong:", error.message);
+        res.status(500).json({
+            message: "Internal server Error",
+            error: error.message
+
+        })
+    }
+}
+
+//get quick recipes
+export const quickRecipes = async (req, res) => {
+    try {
+        let quickRecipes = await RecipeModel.find({ cookingTime: { $lte: 15 } }).select('-__v').populate('createdBy', 'name').sort({ createdAt: -1 }).limit(4)
+        if (quickRecipes.length === 0) {
+            return res.status(404).json({ message: "No recipes with cookingg time lessthan 15mins" })
+        }//find returns an array. so it quickRecipe will always true. so check for the length
+        res.status(200).json({ recipes: quickRecipes })
+
+    } catch (error) {
+        console.log("Something went wrong:", error.message);
+        res.status(500).json({
+            message: "Internal server Error",
+            error: error.message
+
+        })
+    }
+}
+
 //create a recipe
 
 export const createRecipe = async (req, res) => {
