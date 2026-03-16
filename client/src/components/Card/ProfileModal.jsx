@@ -16,7 +16,7 @@ function ProfileModal({ onClose }) {
 
     let authUser = useSelector((state) => state.users.authUser);
     const savedRecipes = useSelector((state) => state.favorites.savedRecipes);
-    const [userAddedRecipes,setUserAddedRecipes] = useState([]);
+    const [userAddedRecipes, setUserAddedRecipes] = useState([]);
 
     let navigate = useNavigate();
     let dispatch = useDispatch();
@@ -43,6 +43,7 @@ function ProfileModal({ onClose }) {
 
             } catch (error) {
                 console.log(error)
+                toast.error("Something went wrong");
             }
 
         };
@@ -82,7 +83,7 @@ function ProfileModal({ onClose }) {
                         <div className='border border-[#13ec6a]/30 bg-green-950 rounded-xl p-4 cursor-pointer hover:scale-105 hover:bg-green-900 transition-all duration-300'
                             onClick={() => {
                                 navigate('/favorites');
-                                onClose()
+                                onClose();
                             }}>
                             <div className='flex items-center gap-2'>
                                 <FaHeart className='text-[#13ec6a]' />
@@ -91,7 +92,11 @@ function ProfileModal({ onClose }) {
                             <p className='font-semibold text-white mt-1'>{savedRecipes.length} Recipes</p>
                         </div>
 
-                        <div className='border border-[#13ec6a]/30 bg-green-950 rounded-xl p-4 cursor-pointer hover:scale-105 hover:bg-green-900 transition-all duration-300'>
+                        <div className='border border-[#13ec6a]/30 bg-green-950 rounded-xl p-4 cursor-pointer hover:scale-105 hover:bg-green-900 transition-all duration-300'
+                            onClick={() => {
+                                navigate('/added-recipes');
+                                onClose();
+                            }}>
                             <div className='flex items-center gap-2'>
                                 <img src='/favicon.ico' alt="icon" className="w-4 h-4" />
                                 <p className='text-gray-400 text-sm'>Added</p>

@@ -220,7 +220,7 @@ export const updateRecipe = async (req, res) => {
 export const getUserAddedRecipe = async (req, res) => {
     try {
         let user = req.user;
-        let userAddedRecipes = await RecipeModel.find({ createdBy: user._id });
+        let userAddedRecipes = await RecipeModel.find({ createdBy: user._id }).populate('createdBy', 'name');
         res.status(200).json({ recipes: userAddedRecipes });
 
     } catch (error) {

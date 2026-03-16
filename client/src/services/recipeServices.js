@@ -32,3 +32,7 @@ export const popularRecipes = () => {
 export const getQuickRecipes = () => {
     return axiosInstance.get('/recipes/quick')
 }
+
+export const getaddedRecipes = () => {
+    return axiosInstance.get('/recipes/my-recipes')
+}

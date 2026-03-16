@@ -16,6 +16,7 @@ import { setSavedRecipes } from './features/favoritesSlice';
 import ProtectedRoute from './routes/ProtectedRoute';
 import GuestRout from './routes/GuestRout';
 import { axiosInstance } from './axios/axiosInstance';
+import AddedRecipes from './pages/addedRecipes';
 
 
 // Router setup using createBrowserRouter
@@ -47,7 +48,11 @@ const router = createBrowserRouter([
           {
             path: '/add',
             element: <AddRecipe />
-          }
+          },
+          {
+            path: '/added-recipes',
+            element: <AddedRecipes />
+          },
 
         ]
       }

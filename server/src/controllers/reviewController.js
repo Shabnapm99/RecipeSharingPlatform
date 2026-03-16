@@ -22,7 +22,7 @@ export const addReview = async (req, res) => {
 
         //calculate rating
         const totalRatingSum = recipe.reviews.reduce((acc, item) => item.rating + acc, 0);
-        recipe.rating = totalRatingSum / recipe.reviews.length;
+        recipe.rating = Math.round((totalRatingSum / recipe.reviews.length) * 10) / 10;//to round the rating 4.666666 save as 4.7
         await recipe.save();//save changes in document
 
         return res.status(200).json({
