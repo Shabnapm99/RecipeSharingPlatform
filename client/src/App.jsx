@@ -82,8 +82,6 @@ function App() {
   let dispatch = useDispatch();
   let user = useSelector((state) => state.users.authUser);
   let loggedIn = useSelector((state) => state.users.isLoggedIn);
-  const recipes = useSelector((state) => state.recipes.recipes);
-  let favorites = useSelector((state) => state.favorites.savedRecipes)
 
 
   //to observe the signIn changes and store the details
@@ -98,17 +96,24 @@ function App() {
           dispatch(setIsLoggedIn(true));
         }
 
+        // let favResponse = await axiosInstance.get('/favorites/getfavorites');
+        // if (favResponse.status === 200) {
+        //   dispatch(setSavedRecipes(favResponse.data.favoriteRecipes.recipes));
+        //   console.log(favResponse.data);
+        // }
+
 
       } catch (error) {
         console.log(error.message);
         dispatch(setAuthUser(null));
         dispatch(setIsLoggedIn(false))
+        dispatch(setSavedRecipes([]));
 
       }
 
     }
     getAuthUser();
-  }, [])
+  }, [dispatch])
 
   //When a user logged in fetch the users favorite recipe list
 

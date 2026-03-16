@@ -10,6 +10,7 @@ import { setAuthUser, setIsLoggedIn } from '../../features/userSlice';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { setSavedRecipes } from '../../features/favoritesSlice';
 
 
 function ProfileModal({ onClose }) {
@@ -27,6 +28,7 @@ function ProfileModal({ onClose }) {
             console.log("user loggedout successfully")
             dispatch(setIsLoggedIn(false));
             dispatch(setAuthUser(null));
+            dispatch(setSavedRecipes([]));
             // onClose();
             toast.success("Logged out successfully");
             navigate('/login')
