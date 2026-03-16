@@ -21,7 +21,7 @@ function Home() {
             {/* Hero Section */}
 
             <section className='h-screen w-full'>
-                <div className='w-[90vw] h-[85vh] mx-auto rounded-lg relative flex items-center' style={{ backgroundImage: "url('/images/Home.png')" }}>
+                <div className='w-[90vw] h-[85vh] mx-auto rounded-lg relative flex items-center bg-no-repeat bg-cover bg-center' style={{ backgroundImage: "url('/images/Home.png')" }}>
                     <div className='w-[90vw] h-[85vh] absolute bg-black/50 rounded-lg'></div>
                     <div className='w-3/4 h-3/4 flex justify-center items-center mx-auto '>
                         <div className='z-10'>

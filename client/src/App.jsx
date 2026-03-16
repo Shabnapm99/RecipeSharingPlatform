@@ -78,7 +78,7 @@ function App() {
   let user = useSelector((state) => state.users.authUser);
   let loggedIn = useSelector((state) => state.users.isLoggedIn);
   const recipes = useSelector((state) => state.recipes.recipes);
-  let favorites =  useSelector((state)=>state.favorites.savedRecipes)
+  let favorites = useSelector((state) => state.favorites.savedRecipes)
 
 
   //to observe the signIn changes and store the details
@@ -86,10 +86,12 @@ function App() {
 
     const getAuthUser = async () => {
       try {
-        let response = await axiosInstance.get('/profile');
-        if (response.status === 200) {
-          dispatch(setAuthUser(response.data.user));
-          dispatch(setIsLoggedIn(true));
+        if (loggedIn) {
+          let response = await axiosInstance.get('/profile');
+          if (response.status === 200) {
+            dispatch(setAuthUser(response.data.user));
+            dispatch(setIsLoggedIn(true));
+          }
         }
 
       } catch (error) {
@@ -120,7 +122,7 @@ function App() {
         }
       }
       getSavedRecipes()
-     
+
     }
 
   }, [loggedIn])

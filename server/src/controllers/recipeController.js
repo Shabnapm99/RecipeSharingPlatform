@@ -46,7 +46,7 @@ export const popularRecipes = async (req, res) => {
     try {
         let popularRecipes = await RecipeModel.find({ rating: { $gte: 4.5 }, cookingTime: { $gt: 15 } }).select('-__v').populate('createdBy', 'name').sort({ createdAt: -1 }).limit(4)
         if (popularRecipes.length === 0) {
-            return res.status(404).json({ message: "No recipes with rating 5" })
+            return res.status(400).json({ message: "No recipes with rating 5" })
         }
         res.status(200).json({ recipes: popularRecipes })
     } catch (error) {
@@ -64,7 +64,7 @@ export const quickRecipes = async (req, res) => {
     try {
         let quickRecipes = await RecipeModel.find({ cookingTime: { $lte: 15 } }).select('-__v').populate('createdBy', 'name').sort({ createdAt: -1 }).limit(4)
         if (quickRecipes.length === 0) {
-            return res.status(404).json({ message: "No recipes with cookingg time lessthan 15mins" })
+            return res.status(400).json({ message: "No recipes with cookingg time lessthan 15mins" })
         }//find returns an array. so it quickRecipe will always true. so check for the length
         res.status(200).json({ recipes: quickRecipes })
 
