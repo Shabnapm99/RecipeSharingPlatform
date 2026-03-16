@@ -6,58 +6,77 @@ https://recipe-sharing-platform-gold.vercel.app/
 
 ## 📖 Description
 
-The Recipe Sharing Platform is a responsive web app that helps users easily find and explore recipes. Users can search by recipe name or ingredients, apply filters like cuisine and cooking time, and view detailed recipes with step-by-step instructions. Logged-in users can add recipes, save favorites, and manage their own content. The app also includes voice search, AI-powered recipe summaries, and a clean, user-friendly design for all devices.
+The Recipe Sharing Platform is a **responsive web application** that allows users to easily discover, explore, and manage recipes. Users can search by recipe name, ingredients, or cuisine, and apply advanced filters such as cooking time, diet type, and difficulty level. Each recipe includes detailed step-by-step instructions, ingredients checklists, cooking timers, and ratings.  
+
+**Logged-in users** can:  
+- Add new recipes with images.  
+- Edit or delete their own recipes.  
+- Save favorite recipes for easy access.  
+- Share recipes via WhatsApp, email, or other platforms.  
+- Rate recipes and leave reviews.  
+
+The platform also includes **modern, intelligent features**:  
+- **Voice Search** using the Web Speech API.  
+- **AI-powered recipe summaries** via the Gemini API.  
+- **Print-friendly recipe layouts**.  
+- Real-time **loading indicators** for better user experience.  
+
+Built with **React.js, Tailwind CSS, MongoDB, JWT authentication, and bcrypt password hashing**, this app combines modern front-end technologies, secure authentication, cloud storage (Multer + Cloudinary), and AI integrations to provide a smooth, intuitive, and feature-rich cooking experience across all devices.
 
 ## ✨ Features
 
-- **Recipe Cards:** Display recipes with images and ratings.
-- **Advanced Filtering:** Filter recipes by cuisine, diet type, cooking time, and difficulty.
+- **Recipe Cards:** Display recipes with images, titles, and average ratings.
+- **Advanced Filtering:** Filter recipes by cuisine, diet type, cooking time, and difficulty level.
 - **Search:** Search recipes by name, ingredients, or cuisine. Includes voice search using the Web Speech API.
-- **Recipe Details:** View detailed recipe pages with ingredients and step-by-step instructions.
-- **Cooking Timer:** Timer to assist during cooking.
-- **Ingredient Checklist:** Interactive checklist for ingredients.
+- **Recipe Details:** View detailed recipe pages with ingredients and step-by-step cooking instructions.
+- **Cooking Timer:** Built-in timer to assist users while cooking.
+- **Ingredient Checklist:** Interactive checklist to keep track of ingredients during cooking.
 - **Add Recipe:** Only registered and logged-in users can add new recipes.
-- **Favorites:** Only registered and logged-in users can add recipes to favorites.
-- **Edit & Delete:** Recipes can be edited or deleted only by the author.
-- **Authentication:** Firebase Authentication for secure user login and signup.
-- **Summarize Recipe:** Summarize recipes using the Gemini API.
-- **Print Recipe:** Print-friendly recipe layout.
-- **Share Recipe:** Share recipes via whatsapp, email,...
-- **Review & Rating:** Logged In users can give review and rating
-- **Firebase Integration:** Firebase used for authentication and data storage.
-- **Mongodb integration:** Migrated to Mongodb for user registration, login authentication and data storage
-- **Responsive Design:** Optimized for mobile, tablet, and desktop devices.
-- **AI Integration:** Web Speech API for voice search and Gemini API for summarization.
+- **Edit & Delete Recipes:** Recipes can be edited or deleted only by the author.
+- **Favorites:** Logged-in users can save recipes to their favorites list and view them anytime.
+- **Review & Rating:** Logged-in users can submit ratings and reviews for recipes. Average rating is automatically calculated.
+- **Share Recipe:** Share recipes easily via WhatsApp, email, and other supported platforms using the Web Share API.
+- **Print Recipe:** Print-friendly recipe layout for easy offline cooking.
+- **Authentication:** Secure user authentication using JWT.
+- **Password Security:** User passwords are securely hashed using bcrypt.
+- **Protected Routes:** Certain features like adding recipes, favorites, and reviews are accessible only to authenticated users.
+- **Loaders:** Loading indicators improve user experience during API requests.
+- **Firebase Integration:** Firebase used for authentication during early development.
+- **MongoDB Integration:** MongoDB used for storing user data, recipes, favorites, and reviews.
+- **Responsive Design:** Fully responsive design optimized for mobile, tablet, and desktop devices.
+- **AI Integration:** Web Speech API for voice search and Gemini API for recipe summarization.
 
 
 ## 🎯 Project Goals
 
-The goal of this project was to build a full-featured recipe management application while strengthening my front-end development skills and gaining hands-on experience with real-world integrations.
+The goal of this project was to build a full-featured recipe management application while enhancing my front-end development skills and gaining hands-on experience with real-world integrations.
 
 Through this project, I learned how to:
-- Build reusable and responsive UI components using React.
-- Implement **responsive web design** to ensure a seamless experience across mobile, tablet, and desktop devices.
-- Implement secure authentication and authorization using Firebase.
-- Manage user-specific data, including favorites and author-based access control.
-- Integrate third-party APIs such as the Web Speech API for voice search and the Gemini API for AI-powered recipe summarization.
-- Implement advanced features like multi-level filtering, search functionality, timers, and print-friendly views and share recipe.
-- Handle CRUD operations effectively with proper data validation and access restrictions.
-- Include file(image) upload using multer and cloudinary.
-- Improve overall application performance, usability, and user experience.
 
-This project aimed to simulate a real-world application by combining modern front-end technologies, cloud services, and AI features into a single, scalable solution.
+- Build **reusable and responsive UI components** using React.
+- Implement **responsive web design** to ensure a seamless experience across mobile, tablet, and desktop devices.
+- Set up **secure authentication and authorization** using JWT and Firebase.
+- Manage user-specific data, including **favorites**, and enforce **author-based access control** for recipes.
+- Integrate third-party APIs, such as the **Web Speech API** for voice search and the **Gemini API** for AI-powered recipe summarization.
+- Implement advanced features like **multi-level filtering**, search, cooking timers, print-friendly layouts, and recipe sharing.
+- Handle **CRUD operations** effectively with proper data validation and access restrictions.
+- Upload and manage files/images using **Multer** and **Cloudinary**.
+- Optimize **application performance, usability, and overall user experience**.
+
+This project simulates a real-world web application by combining modern front-end technologies, cloud services, and AI-powered features into a scalable and user-friendly solution.
 
 
 ## 🛠️ Technologies Used
 
 - **Frontend:** React.js
 - **Styling:** CSS3 / Tailwind CSS
-- **APIs:** dummyjson, {JSON} Placeholder
-- **Libraries:** React-Router-Dom, React-Redux, react-spinners, react-timer-hook, react-to-print, multer, cloudinary, react-toastify,  Web Share API(navigator.share())
-- **AI Tools:** WebSpeech API, Gemini API
+- **Backend / Database:** Node.js, Express.js, MongoDB
+- **Authentication & Security:** JWT (JSON Web Tokens), bcrypt (password hashing)
+- **APIs:** dummyjson, JSONPlaceholder
+- **Libraries:** React-Router-Dom, React-Redux, react-spinners, react-timer-hook, react-to-print, multer, cloudinary, react-toastify, Web Share API (navigator.share())
+- **AI Tools:** Web Speech API, Gemini API
 - **Deployment:** Vercel
 - **Version Control:** Git & GitHub
-- **Backend:** MongoDB
 
 ## 🤖 AI Integration (Optional)
 
@@ -68,9 +87,9 @@ This project aimed to simulate a real-world application by combining modern fron
   Used to generate concise recipe summaries at the click of a button, helping users quickly understand the recipe without reading long instructions.
 
 ### 🚀 How It Enhances User Experience
-- Makes searching easier and more accessible through voice input.
-- Saves time by providing AI-generated recipe summaries.
-- Adds modern, intelligent features that improve overall usability.
+- **Voice Search:** Makes finding recipes faster and more accessible using voice input via the Web Speech API.  
+- **AI Summaries:** Saves time by providing concise, AI-generated recipe summaries with the Gemini API.  
+- **Smart Features:** Adds modern, intelligent functionality—like timers, ingredient checklists, and share/print options—that improve usability and engagement.  
 
 ## 🚀 Setup Instructions
 ### Prerequisites
@@ -78,15 +97,118 @@ This project aimed to simulate a real-world application by combining modern fron
 - npm or yarn
 
 ### Installation Steps
-1. Clone the repository
+1️⃣ Clone the repository
 ```bash
 git clone https://github.com/Shabnapm99/RecipeSharingPlatform.git
 Navigate to project directory cd your-repo-name
-2. Install dependencies npm install
-3. Create .env file (if using APIs) to not to expose
-   VITE_APP_API_KEY=your_api_key_here
-4. Start development server npm run dev
-5. Open http://localhost:5173 in your browser(default port)
+2️⃣ Install Dependencies
+- Backend
+cd server
+npm install
+
+- Frontend
+cd client
+npm install
+
+3️⃣ Configure Environment Variables
+
+Create a .env file inside the server folder and add:
+
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+PORT=4000
+JWT_EXPIRESIN = "expiry-time"
+CLOUDINARY_CLOUD_NAME="cloudinary-name"
+CLOUDINARY_API_KEY="cloudinary-api-key"
+CLOUDINARY_API_SECRET="cloudinary-api-secret"
+NODE_ENV="local"
+FRONTEND_URL='http://localhost:5173'
+
+
+Create a .env file inside the client folder and add:
+
+VITE_GEMINI_API_KEY=gemini-api-key
+VITE_BASE_URL="http://localhost:4000/api/"
+
+4️⃣ Run the Application
+- Start Backend
+cd server
+npm run dev
+
+- Start Frontend
+cd client
+npm run dev
+
+🌍 Access the Application
+
+Frontend → http://localhost:5173
+
+Backend → http://localhost:4000
+
+# 🔐 API Endpoints
+
+## Authentication
+
+- POST /api/register – Register user
+- POST /api/login – Login user
+- POST /api/logout – Logout user
+
+## Recipes
+
+- GET /api/recipes – Get all tasks
+- POST /api/recipes – Create new task
+- PUT /api/recipes/:id – Update task
+- DELETE /api/recipes/:id – Delete task
+
+## 🧪 Testing
+
+- API tested using Postman
+- Frontend tested manually through browser
+
+## 🌍 Deployment
+
+🚀 Deployment (Vercel)
+
+This project is configured for easy deployment on Vercel.
+
+1️⃣ Push to GitHub
+
+Push your complete project (both client and server folders) to a GitHub repository.
+
+2️⃣ Deploy the Backend
+
+- Go to Vercel Dashboard → Click Add New Project
+- Import your GitHub repository
+- Set the Root Directory to: server
+- Add the following Environment Variables in Vercel:
+
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+PORT=4000
+JWT_EXPIRESIN = "expiry-time"
+CLOUDINARY_CLOUD_NAME="your-cloudinary-name"
+CLOUDINARY_API_KEY="your-cloudinary-api-key"
+CLOUDINARY_API_SECRET="your-cloudinary-api-secret"
+NODE_ENV="local"
+FRONTEND_URL='deployed-link'
+
+
+- Click Deploy
+- Vercel will automatically detect the configuration and use the vercel.json file (if provided).
+- After deployment, you will get a backend URL like: https://your-backend-name.vercel.app
+
+3️⃣ Deploy the Frontend
+
+- Create another New Project in Vercel
+- Import the same GitHub repository
+- Set the Root Directory to:
+- client
+- Add the following environment variable:
+
+VITE_GEMINI_API_KEY=gemini-api-key
+VITE_BASE_URL=deployed backend url
+
+- Click Deploy
 
 📱 Responsive Design
 
@@ -95,8 +217,6 @@ This application is fully responsive and tested on:
 ● Tablets (768px and up)
 ● Desktop (1024px and up)
 
-📸 Screenshots
-[Add 2-3 screenshots of your application]
 
 🎨 Design Choices
 
