@@ -1,12 +1,12 @@
 import React from 'react'
-import { useEffect } from 'react'
-import { getaddedRecipes } from '../services/recipeServices.js'
-import { useState } from 'react'
-import { toast } from 'react-toastify';
 import RecipeCard from '../components/Card/RecipeCard';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { getaddedRecipes } from '../services/recipeServices';
+import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
-function AddedRecipes() {
+function UserAddedRecipes() {
     const [addedRecipes, setAddedRecipes] = useState([]);
     const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ function AddedRecipes() {
                 <div className='flex justify-between items-center'>
                     <h2 className='text-3xl font-semibold text-white mb-5'>Your CookBook</h2>
                     <button className='border border-green-500/80 py-0.5 px-3 rounded text-green-600 font-medium hover:bg-[#13ec6a] hover:text-white'
-                        onClick={() => {navigate('/add') }}><span>Add</span><span className='hidden md:inline'> Recipe</span></button>
+                        onClick={() => { navigate('/add') }}><span>Add</span><span className='hidden md:inline'> Recipe</span></button>
 
                 </div>
 
@@ -55,4 +55,4 @@ function AddedRecipes() {
     )
 }
 
-export default AddedRecipes
+export default UserAddedRecipes

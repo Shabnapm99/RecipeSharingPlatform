@@ -16,7 +16,7 @@ import { setSavedRecipes } from './features/favoritesSlice';
 import ProtectedRoute from './routes/ProtectedRoute';
 import GuestRout from './routes/GuestRout';
 import { axiosInstance } from './axios/axiosInstance';
-import AddedRecipes from './pages/addedRecipes';
+import UserAddedRecipes from './pages/UserAddedRecipes';
 
 
 // Router setup using createBrowserRouter
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
           },
           {
             path: '/added-recipes',
-            element: <AddedRecipes />
+            element: <UserAddedRecipes />
           },
 
         ]
@@ -91,13 +91,13 @@ function App() {
 
     const getAuthUser = async () => {
       try {
-        if (loggedIn) {
-          let response = await axiosInstance.get('/profile');
-          if (response.status === 200) {
-            dispatch(setAuthUser(response.data.user));
-            dispatch(setIsLoggedIn(true));
-          }
+
+        let response = await axiosInstance.get('/profile');
+        if (response.status === 200) {
+          dispatch(setAuthUser(response.data.user));
+          dispatch(setIsLoggedIn(true));
         }
+
 
       } catch (error) {
         console.log(error.message);
