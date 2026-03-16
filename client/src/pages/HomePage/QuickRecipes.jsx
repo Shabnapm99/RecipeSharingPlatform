@@ -6,12 +6,8 @@ import { getQuickRecipes } from '../../services/recipeServices';
 
 function QuickRecipes() {
 
-    const recipes = useSelector((state) => state.recipes.recipes);
     let [loading, setLoading] = useState(true);
-    // let QuickRecipes = recipes.filter((recipe) => recipe?.cookingTime < 15);//this will filter the recipes and return recipes which have rating greater than 4.8
-    // let QuickRecipesToshow = QuickRecipes.slice(0, 4);//to show only 4 items
     const [quickRecipes, setQuickRecipes] = useState([]);
-
 
     useEffect(() => {
         let getPopularRecipes = async () => {
@@ -22,7 +18,7 @@ function QuickRecipes() {
 
             } catch (error) {
                 console.log(error);
-                toast.error("something went wrong while fetching popular recipes")
+                toast.error("something went wrong while fetching quick recipes")
             } finally { setLoading(false) }
         }
         getPopularRecipes();

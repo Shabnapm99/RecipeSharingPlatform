@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import RecipeCard from '../../components/Card/RecipeCard';
 import Spinner from '../../components/Card/Spinner';
 import { popularRecipes as fetchPopularRecipes} from '../../services/recipeServices.js'
 import { toast } from 'react-toastify';
 
 function PopularRecipe() {
-    const recipes = useSelector((state) => state.recipes.recipes);
     let [loading, setLoading] = useState(false);
-    // let popularRecipes = recipes.filter((recipe) => recipe?.rating > 4.8 && recipe?.cookingTime > 15);//this will filter the recipes and return recipes which have rating greater than 4.8
     const [popularRecipes, setPopularRecipes] = useState([]);
-    // let popularRecipesToshow = popularRecipes.slice(0, 4);//to show only 4 items
 
     useEffect(() => {
 

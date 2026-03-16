@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
     credentials: true//to access the cookies
 }))
 
@@ -28,8 +28,8 @@ app.get('/', (req, res) => {
 
 app.use('/api', authRoute);
 app.use('/api/recipes', recipesRoute);
-app.use('/api/recipes',reviewRouter);
-app.use('/api/favorites',favoriteRoutes)
+app.use('/api/recipes', reviewRouter);
+app.use('/api/favorites', favoriteRoutes)
 
 dbConnect();//connecting to db
 

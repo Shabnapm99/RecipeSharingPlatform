@@ -6,11 +6,7 @@ import { IoSearchSharp } from "react-icons/io5";
 import { useNavigate, Link } from 'react-router-dom';
 import { IoHomeOutline } from "react-icons/io5";
 import { useSelector } from 'react-redux';
-import { app } from '../utils/firebaseConfig';
-import { getAuth, signOut } from 'firebase/auth'
 import ProfileModal from './Card/ProfileModal';
-
-const auth = getAuth(app);
 
 function Header() {
 
@@ -18,7 +14,6 @@ function Header() {
     const user = useSelector((state) => state.users.authUser);
     const favoriteCount = useSelector((state) => state.favorites.savedRecipes).length;
     const [initials, setInitials] = useState('U');
-    const [showAccountDetails, setShowAccountDetails] = useState(false);
     const [showProfileModal, setShowProfileModal] = useState(false);
 
     let navigate = useNavigate();
@@ -61,29 +56,11 @@ function Header() {
                                     </div></Link>
                                 <button className='text-2xl md:text-3xl bg-[#3c4f43] w-12 h-12 rounded-full text-[#13ec6a] cursor-pointer flex justify-center items-center font-semibold'
                                     onClick={
-                                        // () => setShowAccountDetails(!showAccountDetails)
                                         () => setShowProfileModal(true)
                                     }>
                                     {/* <FaRegUser /> */}
                                     <h2 className='flex justify-center items-center'>{initials}</h2>
                                 </button>
-
-                                {/* Account details */}
-                                {/* {showAccountDetails &&
-                                    <div className='bg-black/60 px-2 py-4 md:p-4 rounded-lg absolute top-full right-0   flex flex-col gap-3'>
-                                        <div>
-                                            <p>{user?.name}</p>
-                                            <p>{user?.email}</p>
-                                        </div>
-                                        <div className='border border-gray-500'></div>
-                                        <div>
-                                            <button className='text-[#13ec6a] font-medium cursor-pointer' onClick={() => {
-                                                signOut(auth).then(() => console.log("Signed out of user"))
-                                                    .then(() => navigate('/login'))
-                                            }}>Logout</button>
-                                        </div>
-                                    </div>
-                                } */}
                             </div>
                     }
                 </nav>

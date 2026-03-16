@@ -19,7 +19,6 @@ import ButtonSpinner from '../../components/Card/ButtonSpinner';
 import DeleteModal from '../../components/Card/DeleteModal';
 import Modal from '../../components/Card/Modal';
 import { useReactToPrint } from 'react-to-print';
-import { favorite } from '../../utils/favorite';
 import StopWatch from '../../components/Card/StopWatch';
 import { ImCross } from 'react-icons/im'
 import { axiosInstance } from '../../axios/axiosInstance';
@@ -38,7 +37,6 @@ function RecipeDetails() {
   const [summary, setsummary] = useState("");
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
-  // const [review, setReview] = useState({ rating: 5, comment: "", user: "" });
   const [buttonLoading, setButtonLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -83,7 +81,6 @@ function RecipeDetails() {
 
     }
     getRecipe();//call the function to get the recipe
-    // setIsSaved(savedRecipes.some((recipe) => recipe.uniqueId === recipe?.uniqueId))
 
     return () => {
       dispatch(clearSelectedRecipe());//Anything returned from useEffect is a cleanup function.React calls this before the component unmounts or before running the effect next time (if dependencies changed).
