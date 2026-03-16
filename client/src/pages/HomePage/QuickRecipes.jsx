@@ -3,6 +3,7 @@ import RecipeCard from '../../components/Card/RecipeCard';
 import { useSelector } from 'react-redux';
 import Spinner from '../../components/Card/Spinner'
 import { getQuickRecipes } from '../../services/recipeServices';
+import { toast } from 'react-toastify';
 
 function QuickRecipes() {
 
