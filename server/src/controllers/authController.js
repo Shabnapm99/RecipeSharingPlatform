@@ -29,7 +29,9 @@ export const login = async (req, res) => {
 
             res.cookie('token', token, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
+                // secure: process.env.NODE_ENV === "production",
+                secure: true,      // Required for sameSite: 'none'
+                sameSite: 'none',  // Crucial for cross-subdomain requests on Vercel
             });//create a cookie named token with value token and other credentials
 
             return res.status(200).json({
