@@ -32,6 +32,7 @@ export const login = async (req, res) => {
                 // secure: process.env.NODE_ENV === "production",
                 secure: true,      // Required for sameSite: 'none'
                 sameSite: 'none',  // Crucial for cross-subdomain requests on Vercel
+                partitioned: true,//ADD THIS for mobile/cross-site support
             });//create a cookie named token with value token and other credentials
 
             return res.status(200).json({
