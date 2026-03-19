@@ -25,7 +25,7 @@ function FilterComponent({ setFiletered }) {
             // apply cuisine filter only if selected
             if (cuisine && recipeCuisine !== cuisine) return false;
 
-            if (difficulty && recipeDifficulty !== difficulty) return false;
+            if (difficulty && recipeDifficulty !== difficulty) return false;//If user selected a difficulty AND this recipe is not that difficulty, remove it
 
             if (dietType && recipeDietType !== dietType) return false;
 

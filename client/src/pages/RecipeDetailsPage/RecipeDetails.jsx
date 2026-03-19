@@ -29,6 +29,7 @@ import { addReview } from '../../services/recipeServices';
 function RecipeDetails() {
 
   let dispatch = useDispatch();
+  let navigate = useNavigate();
   let user = useSelector((state) => state.users.authUser);
   let isLoggedIn = useSelector((state) => state.users.isLoggedIn);
   const recipe = useSelector((state) => state.recipes.selectedRecipe);
@@ -40,7 +41,6 @@ function RecipeDetails() {
   const [buttonLoading, setButtonLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  let navigate = useNavigate();
   const [showSummaryDiv, setShowSummaryDiv] = useState(false);
   const [showReviewBox, setShowReviewBox] = useState(false);
   const [postButtonLoading, setPostButtonLoading] = useState(false);
@@ -88,13 +88,17 @@ function RecipeDetails() {
 
   }, [id])
 
-  //share recipe
+  //share recipe using webshare API
 
   async function shareRecipe() {
-    console.log("share");
+    if (!navigator.share) {
+      toast("Sharing is not supported in this browser");
+      return;
+    }
+
     const shareData = {
       title: recipe.title,
-      text: "Check out this recipe!",
+      text: `Check out this recipe: ${recipe.title}`,
       url: window.location.href
     };
     try {
@@ -104,6 +108,8 @@ function RecipeDetails() {
       console.log("sharing failed", error);
       toast.error(error.message)
     }
+
+
   }
 
 
@@ -202,7 +208,7 @@ function RecipeDetails() {
               <div className='inset-0 bg-black/40 absolute top-0 left-0 rounded-xl'></div>
               <div className='flex items-center gap-2 absolute top-3.5 right-2 print:hidden'>
                 <div className='rounded-full p-2 bg-black/65 text-white'>
-                  {isSaved ? <FaHeart className='text-[#13ec6a] text-2xl' onClick={() => {
+                  {isSaved ? <FaHeart className='text-[#13ec6a] text-2xl cursor-pointer' onClick={() => {
                     const updatedList = savedRecipes.filter((item) => item._id !== recipe?._id)
                     dispatch(setSavedRecipes(updatedList));//update redux
                     removeFromFavorite(recipe._id);
@@ -217,15 +223,15 @@ function RecipeDetails() {
                       toast.success("Recipe saved")
                       // favorite(updatedList, user);//function to add the savedList to user
                     } else setShowLoginModal(true)
-                  }} className='text-2xl' />}
+                  }} className='text-2xl cursor-pointer' />}
 
                 </div>
                 <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
-                  <FiShare2 className='text-2xl' onClick={shareRecipe} />
+                  <FiShare2 className='text-2xl cursor-pointer' onClick={shareRecipe} />
 
                 </div>
                 <div className='rounded-full p-2 bg-black/65 text-white flex items-center gap-1'>
-                  <FiPrinter className='text-2xl' onClick={reactToPrintFunction} />
+                  <FiPrinter className='text-2xl cursor-pointer' onClick={reactToPrintFunction} />
 
                 </div>
 
