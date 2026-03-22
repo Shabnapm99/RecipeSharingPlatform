@@ -42,12 +42,6 @@ function AddRecipe() {
 
   }, [title, description, cookingTime, difficulty, dietType, cuisine, imageUrl, ingredients, instructions])
 
-  // useEffect(() => {
-
-  //   setAuthor(user?.name);
-
-  // }, [user]);//to set the author name as current user
-
   //function to get the recipe details to update
   useEffect(() => {
     if (isEditing) {
@@ -164,12 +158,12 @@ function AddRecipe() {
               {/* image url */}
               <div className='flex flex-col gap-2'>
                 <label htmlFor='title' className='text-[#13ec6a]/50 font-medium'>Image URL</label>
-                <input type='text' id='title' placeholder='Enter url' className='border border-[#3b5445] rounded p-2 bg-[#1c2720]' value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+                <input type='text' id='title' placeholder='Enter url' className='border border-[#3b5445] rounded p-2 bg-[#1c2720] text-sm' value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
               </div>
-              <div className='flex gap-2 my-2'>
-                <input type='file' className='border border-[#3b5445] rounded w-35 px-2 py-1 bg-[#1c2720]'
+              <div className='flex flex-col md:flex-row gap-2 my-2 md:items-center'>
+                <input type='file' className='border border-[#3b5445] rounded px-2 py-1 bg-[#1c2720] file-input file-input-bordered w-full max-w-xs text-sm'
                 onChange={(e)=>setImageFile(e.target.files[0])} />
-                <p>or paste URL above</p>
+                <span className='text-sm text-gray-500'>or paste URL above</span>
               </div>
             </div>
           </div>
