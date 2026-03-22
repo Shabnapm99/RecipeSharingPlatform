@@ -190,6 +190,16 @@ export const updateRecipe = async (req, res) => {
 
         let updateData = { ...req.body };
 
+
+        // Fix for array fields since we are sending the data as FormData
+        if (updateData.ingredients && typeof updateData.ingredients === "string") {
+            updateData.ingredients = JSON.parse(updateData.ingredients);
+        }
+
+        if (updateData.instructions && typeof updateData.instructions === "string") {
+            updateData.instructions = JSON.parse(updateData.instructions);
+        }
+
         if (req.file) {
             let imageURL = await uploadToCloudinary(req.file.path);
             updateData.image = imageURL;
