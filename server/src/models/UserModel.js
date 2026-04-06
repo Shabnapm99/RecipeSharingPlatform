@@ -12,7 +12,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        index:true,
+        index: true,
         trim: true,
         lowercase: true //It automatically converts the value to lowercase before saving to the database.
     },
@@ -26,13 +26,13 @@ const userSchema = new Schema({
         minLength: 3,
         trim: true
     },
-    //To store favorite recipes (reference to recipe model to store only the recipe IDs)
-    // favoriteRecipes: [
-    //     {
-    //         type: Schema.Types.ObjectId,
-    //         ref: 'Recipe'
-    //     }
-    // ],
+    status: {
+        type: String,
+        enum: ["active", "disabled"],
+        default: "active",
+        lowercase:true
+    },
+
     addedRecipes: [
         {
             type: Schema.Types.ObjectId,

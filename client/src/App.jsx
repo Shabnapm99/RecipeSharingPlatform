@@ -17,6 +17,8 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import GuestRout from './routes/GuestRout';
 import { axiosInstance } from './axios/axiosInstance';
 import UserAddedRecipes from './pages/UserAddedRecipes';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminProtectedRoute from './routes/AdminProtectedRoute';
 
 
 // Router setup using createBrowserRouter
@@ -55,9 +57,22 @@ const router = createBrowserRouter([
           },
 
         ]
-      }
+      },
+
     ],
     errorElement: <NotFound />
+  },
+  {
+    path: '/admin',
+    element:<AdminProtectedRoute/>,
+    errorElement: <NotFound />,
+    children: [
+      {
+        path: 'dashboard',
+        element: <AdminDashboard />,
+
+      },
+    ]
   },
   {
     element: <GuestRout />,

@@ -135,25 +135,25 @@ function SignUp() {
                 <div className='flex flex-col gap-5'>
                   <div className=''>
                     <label htmlFor='name' className='text-white block text-sm'>Name</label>
-                    <input className='mt-2 rounded-2xl py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='text' id='name' minLength={3} maxLength={100} required placeholder='enter your name here' value={name}
+                    <input className='mt-2 rounded-2xl py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm focus:ring-green-500 outline-none' type='text' id='name' minLength={3} maxLength={100} required placeholder='enter your name here' value={name}
                       onChange={(e) => setName(e.target.value)} />
                   </div>
                   <div className=''>
                     <label htmlFor='email' className='text-white block text-sm'>Email or UserName</label>
-                    <input className='mt-2 rounded-2xl  py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='email' id='email' required placeholder='example@gmail.com' value={email}
+                    <input className='mt-2 rounded-2xl  py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm focus:ring-green-500 outline-none' type='email' id='email' required placeholder='example@gmail.com' value={email}
                       onChange={(e) => setEmail(e.target.value)} />
                   </div>
 
                   <div className=''>
                     <label htmlFor='occupation' className='text-white block text-sm'>Occupation</label>
-                    <input className='mt-2 rounded-2xl  py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='text' id='occupation' required placeholder='Chef, Home maker' value={occupation} minLength={3} maxLength={100}
+                    <input className='mt-2 rounded-2xl  py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm focus:ring-green-500 outline-none' type='text' id='occupation' required placeholder='Chef, Home maker' value={occupation} minLength={3} maxLength={100}
                       onChange={(e) => setOccupation(e.target.value)} />
                   </div>
 
                   <div className=''>
                     <label htmlFor='pswd' className='text-white block text-sm'>Password</label>
                     <div className="relative">
-                      <input className='mt-2 rounded-2xl  py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl'
+                      <input className='mt-2 rounded-2xl  py-2 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl focus:ring-green-500 outline-none'
                         type={showPassword ? 'text' : 'password'} id='pswd' required placeholder='.......' value={password}
                         onChange={(e) => setPassword(e.target.value)} />
                       {showPassword ? <FaRegEye className='text-white absolute top-5 right-2' onClick={() => setShowPassword(false)} /> : <FaRegEyeSlash className='text-white absolute top-5 right-2' onClick={() => setShowPassword(true)} />}

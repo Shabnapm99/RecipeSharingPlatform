@@ -78,13 +78,13 @@ function Login() {
               <div className='flex flex-col gap-5'>
                 <div className=''>
                   <label htmlFor='email' className='text-white block text-sm'>Email or UserName</label>
-                  <input className='mt-2 rounded-2xl py-2.5 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm' type='email' id='email' required placeholder='example@gmail.com' value={email}
+                  <input className='mt-2 rounded-2xl py-2.5 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm focus:ring-green-500 outline-none' type='email' id='email' required placeholder='example@gmail.com' value={email}
                     onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div className=''>
                   <label htmlFor='pswd' className='text-white block text-sm'>Password</label>
                   <div className="relative">
-                    <input className='mt-2 rounded-2xl py-2.5 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl' 
+                    <input className='mt-2 rounded-2xl py-2.5 px-5 ring-1 ring-gray-300 placeholder:text-gray-400 text-white w-full bg-[#1c2720] text-sm placeholder:font-extrabold placeholder:text-xl focus:ring-green-500 outline-none' 
                     type={showPassword?"text":"password"} id='pswd' required placeholder='.......' value={password}
                       onChange={(e) => setPassword(e.target.value)} />
                     {showPassword ? <FaRegEye className='text-white absolute top-5 right-2' onClick={()=>setShowPassword(false)}/> : <FaRegEyeSlash className='text-white absolute top-5 right-2' onClick={()=>setShowPassword(true)}/>}
@@ -96,7 +96,7 @@ function Login() {
                 </div>
 
                 {/* Submit button */}
-                <button className='rounded-2xl py-2.5 px-5  text-sm font-bold text-[#102217] bg-[#13ec6a] hover:bg-[#13ec6a]/90 relative overflow-hidden' type='submit'>Login
+                <button disabled={loading} className='rounded-2xl py-2.5 px-5  text-sm font-bold text-[#102217] bg-[#13ec6a] hover:bg-[#13ec6a]/90 relative overflow-hidden disabled:opacity-50' type='submit'>Login
                   {loading && <ButtonSpinner loading={loading} />}</button>
 
               </div>

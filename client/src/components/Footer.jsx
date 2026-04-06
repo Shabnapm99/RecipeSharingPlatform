@@ -7,18 +7,25 @@ import { GrLocation } from "react-icons/gr";
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from './Card/Modal';
 import { useSelector } from 'react-redux';
+import AdminLogin from './Card/AdminLogin';
 
 function Footer() {
-    const [showModal,setShowModal] = useState(false);
-    const isLoggedIn = useSelector((state)=>state.users.isLoggedIn);
+    const [showModal, setShowModal] = useState(false);
+    const [showAdminLoginModal, setShowAdminLoginModal] = useState(false);
+    const isLoggedIn = useSelector((state) => state.users.isLoggedIn);
     let navigate = useNavigate();
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        setShowAdminLoginModal(true);
+    }
     return (
         <footer className='bg-[#102217] text-gray-400 text-sm py-6 px-4 sm:px-6 lg:px-8'>
             {/* About cookBook and social media icons */}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 lg:justify-items-center'>
                 <div className='flex flex-col gap-4'>
                     <div className='flex items-center gap-3'>
-                        <img src='/images/BrandIcons.png' alt='Brand icon' />
+                        <img src='/images/BrandIcons.png' alt='Brand icon' onClick={handleClick} />
                         <p className='text-white text:lg md:text-xl font-semibold'>CookBook</p>
                     </div>
                     <p className='leading-relaxed'>Discover and share amazing recipes from around the world. Join our community of passionate food lovers.</p>
@@ -35,7 +42,7 @@ function Footer() {
                     <h3 className='text-lg text-[#13ec6a] font-semibold mb-2'>Quick Links</h3>
                     <ul>
                         <Link to={'/recipes'}><li className='hover:text-white py-1 cursor-pointer'>Search recipes</li></Link>
-                        <li className='hover:text-white py-1 cursor-pointer' onClick={()=>isLoggedIn?navigate('/add'):setShowModal(true)}>Add Recipe</li>
+                        <li className='hover:text-white py-1 cursor-pointer' onClick={() => isLoggedIn ? navigate('/add') : setShowModal(true)}>Add Recipe</li>
                         <Link><li className='hover:text-white py-1 cursor-pointer'>Popular Recipe</li></Link>
                         <li className='hover:text-white py-1 cursor-pointer'>Top Chefs</li>
                         <li className='hover:text-white py-1 cursor-pointer'>Cooking Blog</li>
@@ -88,6 +95,7 @@ function Footer() {
                     <p>Cookies</p>
                 </div>
             </div>
+            {showAdminLoginModal && <AdminLogin onClose={() => setShowAdminLoginModal(false)} />}
         </footer>
     )
 }

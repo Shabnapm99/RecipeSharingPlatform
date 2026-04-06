@@ -29,7 +29,6 @@ function ProfileModal({ onClose }) {
             dispatch(setIsLoggedIn(false));
             dispatch(setAuthUser(null));
             dispatch(setSavedRecipes([]));
-            // onClose();
             toast.success("Logged out successfully");
             navigate('/login')
 

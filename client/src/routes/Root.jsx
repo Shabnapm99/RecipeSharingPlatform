@@ -21,6 +21,7 @@ function Root() {
 
       let response = await getRecipes();
       if (response.status === 200) {
+        console.log("Recipes array:", response.data.recipes);
         dispatch(setRecipes(response.data.recipes));
       }
 

@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const recipeSlice = createSlice({
   name: 'recipe',
   initialState: {
-    recipes: [{}],
-    selectedRecipe: {},
+    recipes: [],
+    selectedRecipe: null,
     isEditing: false,
     uniqueId: null
   },

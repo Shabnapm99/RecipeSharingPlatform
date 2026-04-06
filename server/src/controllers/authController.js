@@ -19,13 +19,14 @@ export const login = async (req, res) => {
 
         let user = await UserModel.findOne({ email: email }).select('-__v').populate('addedRecipes');
         //if there is no user registered on this email id
-        if (!user) {
+        if (!user || user.status === "disabled") {
             return res.status(400).json({ message: "Incorrect email or password" })
         }
+
         //compare the password with the hashed password 
         let isMatch = await bcrypt.compare(password, user.password_hash);
         if (isMatch) {
-            const token = jwt.sign({ _id: user._id }, process.env.JWT_TOKEN, { expiresIn: process.env.JWT_EXPIRESIN });
+            const token = jwt.sign({ _id: user._id, role: "user" }, process.env.JWT_TOKEN, { expiresIn: process.env.JWT_EXPIRESIN });
 
             res.cookie('token', token, {
                 httpOnly: true,
@@ -42,6 +43,7 @@ export const login = async (req, res) => {
                     name: user.name,
                     email: user.email,
                     occupation: user.occupation,
+                    status: user.status,
                     favoriteRecipes: user.favoriteRecipes,
                     addedRecipes: user.favoriteRecipes
                 }//to prevent secured info like hashedpassed from sending back, send needed fields only
@@ -109,6 +111,7 @@ export const register = async (req, res) => {
     }
 }
 
+
 //get profile
 
 export const profile = async (req, res) => {
@@ -134,7 +137,10 @@ export const logout = async (req, res) => {
     try {
         res.clearCookie('token', {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            // secure: process.env.NODE_ENV === "production",
+            secure: true,      // Required for sameSite: 'none'
+            sameSite: 'none',  // Crucial for cross-subdomain requests on Vercel
+            partitioned: true,//ADD THIS for mobile/cross-site support
         });
         res.status(200).json({ message: 'Logged out successfully' })
 
@@ -147,3 +153,4 @@ export const logout = async (req, res) => {
         })
     }
 }
+

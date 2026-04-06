@@ -14,6 +14,10 @@ export const validateToken = async (req, res, next) => {
         if (!decoded) {
             return res.status(401).json({ message: "User not authenticated" });
         }
+        if (decoded.role !== "user") {
+            return res.status(401).json({ message: "Access denied" });//role based accecc
+
+        }
         let userId = decoded._id;
         const user = await UserModel.findOne({ _id: userId });
         if (!user) {
