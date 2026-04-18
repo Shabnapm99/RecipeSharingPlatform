@@ -153,7 +153,7 @@ function App() {
   }, [loggedIn])
 
   return (
-    <div id='rootContainer'>
+    <div id='rootContainer' className='min-h-screen w-full bg-[#1c2720]'>
       <RouterProvider router={router} />
     </div>
   )

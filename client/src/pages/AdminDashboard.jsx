@@ -16,6 +16,7 @@ import { setRecipes } from '../features/recipeSlice.js';
 function AdminDashboard() {
     const [users, setUsers] = useState([]);
     const [searchContent, setSearchContent] = useState('');
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     // const [recipes,setRecipes] = useState([]);
     let dispatch = useDispatch();
     const recipes = useSelector((state) => state.recipes.recipes);
@@ -63,19 +64,37 @@ function AdminDashboard() {
 
 
     return (
-        <div className="bg-[#1c2720] min-h-screen flex gap-4 p-6 text-gray-100">
+        <div className="bg-[#1c2720] min-h-screen w-full flex gap-4 p-3 md:p-6 text-gray-100 overflow-auto">
 
             {/* Sidebar */}
             <div className="w-64 hidden md:block">
                 <AdminSidebar />
             </div>
 
+            {/* Sidebar (mobile overlay) */}
+            {isSidebarOpen && (
+                <div className="fixed inset-0 z-40 flex">
+
+                    {/* Overlay */}
+                    <div
+                        className="fixed inset-0 bg-black/50"
+                        onClick={() => setIsSidebarOpen(false)}
+                    />
+
+                    {/* Sidebar */}
+                    <div className="relative z-50">
+                        <AdminSidebar />
+                    </div>
+                </div>
+            )}
+
+
             {/* Main Content */}
             <div className="flex-1 flex flex-col space-y-6">
 
                 {/* Header */}
                 <div className="bg-[#24332b] shadow rounded-2xl p-4 text-gray-100">
-                    <AdminHeader searchContent={searchContent} setSearchContent={setSearchContent} />
+                    <AdminHeader searchContent={searchContent} setSearchContent={setSearchContent}  setIsSidebarOpen={setIsSidebarOpen} />
                 </div>
 
 
