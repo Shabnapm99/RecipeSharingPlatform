@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { LuFilter } from "react-icons/lu";
 import { useSelector } from 'react-redux';
+import { motion } from 'framer-motion';
 
 function FilterComponent({ setFiletered }) {
 

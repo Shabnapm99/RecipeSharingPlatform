@@ -7,6 +7,7 @@ import RecipeCard from '../../components/Card/RecipeCard';
 import { ImCross } from 'react-icons/im'
 import { setRecipes } from '../../features/recipeSlice';
 import { getRecipes } from '../../services/recipeServices';
+import { motion } from 'framer-motion';
 
 function RecipeList() {
 
@@ -31,7 +32,7 @@ function RecipeList() {
 
       } catch (error) {
         console.error(`Error occured : ${error.message}`);
-      } 
+      }
       // finally { setLoading(false) }
 
     }
@@ -82,13 +83,17 @@ function RecipeList() {
 
         {/* Filter section */}
 
-        <section className='basis-1/4'>
+        <motion.section className='basis-1/4' initial={{ x: -80, opacity: 0 }}        // start below
+          whileInView={{ x: 0, opacity: 1 }}     // move up to position
+          transition={{ duration: 0.6, ease: "easeOut" }}>
           <FilterComponent fileterdRecipe={fileterdRecipe} setFiletered={setFiletered} />
-        </section>
+        </motion.section>
 
         {/* Recipe list section */}
 
-        <section className='basis-3/4 relative'>
+        <motion.section className='basis-3/4 relative' initial={{ x: 80, opacity: 0 }}        // start below
+          whileInView={{ x: 0, opacity: 1 }}     // move up to position
+          transition={{ duration: 0.6, ease: "easeOut" }}>
           <div>
             <h4 className='text-gray-500 mb-3 text-[16px]'>Found {fileterdRecipe?.length} Recipes</h4>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
@@ -101,7 +106,7 @@ function RecipeList() {
               }
             </div>
           </div>
-        </section>
+        </motion.section>
       </div>
     </main>
   )

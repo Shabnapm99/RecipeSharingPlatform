@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import Spinner from '../../components/Card/Spinner'
 import { getQuickRecipes } from '../../services/recipeServices';
 import { toast } from 'react-toastify';
+import { motion } from 'framer-motion';
 
 function QuickRecipes() {
 
@@ -26,7 +27,10 @@ function QuickRecipes() {
     }, [])
 
     return (
-        <div className='w-[90vw] mx-auto rounded-lg relative'>
+        <motion.div className='w-[90vw] mx-auto rounded-lg relative'
+            initial={{ y: 80, opacity: 0 }}        // start below
+            whileInView={{ y: 0, opacity: 1 }}     // move up to position
+            transition={{ duration: 0.6, ease: "easeOut" }}>
             <h2 className='text-2xl md:text-3xl font-semibold text-white mb-5'>Quick & Easy(under 15 mins)</h2>
             {loading ? <Spinner loading={loading} /> :
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
@@ -39,7 +43,7 @@ function QuickRecipes() {
                     }
 
                 </div>}
-        </div>
+        </motion.div>
     )
 }
 
